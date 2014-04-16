@@ -13,10 +13,19 @@ import object.Cell;
 import object.Facts;
 import object.Virus;
 
-//Main class
+/**
+ * Main class. 
+ * Contains three JPanels at any one time: screens, optionPanel, and sidebarPanel.
+ * gameScreens uses a CardLayout and holds the various game screens 
+ * (welcome menu, instructions, game over), displaying one at a time.
+ * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of gameplay.
+ * The optionPanel holds the menu bar at the top of the game.
+ * The sidebarPanel is a sidebar that displays the facts to the user on the right side of the screen.
+ *
+ */
 
 public class InvasionGame extends JApplet implements Runnable {
-	//Game constants
+	/******** GAME CONSTANTS ********/
 	private int WINDOW_WIDTH = 970; //should == GAME_WIDTH + SIDEBAR_WIDTH
 	private int WINDOW_HEIGHT = 800; //should == GAME_HEIGHT + OPTION_HEIGHT
 	private int GAME_HEIGHT = 720;
@@ -24,19 +33,32 @@ public class InvasionGame extends JApplet implements Runnable {
 	private int OPTION_HEIGHT = 80;
 	private int SIDEBAR_WIDTH = 250;
 	
-	//Class variables
+	/******** CLASS VARIABLES ********/
+	// An ArrayList of Cell objects. Represents the body of cells.
 	private ArrayList<Cell> cellList;
+	// An ArrayList of Virus objects. Holds the instances of the hostile viruses that are
+	// launched towards the body of cells throughout the game.
 	private ArrayList<Virus> virusList;
 	private Facts hivFacts;
+	
+	// Status of the game.
 	private String gameStatus;
+	// Count of the number of T-Cells. Determines the difficulty (number of clicks) of killing a virus.
 	private int tCellCount;
+	// User's score in the game, determined by number of viruses killed and time.
 	private int gameScore;
+	// Timer counting the time elapsed during the game. 
 	private Timer gameTimer;
+	// Difficulty of the game (number of clicks it takes to kill a virus, speed of viruses)
 	private int difficultyLevel;
 	
-	//Screen components
-    private JPanel screens; //JPanel that flips between screens
-	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; //various screens
+	/******** WINDOW COMPONENTS ********/
+	// JPanel that holds all of the screens for the different stages of gameplay.
+	// It only displays one at once, and can therefore be used to 'flip' between them.
+    private JPanel gameScreens; 
+    
+    // Various screens, for different stages of gameplay.
+	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; 
 	private CardLayout cardLayout;
     private Board gameBoard; //JPanel object
 	private JPanel optionPanel;
@@ -50,7 +72,7 @@ public class InvasionGame extends JApplet implements Runnable {
 		setLayout(new BorderLayout());
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	    
-	    //initialize panels
+	    // Initialize panels
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    
 	    welcomePanel = new JPanel();
@@ -66,22 +88,24 @@ public class InvasionGame extends JApplet implements Runnable {
 	    gameOverPanel.setBackground(Color.MAGENTA);
 	    
 	    /*****************************************
-	     * screens variable holds the various screens that the center component flips between
-	     * There are 5 screens, each JPanel objects: welcome, background, instructions, game, game over
-	     * cardLayout.show(screens, "STRING") changes which JPanel is displayed
+	     * The gameScreens variable holds the various game screens (welcome menu, 
+	     * instructions, game over, etc.) for the different stages of gameplay.
+	     * It displays one at a time, and is therefore used to 'flip' between them.
+	     * There are 5 gameScreens, each a JPanel object: welcome, background, instructions, game, game over
+	     * cardLayout.show(gameScreens, "STRING") changes which JPanel is displayed
 	     ****************************************/
 	    
-	    screens = new JPanel(new CardLayout());
+	    gameScreens = new JPanel(new CardLayout());
 	    
+	    // Add the 'cards' to gameScreens
+	    gameScreens.add(welcomePanel, "Welcome Screen");
+	    gameScreens.add(backgroundPanel, "Background");
+	    gameScreens.add(instructionPanel, "Instructions");
+	    gameScreens.add(gameBoard, "Game");
+	    gameScreens.add(gameOverPanel, "Game Over Screen");
 	    
-	    screens.add(welcomePanel, "Welcome Screen");
-	    screens.add(backgroundPanel, "Background");
-	    screens.add(instructionPanel, "Instructions");
-	    screens.add(gameBoard, "Game");
-	    screens.add(gameOverPanel, "Game Over Screen");
-	    
-	    cardLayout = (CardLayout) screens.getLayout();
-	    cardLayout.show(screens, "Background"); //this command changes what's on the screen
+	    cardLayout = (CardLayout) gameScreens.getLayout();
+	    cardLayout.show(gameScreens, "Background"); //this command changes what's on the screen
 	    
 	    //Other components of the applet
 	    optionPanel = new JPanel();
@@ -98,7 +122,7 @@ public class InvasionGame extends JApplet implements Runnable {
 	    
 	    add(optionPanel, BorderLayout.NORTH);
 	    add(sidebarPanel, BorderLayout.EAST);
-	    add(screens, BorderLayout.CENTER); //adding center screen to layout
+	    add(gameScreens, BorderLayout.CENTER); //adding center screen to layout
 	    
 	    setVisible(true);
 	}
@@ -133,7 +157,7 @@ public class InvasionGame extends JApplet implements Runnable {
 		
 	}
 	
-	//this method should be adding to the instructionPanel JPanel object
+	//This method should add to the instructionPanel JPanel object
 	public void displayInstructions() {
 		
 	}
@@ -145,6 +169,14 @@ public class InvasionGame extends JApplet implements Runnable {
 	public void drawVirus() {
 		
 	}
+	
+	
+	/**
+	 * Called after a certain amount of time has passed in the game. 
+	 * Starts decrementing the T-cell count. 
+	 * After this method is called, the game becomes increasingly difficult
+	 * (i.e. the immune system becomes increasingly deficient).
+	 */
 	
 	public void infectHIV() {
 		
@@ -169,13 +201,24 @@ public class InvasionGame extends JApplet implements Runnable {
 		
 	}
 	
+	/**
+	 * Detects collisions between Virus objects and Cell objects.
+	 */
+	
 	public void detectInfection() {
 		
 	}
 	
-	public void calibrateDifficulty() {
+	/**
+	 * Sets the difficulty of the game (number of clicks needed to kill a virus, virus speed).
+	 * Responds to changes in T-cell count.
+	 * @param difficulty
+	 */
+	
+	public void calibrateDifficulty(int difficulty) {
 		
 	}
+	
 	public void introduceVirus() {
 		
 	}
