@@ -27,7 +27,7 @@ import object.Virus;
  * (welcome menu, instructions, game over), displaying one at a time.
  * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of gameplay.
  * The optionPanel holds the menu bar at the top of the game.
- * The sidebarPanel is a sidebar that displays the facts to the user on the right side of the screen.
+ * The sidebarPanel is a side bar that displays the facts to the user on the right side of the screen.
  *
  */
 
@@ -59,6 +59,16 @@ public class InvasionGame extends JApplet {
 	private String currentScreen;
 	private BufferedImage background, logo, background_sidebar, logo_sidebar;
 	
+	/*
+	 * initUI()
+	 * 
+	 * Sets up the game and and the initial sizes of the window, buttons, 
+	 * and text area. Essentially, the structure needed for the game. 
+	 * 
+	 * @param none
+	 * @return none 
+	 * 
+	 */
 	
 	public void init() {
 		// Make the JApplet visible.
@@ -124,6 +134,17 @@ public class InvasionGame extends JApplet {
 	    setVisible(true);
 	}
 	
+	/*
+	 *loadImages()  
+	 * 
+	 * This method loads the pictures for the game which were created and designed to be 
+	 * geared towards an audience for kids. 
+	 * 
+	 * @param none 
+	 * @return none 
+	 * 
+	 */
+		
 	public void loadImages() {
 		//load images
 	    try {
@@ -155,6 +176,12 @@ public class InvasionGame extends JApplet {
 		return button;
 	}
 	
+	/*
+	 * This class is the structure of the welcome screen where you hit start and directs you 
+	 * to the next page. Has a nice picture that encompasses a very attractive 
+	 * picture so kids can understand the theme of the game. 
+	 * 
+	 */
 
 	public class WelcomePanel extends JPanel {
 		private JButton startButton;
@@ -187,6 +214,11 @@ public class InvasionGame extends JApplet {
 		}
 	}
 	
+	/*
+	 * This class tells the user the background and reason for playing 
+	 * the game and why it is important. It is directed toward a kid audience. 
+	 * 
+	 */
 
 	public class BackgroundPanel extends JPanel {
 	
@@ -250,6 +282,12 @@ public class InvasionGame extends JApplet {
 			
 		}
 	}
+	
+	
+	/*
+	 * This class encompasses the Instruction Panel which 
+	 * tells the user what to do and how to play the game. 
+	 */
 	
 	public class InstructionPanel extends JPanel {
 		
