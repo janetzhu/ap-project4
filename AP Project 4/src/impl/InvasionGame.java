@@ -159,6 +159,7 @@ public class InvasionGame extends JApplet {
 				public void actionPerformed(ActionEvent event) {
 					cardLayout.show(gameScreens, "Background");
 					currentScreen = "Background";
+					sidebarPanel.repaint();
 				}
 				
 			});
@@ -230,6 +231,7 @@ public class InvasionGame extends JApplet {
 				public void actionPerformed(ActionEvent event) {
 					cardLayout.show(gameScreens, "Instructions");
 					currentScreen = "Instructions";
+					sidebarPanel.repaint();
 				}
 				
 			});
