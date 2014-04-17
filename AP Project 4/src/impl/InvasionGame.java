@@ -123,6 +123,27 @@ public class InvasionGame extends JApplet {
 	    sidebarPanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 	    sidebarPanel.setBackground(Color.CYAN);
 	    
+	    quit = new JButton("Quit");
+	    quit.setPreferredSize(new Dimension(70,30));
+	    quit.setBounds(10, 15, 70, 30);
+	    //quit.addActionListener((ActionListener) this);
+	    optionPanel.add(quit);
+	    optionPanel.setVisible(true);
+	    
+	    restart = new JButton("Restart");
+	    restart.setPreferredSize(new Dimension(70,30));
+	    restart.setBounds(10, 15, 70, 30);
+	    //restart.addActionListener((ActionListener) this);
+	    optionPanel.add(restart);
+	    optionPanel.setVisible(true);
+	    
+	    pause = new JButton("Pause");
+	    pause.setPreferredSize(new Dimension(70,30));
+	    pause.setBounds(10, 15, 70, 30);
+	    //pause.addActionListener((ActionListener) this);
+	    optionPanel.add(pause);
+	    optionPanel.setVisible(true);
+	    
 	    add(optionPanel, BorderLayout.NORTH);
 	    add(sidebarPanel, BorderLayout.EAST);
 	    add(gameScreens, BorderLayout.CENTER); //adding center screen to layout
