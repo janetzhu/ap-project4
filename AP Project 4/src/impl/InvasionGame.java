@@ -198,10 +198,7 @@ public class InvasionGame extends JApplet {
 				+ "textbooks? This game will not only teach you the facts but also you will have fun playing it! "
 				+ "With your help, we can help stop the epidemic together and save lives. "
 				+ "Enter through each stage of the game and on completion you will be a AIDS/HIV scientist.";
-		private String instructions = "Instructions: " +
-	"1. Double click on the black squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells." + 
- 	"2. As the game gets harder, the bad cells become harder to take down." + 
-	"3. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
+		
 
 		private JButton nextButton;
 		private JTextArea instructionsText;
@@ -255,6 +252,15 @@ public class InvasionGame extends JApplet {
 	}
 	
 	public class InstructionPanel extends JPanel {
+		
+		private JTextArea instructionsText2;
+		
+		private String instructions = "Instructions: " +
+		"\n1. Double click on the black squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells." + 
+		"\n2. As the game gets harder, the bad cells become harder to take down." + 
+		"\n3. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
+		
+		
 		public InstructionPanel() {
 			setLayout(null);
 			
@@ -280,6 +286,12 @@ public class InvasionGame extends JApplet {
 				
 			});
 			
+			instructionsText2 = new JTextArea(instructions,10,50);
+			instructionsText2.setBounds(25, 25, 600, 300);
+			instructionsText2.setLineWrap(true);
+			instructionsText2.setWrapStyleWord(true);
+			
+			add(instructionsText2);
 			add(nextButton);
 		}
 
