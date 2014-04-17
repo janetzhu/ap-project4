@@ -8,15 +8,23 @@ package object;
 
 public class Cell {
 
+<<<<<<< HEAD
 	// The x coordinate of the top-left corner of the cell
 	private int xCoord;
 	// The x coordinate of the top-left corner of the cell
 	private int yCoord;
 	
 	// The width of the cell
+=======
+	// Location of the Cell - x and y-coordinates
+	private int xCoord, yCoord;
+	// Width and height of the cell
+>>>>>>> FETCH_HEAD
 	private int width;
 	// The height of the cell
 	private int height;
+	// Boolean that holds whether a cell has been infected by a virus or not
+	private boolean infected;
 	
 	// Infected is true if the cell has been infected by a virus or disease, false if healthy
 	private boolean infected;

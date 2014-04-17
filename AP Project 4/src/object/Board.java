@@ -15,9 +15,11 @@ import java.util.ArrayList;
 
 public class Board extends JPanel implements Runnable{
 
+	/******** CLASS VARIABLES ********/
 	private int gameHeight;
 	private int gameWidth;
 	
+<<<<<<< HEAD
 	private Cell[][] cellList = new Cell[7][3];
 	private ArrayList<Virus> virusList = new ArrayList<Virus>();
 	private Facts hivFacts;
@@ -35,6 +37,16 @@ public class Board extends JPanel implements Runnable{
     private final int VIRUS_POS_XMAX = 700;
     private final int VIRUS_POS_YMIN = 10;
     private final int VIRUS_POS_YMAX = 375;
+=======
+	ArrayList<Cell> cellList;
+	ArrayList<Virus> virusList;
+	Facts hivFacts;
+	String gameStatus;
+	int tCellCount;
+	int gameScore;
+	Timer gameTimer;
+	int difficultyLevel;
+>>>>>>> FETCH_HEAD
 	
 	public Board(int height, int width) {
 		initBoard(height, width);
@@ -65,10 +77,13 @@ public class Board extends JPanel implements Runnable{
 	
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
+<<<<<<< HEAD
 				
 		//turn on anti-aliasing to smooth out shapes
 		
 		// Turn on anti-aliasing to smooth out shapes
+=======
+>>>>>>> FETCH_HEAD
 		
 		// Turn on anti-aliasing to smooth out shapes
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
