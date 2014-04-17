@@ -6,6 +6,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Board extends JPanel implements Runnable{
+public class Board extends JPanel implements Runnable,MouseListener {
 
 	/******** CLASS VARIABLES ********/
 	private int gameHeight;
@@ -48,7 +50,9 @@ public class Board extends JPanel implements Runnable{
 		setVisible(true);
 		
 		setPreferredSize(new Dimension(gameWidth, gameHeight));
-		setBackground(Color.RED);
+		setBackground(Color.GRAY);
+		
+		this.addMouseListener(this);
 		
 		// Body Cells are created in a 3 x 10 array toward the bottom of the board
         for (int j = 0; j < 3; j++) {
@@ -59,11 +63,29 @@ public class Board extends JPanel implements Runnable{
         }
         
         introduceVirus();
+        introduceVirus();
+        introduceVirus();
         
         repaint();
         
+        start();
 	}
 	
+	public void start() {
+    	Thread th = new Thread (this);
+    	th.start();
+    	gameStatus = "playing";
+    }
+	
+    public void stop() {}
+    
+    public void destroy() {}
+	
+	/**
+	 * Re-Paints the objects to the screen
+	 * 
+	 * @param g
+	 */
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 				
@@ -71,7 +93,7 @@ public class Board extends JPanel implements Runnable{
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-        g2.setColor(Color.RED);
+        g2.setColor(Color.GRAY);
         
         g2.fillRect(0, 0, gameWidth, gameHeight);
         
@@ -79,7 +101,7 @@ public class Board extends JPanel implements Runnable{
         drawViruses(g);
 	}
     
-
+	
 	/**
      * Draw the body cells currently in the cellList as rectangles.  Set the color to black to show they're not infected
      * and fill the cells.
@@ -93,6 +115,11 @@ public class Board extends JPanel implements Runnable{
 	        	if (!cell.isInfected()) {
 		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g.setColor(Color.BLACK);
+		        	g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
+	        	}
+	        	if (cell.isInfected()) {
+		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
+		        	g.setColor(Color.RED);
 		        	g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 	        	}
 	        }
@@ -112,9 +139,89 @@ public class Board extends JPanel implements Runnable{
 	        	g.setColor(Color.BLACK);
 	        	g.fillRect((int) virus.getX(), (int) virus.getY(), (int) virus.getWidth(), (int) virus.getHeight());
         	}
+        	else if (!virus.isAlive()) {
+        		// Do nothing, do not draw virus if it is dead
+        	}
         }
     }
     
+    /**
+	 * Detects user mouse clicks.
+	 */
+	public void mousePressed(MouseEvent e) {
+		System.out.println("pressed");
+
+		// Check if the user click on top of an actual virus
+		for (int i = 0; i < virusList.size(); i++) {
+
+			// Iterate through all viruses
+			Virus virus = virusList.get(i);
+			
+			//Check if click location is within bounds of any virus 
+			if (virus.withinVirus(e.getX(), e.getY())) {
+				// If so, kill virus
+				System.out.println("Killed");
+				virus.setAlive(false);
+				
+				// Replace virus with killed one
+				virusList.set(i, virus);
+				//Break from loop
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Initializes the timer.
+	 */
+	public void initTimer() {
+		
+	}
+	
+	/**
+	 * Adds to the instructionPanel JPanel object
+	 */
+	public void displayInstructions() {
+		
+	}
+	
+	/**
+	 * Starts the game play by setting gameStatus to "playing"
+	 */
+	public void startGame() {
+		
+	}
+	
+	/**
+	 * Called after a certain amount of time has passed in the game. 
+	 * Starts decrementing the T-cell count. 
+	 * After this method is called, the game becomes increasingly difficult
+	 * (i.e. the immune system becomes increasingly deficient).
+	 * 
+	 */
+	public void infectHIV() {
+		
+	}
+	
+	/**
+	 * Returns the game status.
+	 * @return gameStatus
+	 */
+	public String getGameStatus() {
+		return gameStatus;
+	}
+	
+	/**
+	 * Sets the game status.
+	 * @param status
+	 */
+	public void setGameStatus(String status) {
+		this.gameStatus = status;
+	}
+    
+	/**
+	 * Introduces a new virus or disease to the game to be killed
+	 */
     public void introduceVirus() {
 	    /* 
 	     * Used a random number generator to get random numbers for the initial position of the virus introduced
@@ -125,18 +232,21 @@ public class Board extends JPanel implements Runnable{
 	    int randomNumberY = VIRUS_POS_YMIN + (int)(Math.random() * ((VIRUS_POS_YMAX - VIRUS_POS_YMIN) + 1));
 	    
 	    // Initializes virus at the random location each time a new one is introduced
-	    Virus newVirus = new Virus(randomNumberX,randomNumberY,1,-1);
-	    
+	    Virus newVirus = new Virus(randomNumberX,randomNumberY,1,1);
+	    	    
 	    virusList.add(newVirus);
     }
 	
-    
+    /**
+	 * Handles the animation and collision checking for viruses while playing game.
+	 */
     public void cycle() {
 		
 		// Animate Viruses and check for collisions or infections
 		for (int i = 0; i < virusList.size(); i++) {
         	Virus virus = virusList.get(i);
         	if (virus.isAlive()) {
+        		
 	        	virus.animateVirus();
 	        	
 	        	detectInfection(i);
@@ -148,14 +258,62 @@ public class Board extends JPanel implements Runnable{
         }
 	}
 
+    /**
+	 * Detects collisions between Virus objects and Cell objects.
+	 */
 	public void detectInfection(int virusIndex) {
 		Virus thisVirus = virusList.get(virusIndex);
 		
-		// TODO Check if virus bounds are at the bounds of any of the body cells, if so infect the cell with the virus
-		// Then remove virus
-    	
+		// Check if the virus infects a cell
+       	if (thisVirus.getY() > 350) {
+    		for (int j = 0; j < 3; j++) {
+    	        for (int i = 0; i < 7; i++) {
+    	        	// Iterate through cell List and store the location parameters of the cell into variables for convenience
+    	        	Cell cell = cellList[i][j];
+    	        	
+    	        	// Only infect if the cell has not already been infected
+    	        	if (!cell.isInfected()) {
+	    	        	
+	    	        	int top = (int) cell.getBound(1);
+	    	        	int right = (int) cell.getBound(2);
+	    	        	int bottom = (int) cell.getBound(3);
+	    	        	int left = (int) cell.getBound(4);
+	    	        	
+	    	        	// Infect cell and set virus to not-active so that it is not redrawn
+	    	        	if ((Math.abs(thisVirus.getBound(1) - bottom) < 4) && thisVirus.getBound(2) >= left && thisVirus.getBound(4) <= right) {
+	    	        		// Hit bottom of cell, infect cell
+	    	        		thisVirus.setAlive(false);
+	    	        		cellList[i][j].setInfected(true);
+	    	        	}
+	    	        	else if ((Math.abs(thisVirus.getBound(3) -top) < 4) && thisVirus.getBound(2) >= left && thisVirus.getBound(4) <= right) {
+	    	        		// Hit top of cell, infect cell
+	    	        		thisVirus.setAlive(false);
+	    	        		cellList[i][j].setInfected(true);
+	    	        	}
+	    	        	else if ((Math.abs(thisVirus.getBound(2) - left) < 4) && thisVirus.getBound(3) >= top && thisVirus.getBound(1) <= bottom) {
+	    	        		// Hit left of cell, infect cell
+	    	        		thisVirus.setAlive(false);
+	    	        		cellList[i][j].setInfected(true);
+	
+	    	        	}
+	    	        	else if ((Math.abs(thisVirus.getBound(4) - right) < 4) && thisVirus.getBound(3) >= top && thisVirus.getBound(1) <= bottom) {
+	    	        		// Hit right of cell, infect cell
+	    	        		thisVirus.setAlive(false);
+	    	        		cellList[i][j].setInfected(true);
+	
+	    	        	}
+    	        	}
+    	        }
+            }
+       	}   
+       	
+       	// Reset virus in list with new status (if there was contact)
+       	virusList.set(virusIndex, thisVirus);
     }
     
+	/**
+	 * Handles the collision of viruses with the four 'walls' of the board.
+	 */
 	public void checkWallCollision(int virusIndex) {
 		Virus thisVirus = virusList.get(virusIndex);
 		
@@ -164,24 +322,27 @@ public class Board extends JPanel implements Runnable{
     	// off the wall properly.
     	if (thisVirus.getBound(3) >= gameHeight) {
     		// Hit top of board
-    		thisVirus.setySpeed(-3);
+    		thisVirus.setySpeed(-2);
     	}
     	else if (thisVirus.getBound(2) >= gameWidth) {
     		// Hit right wall
-    		thisVirus.setxSpeed(-3);
+    		thisVirus.setxSpeed(-2);
     	}
     	else if (thisVirus.getBound(4) <= 0) {
     		// Hit left wall
-    		thisVirus.setxSpeed(3);
+    		thisVirus.setxSpeed(2);
     	}
     	else if (thisVirus.getBound(1) <= 0) {
     		// Hit top of board
-    		thisVirus.setySpeed(3);
+    		thisVirus.setySpeed(2);
     	}
     	
     	virusList.set(virusIndex, thisVirus);
 	}
     
+	/**
+	 * Handles collision of viruses with the membrane.
+	 */
 	public void checkMembraneCollision(int virusIndex) {
 		Virus thisVirus = virusList.get(virusIndex);
 		
@@ -190,11 +351,19 @@ public class Board extends JPanel implements Runnable{
     	virusList.set(virusIndex, thisVirus);
 	}
 	
+	/**
+	 * Re-Calabrates the difficulty of the game (number of clicks needed to kill a virus, virus speed).
+	 * Responds to changes in T-cell count.
+	 * 
+	 */
 	public void calibrateDifficulty() {
 		// TODO Auto-generated method stub
-		
+
 	}
 	
+	/**
+	 * Edits the gameOverPanel JPanel object
+	 */
 	public void displayGameOverMessage() {
 		// TODO Auto-generated method stub
 		
@@ -246,5 +415,28 @@ public class Board extends JPanel implements Runnable{
 		
 	}
 
-    
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

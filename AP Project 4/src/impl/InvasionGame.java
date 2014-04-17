@@ -24,7 +24,7 @@ import object.Virus;
  *
  */
 
-public class InvasionGame extends JApplet implements Runnable {
+public class InvasionGame extends JApplet {
 	/******** GAME CONSTANTS ********/
 	// Heights and widths of the window and the various panels
 	private int WINDOW_WIDTH = 970; //should == GAME_WIDTH + SIDEBAR_WIDTH
@@ -73,7 +73,7 @@ public class InvasionGame extends JApplet implements Runnable {
 		setVisible(true);
 		setLayout(new BorderLayout());
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	    
+        
 	    // Initialize panels
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    
@@ -154,159 +154,5 @@ public class InvasionGame extends JApplet implements Runnable {
 	public void editGameOverPanel(Graphics2D g2) {
 	
 	}
-
-	
-	/**
-	 * Initializes the timer.
-	 */
-	
-	public void initTimer() {
-		
-	}
-	
-	
-	/**
-	 * Adds to the instructionPanel JPanel object
-	 */
-	public void displayInstructions() {
-		
-	}
-	
-	public void startGame() {
-		
-	}
-	
-	/**
-	 * Draws the virus on the board.
-	 */
-	
-	public void drawVirus() {
-		
-	}
-	
-	
-	/**
-	 * Called after a certain amount of time has passed in the game. 
-	 * Starts decrementing the T-cell count. 
-	 * After this method is called, the game becomes increasingly difficult
-	 * (i.e. the immune system becomes increasingly deficient).
-	 */
-	
-	public void infectHIV() {
-		
-	}
-	
-	/**
-	 * Draws cells on the board.
-	 */
-	
-	public void drawCells() {
-		
-	}
-	
-	/**
-	 * Returns the game status.
-	 * @return gameStatus
-	 */
-	
-	public String getGameStatus() {
-		return gameStatus;
-	}
-	
-	/**
-	 * Sets the game status.
-	 * @param status
-	 */
-	
-	public void setGameStatus(String status) {
-		
-	}
-	
-	/**
-	 * Detects user mouse clicks.
-	 */
-	
-	public void mouseClicked() {
-		
-	}
-	
-	/**
-	 * Handles the animation while in gameplay.
-	 */
-	
-	public void cycle() {
-		
-	}
-	
-	/**
-	 * Detects collisions between Virus objects and Cell objects.
-	 */
-	
-	public void detectInfection() {
-		
-	}
-	
-	/**
-	 * Sets the difficulty of the game (number of clicks needed to kill a virus, virus speed).
-	 * Responds to changes in T-cell count.
-	 * @param difficulty
-	 */
-	
-	public void calibrateDifficulty(int difficulty) {
-		
-	}
-	
-	/**
-	 * Introduces a new Virus instance.
-	 */
-	
-	public void introduceVirus() {
-		
-	}
-	
-	/**
-	 * Handles the collision of viruses with the four 'walls' of the board.
-	 */
-	
-	public void checkWallCollision() {
-		
-	}
-	
-	/**
-	 * Handles collision of viruses with the membrane.
-	 */
-	
-	public void checkMembraneCollision() {
-		
-	}
-	
-	/**
-	 * Obtains fact String from the Fact object
-	 */
-	
-	public void getFact() {
-		
-	}
-	
-	/**
-	 * Edits the gameOverPanel JPanel object
-	 */
-	
-	public void displayGameOverMessage() {
-		
-	}
-	
-
-	/**
-	 * Overrides the run method of the Runnable.
-	 * Determines how the game objects and GUI are updated as the thread runs and reruns.
-	 */
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-	}
-		
-		  
-	  
 
 }

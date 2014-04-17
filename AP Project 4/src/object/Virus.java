@@ -1,5 +1,9 @@
 package object;
 
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * Contains data and methods associated with an individual Virus object.
  */
@@ -30,7 +34,7 @@ public class Virus {
 		this.setX(0);
 		this.setY(0);
 		this.setxSpeed(0);
-		this.setxSpeed(0);
+		this.setySpeed(0);
 		this.setWidth(0);
 		this.setHeight(0);
 		this.setAlive(true);
@@ -40,9 +44,9 @@ public class Virus {
 		this.setX(xCoord);
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
-		this.setxSpeed(ySpeed);
-		this.setWidth(20);
-		this.setHeight(20);
+		this.setySpeed(ySpeed);
+		this.setWidth(40);
+		this.setHeight(40);
 		this.setAlive(true);
 	}
 	
@@ -50,7 +54,7 @@ public class Virus {
 		this.setX(xCoord);
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
-		this.setxSpeed(ySpeed);
+		this.setySpeed(ySpeed);
 		this.setWidth(width);
 		this.setHeight(height);
 		this.setAlive(isAlive);
@@ -201,6 +205,18 @@ public class Virus {
 	public void animateVirus () {
 		setX(this.getX() + this.getxSpeed());
     	setY(this.getY() + this.getySpeed());
+	}
+	
+	/**
+	 * Checks if a coordinate is within the bounds of the virus
+	 */
+	public boolean withinVirus (int x, int y) {
+		if (x <= this.getBound(2) && x >= this.getBound(4) && y <= this.getBound(3) && y >= this.getBound(1)) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 }
