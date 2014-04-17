@@ -124,8 +124,8 @@ public class InvasionGame extends JApplet {
 	    setVisible(true);
 	}
 	
+	//loads all BufferedImage objects from res folder
 	public void loadImages() {
-		//load images
 	    try {
 			//load background image
 			background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
@@ -144,6 +144,7 @@ public class InvasionGame extends JApplet {
 		}
 	}
 	
+	//adds color and styles to JButtons
 	public JButton styleButton(JButton button) {
 		button.setMargin(new Insets(10, 0, 0, 0));
 		button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
@@ -156,6 +157,7 @@ public class InvasionGame extends JApplet {
 	}
 	
 
+	//JPanel object that contains the logo and Start button
 	public class WelcomePanel extends JPanel {
 		private JButton startButton;
 	
@@ -188,6 +190,7 @@ public class InvasionGame extends JApplet {
 	}
 	
 
+	//JPanel that gives the user backgrond information about HIV/AIDS
 	public class BackgroundPanel extends JPanel {
 	
 		private String title = "HIV is a virus that makes your body very vulnerable to being attacked " 
@@ -212,10 +215,7 @@ public class InvasionGame extends JApplet {
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 			
-			g2.drawImage(background,0,0,this);
-			
-        	editBackgroundPanel(g);
-			
+			g2.drawImage(background,0,0,this);			
 		}
 		
 		private void initializeGUI(){
@@ -244,13 +244,9 @@ public class InvasionGame extends JApplet {
 			add(nextButton);
 		}
 		
-		public void editBackgroundPanel(Graphics g) {
-		
-			Graphics2D graphicsObject = (Graphics2D) g;
-			
-		}
 	}
 	
+	//JPanel that contains instructions for gameplay
 	public class InstructionPanel extends JPanel {
 		
 		private JTextArea instructionsText2;

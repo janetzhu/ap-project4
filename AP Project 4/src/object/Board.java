@@ -29,7 +29,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int VIRUS_POS_YMAX = 375;
     private final int CELL_ROWS = 3;
     private final int CELL_COLUMNS = 6;
-    private final int START_VIRUS_COUNT = 5;
+    private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
 	private int gameHeight;
 	private int gameWidth;
 	
