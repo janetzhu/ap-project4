@@ -37,6 +37,7 @@ public class Virus {
 		this.setySpeed(0);
 		this.setWidth(0);
 		this.setHeight(0);
+		this.setStrength(1);
 		this.setAlive(true);
 	}
 	
@@ -47,6 +48,7 @@ public class Virus {
 		this.setySpeed(ySpeed);
 		this.setWidth(40);
 		this.setHeight(40);
+		this.setStrength(1);
 		this.setAlive(true);
 	}
 	
@@ -57,6 +59,7 @@ public class Virus {
 		this.setySpeed(ySpeed);
 		this.setWidth(width);
 		this.setHeight(height);
+		this.setStrength(1);
 		this.setAlive(isAlive);
 	}
 
