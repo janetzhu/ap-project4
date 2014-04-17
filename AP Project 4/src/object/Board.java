@@ -21,17 +21,6 @@ public class Board extends JPanel implements Runnable,MouseListener {
 	private int gameHeight;
 	private int gameWidth;
 	
-<<<<<<< HEAD
-	//Class variables
-	private ArrayList<Cell> cellList;
-	private ArrayList<Virus> virusList;
-	private Facts hivFacts;
-	private String gameStatus;
-	private int tCellCount;
-	private int gameScore;
-	private Timer gameTimer;
-	private int difficultyLevel;
-=======
 	private Cell[][] cellList = new Cell[7][3];
 	private ArrayList<Virus> virusList = new ArrayList<Virus>();
 	private Facts hivFacts;
@@ -49,7 +38,6 @@ public class Board extends JPanel implements Runnable,MouseListener {
     private final int VIRUS_POS_XMAX = 700;
     private final int VIRUS_POS_YMIN = 10;
     private final int VIRUS_POS_YMAX = 375;
->>>>>>> master
 	
 	public Board(int height, int width) {
 		initBoard(height, width);
@@ -105,9 +93,6 @@ public class Board extends JPanel implements Runnable,MouseListener {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-<<<<<<< HEAD
-        g2.setColor(Color.RED);
-=======
         g2.setColor(Color.GRAY);
         
         g2.fillRect(0, 0, gameWidth, gameHeight);
@@ -455,24 +440,9 @@ public class Board extends JPanel implements Runnable,MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
->>>>>>> master
-	}
-
-	
-	public void initTimer() {
-		
-	}
-	
-	public void startGame() {
-		
 	}
 	
 	public void drawVirus() {
-		
-	}
-	
-	public void infectHIV() {
 		
 	}
 	
@@ -480,18 +450,7 @@ public class Board extends JPanel implements Runnable,MouseListener {
 		
 	}
 	
-	public void getGameStatus() {
-		
-	}
-	
-	public void setGameStatus(String status) {
-		
-	}
 	public void mouseClicked() {
-		
-	}
-	
-	public void cycle() {
 		
 	}
 	
@@ -499,12 +458,6 @@ public class Board extends JPanel implements Runnable,MouseListener {
 		
 	}
 	
-	public void calibrateDifficulty() {
-		
-	}
-	public void introduceVirus() {
-		
-	}
 	
 	public void checkWallCollision() {
 		

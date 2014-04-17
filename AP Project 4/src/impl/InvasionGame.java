@@ -34,11 +34,6 @@ public class InvasionGame extends JApplet {
 	private int OPTION_HEIGHT = 80;
 	private int SIDEBAR_WIDTH = 250;
 	
-<<<<<<< HEAD
-	//Screen components
-    private JPanel screens; //JPanel that flips between screens
-	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; //various screens
-=======
 	/******** CLASS VARIABLES ********/
 	// An ArrayList of Cell objects. Represents the body of cells.
 	private ArrayList<Cell> cellList;
@@ -65,7 +60,6 @@ public class InvasionGame extends JApplet {
     
     // Various screens, for different stages of gameplay.
 	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; 
->>>>>>> master
 	private CardLayout cardLayout;
     private Board gameBoard; //JPanel object
 	private JPanel optionPanel;
@@ -105,16 +99,6 @@ public class InvasionGame extends JApplet {
 	    
 	    gameScreens = new JPanel(new CardLayout());
 	    
-<<<<<<< HEAD
-	    screens.add(welcomePanel, "Welcome Screen");
-	    screens.add(backgroundPanel, "Background");
-	    screens.add(instructionPanel, "Instructions");
-	    screens.add(gameBoard, "Game");
-	    screens.add(gameOverPanel, "Game Over Screen");
-	    
-	    cardLayout = (CardLayout) screens.getLayout();
-	    cardLayout.show(screens, "Game"); //this command changes what's on the screen
-=======
 	    // Add the 'cards' to gameScreens
 	    gameScreens.add(welcomePanel, "Welcome Screen");
 	    gameScreens.add(backgroundPanel, "Background");
@@ -124,7 +108,7 @@ public class InvasionGame extends JApplet {
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
 	    cardLayout.show(gameScreens, "Game"); //this command changes what's on the screen
->>>>>>> master
+
 	    
 	    //Other components of the applet
 	    optionPanel = new JPanel();
@@ -171,8 +155,6 @@ public class InvasionGame extends JApplet {
 	public void editGameOverPanel(Graphics2D g2) {
 	
 	}
-
-<<<<<<< HEAD
 	
 	
 	//this method should be adding to the instructionPanel JPanel object
@@ -184,18 +166,6 @@ public class InvasionGame extends JApplet {
 	public void displayGameOverMessage() {
 		
 	}
-	
-	
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-		
 		  
-	  
-
-=======
->>>>>>> master
 }
