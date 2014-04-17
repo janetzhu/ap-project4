@@ -190,7 +190,7 @@ public class InvasionGame extends JApplet {
 
 	public class BackgroundPanel extends JPanel {
 	
-		private String title = "HIV is a virus that makes your body very vulnerable to being attacked" 
+		private String title = "HIV is a virus that makes your body very vulnerable to being attacked " 
 				+ "by bad diseases that will harm you. The virus tries to attack all the good cells "
 				+ "in your body and if there are too few good cells then you may be in big trouble. "
 				+ "There are over 1.1 million people in America living with HIV. Approximately 25% of "
@@ -204,6 +204,7 @@ public class InvasionGame extends JApplet {
 	"3. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
 
 		private JButton nextButton;
+		private JTextArea instructionsText;
 		
 		public BackgroundPanel(){
 			setLayout(null);
@@ -221,21 +222,17 @@ public class InvasionGame extends JApplet {
 		}
 		
 		private void initializeGUI(){
-<<<<<<< HEAD
 			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 
 			nextButton = new JButton("NEXT PAGE");
 			nextButton = styleButton(nextButton);
 			nextButton.setBounds(325, 560, 200, 50);
-=======
 			
-			JButton nextButton = new JButton("Next");
-			JTextArea instructionsText = new JTextArea(title,10,50);
+			instructionsText = new JTextArea(title,10,50);
+			instructionsText.setBounds(25, 25, 600, 300);
 			instructionsText.setLineWrap(true);
 			instructionsText.setWrapStyleWord(true);
-			nextButton.setPreferredSize(new Dimension (100, 50));
-			nextButton.setBounds(105, 110, 100, 50);
->>>>>>> FETCH_HEAD
+
 			nextButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -253,15 +250,6 @@ public class InvasionGame extends JApplet {
 		public void editBackgroundPanel(Graphics g) {
 		
 			Graphics2D graphicsObject = (Graphics2D) g;
-<<<<<<< HEAD
-			graphicsObject.setFont(new Font(title, 10, 18));
-			graphicsObject.setFont(new Font(instructions, 10, 18));
-			graphicsObject.setColor(Color.RED);
-			graphicsObject.drawString(title, 80, 20);
-			graphicsObject.drawString(instructions,  75,  50);
-=======
-			
->>>>>>> FETCH_HEAD
 			
 		}
 	}

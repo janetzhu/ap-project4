@@ -64,7 +64,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	// locations are spaced apart slightly
-	        	cellList[i][j] = new Cell(100*i+5,400+60*j,95,50, false);
+	        	cellList[i][j] = new Cell(100*i+15,400+60*j,95,50, false);
 	        }
         }
         
