@@ -193,8 +193,19 @@ public class InvasionGame extends JApplet {
 
 	public class BackgroundPanel extends JPanel {
 	
-		private String title = "";
-		private String instructions = "";
+		private String title = "HIV is a virus that makes your body very vulnerable to being attacked" 
+				+ "by bad diseases that will harm you. The virus tries to attack all the good cells "
+				+ "in your body and if there are too few good cells then you may be in big trouble. "
+				+ "There are over 1.1 million people in America living with HIV. Approximately 25% of "
+				+ "new infections can affect a kid like you. Want to learn more but not have to read fifty "
+				+ "textbooks? This game will not only teach you the facts but also you will have fun playing it! "
+				+ "With your help, we can help stop the epidemic together and save lives. "
+				+ "Enter through each stage of the game and on completion you will be a AIDS/HIV scientist.";
+		private String instructions = "Instructions: " +
+	"1. Double click on the black squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells." + 
+ 	"2. As the game gets harder, the bad cells become harder to take down." + 
+	"3. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
+
 		private JButton nextButton;
 		
 		public BackgroundPanel(){
@@ -223,6 +234,9 @@ public class InvasionGame extends JApplet {
 		private void initializeGUI(){
 			
 			JButton nextButton = new JButton("Next");
+			JTextArea instructionsText = new JTextArea(title,10,50);
+			instructionsText.setLineWrap(true);
+			instructionsText.setWrapStyleWord(true);
 			nextButton.setPreferredSize(new Dimension (100, 50));
 			nextButton.setBounds(105, 110, 100, 50);
 			nextButton.addActionListener(new ActionListener() {
@@ -235,6 +249,7 @@ public class InvasionGame extends JApplet {
 				}
 				
 			});
+			add(instructionsText);
 			add(nextButton);
 
 			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
@@ -244,11 +259,7 @@ public class InvasionGame extends JApplet {
 		public void editBackgroundPanel(Graphics g) {
 		
 			Graphics2D graphicsObject = (Graphics2D) g;
-			graphicsObject.setFont(new Font(title, 10, 18));
-			graphicsObject.setFont(new Font(instructions, 10, 18));
-			graphicsObject.setColor(Color.red);
-			graphicsObject.drawString(title, 80, 20);
-			graphicsObject.drawString(instructions,  75,  50);
+			
 			
 		}
 	}
@@ -308,15 +319,6 @@ public class InvasionGame extends JApplet {
 	}
 	
 	
-	//this method should be adding to the instructionPanel JPanel object
-	public void displayInstructions() {
-		
-	}
-	
-	//this method should be editing the gameOverPanel JPanel object
-	public void displayGameOverMessage() {
-		
-	}
 
 		  
 }
