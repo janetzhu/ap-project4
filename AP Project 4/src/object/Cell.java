@@ -22,19 +22,19 @@ public class Cell {
 	private boolean infected;
 	
 	public Cell() {
-		this.setX(0);
-		this.setY(0);
-		this.setWidth(0);
-		this.setHeight(0);
-		this.setInfected(false);
+		xCoord = 0;
+		yCoord = 0;
+		width = 0;
+		height = 0;
+		infected = false;
 	}
 	
 	public Cell(int x, int y, int width, int height, boolean infected) {
-		this.setX(x);
-		this.setY(y);
-		this.setWidth(width);
-		this.setHeight(height);
-		this.setInfected(infected);
+		this.xCoord = x;
+		this.yCoord = y;
+		this.width = width;
+		this.height = height;
+		this.infected = infected;
 	}
 	
 	/**
