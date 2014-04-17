@@ -120,12 +120,16 @@ public class Cell {
 	public int getBound(int sideRequested) {
 		switch (sideRequested) {
 		case 1: 
+			// Top
 			return getY();
 		case 2:
+			//Right
 			return getX() + getWidth();
 		case 3:
+			//Bottom
 			return getY() + getHeight();
 		case 4:
+			//Left
 			return getX();
 		default:
 			return 0;
