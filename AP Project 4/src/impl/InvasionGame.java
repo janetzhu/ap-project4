@@ -2,10 +2,14 @@ package impl;
 
 import java.applet.Applet;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
 
@@ -28,31 +32,12 @@ import object.Virus;
 public class InvasionGame extends JApplet {
 	/******** GAME CONSTANTS ********/
 	// Heights and widths of the window and the various panels
-	private int WINDOW_WIDTH = 970; //should == GAME_WIDTH + SIDEBAR_WIDTH
-	private int WINDOW_HEIGHT = 800; //should == GAME_HEIGHT + OPTION_HEIGHT
-	private int GAME_HEIGHT = 720;
-	private int GAME_WIDTH = 720;
-	private int OPTION_HEIGHT = 80;
-	private int SIDEBAR_WIDTH = 250;
-
-	/******** CLASS VARIABLES ********/
-	// An ArrayList of Cell objects. Represents the body of cells.
-	private ArrayList<Cell> cellList;
-	// An ArrayList of Virus objects. Holds the instances of the hostile viruses that are
-	// launched towards the body of cells throughout the game.
-	private ArrayList<Virus> virusList;
-	private Facts hivFacts;
-	
-	// Status of the game.
-	private String gameStatus;
-	// Count of the number of T-Cells. Determines the difficulty (number of clicks) of killing a virus.
-	private int tCellCount;
-	// User's score in the game, determined by number of viruses killed and time.
-	private int gameScore;
-	// Timer counting the time elapsed during the game. 
-	private Timer gameTimer;
-	// Difficulty of the game (number of clicks it takes to kill a virus, speed of viruses)
-	private int difficultyLevel;
+	private int WINDOW_WIDTH = 850; //should == GAME_WIDTH + SIDEBAR_WIDTH
+	private int WINDOW_HEIGHT = 720; //should == GAME_HEIGHT + OPTION_HEIGHT
+	private int GAME_HEIGHT = 650;
+	private int GAME_WIDTH = 650;
+	private int OPTION_HEIGHT = 70;
+	private int SIDEBAR_WIDTH = 200;
 	
 	/******** WINDOW COMPONENTS ********/
 	// JPanel that holds all of the screens for the different stages of gameplay.
@@ -60,13 +45,18 @@ public class InvasionGame extends JApplet {
     private JPanel gameScreens; 
     
     // Various screens, for different stages of gameplay.
-	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; 
+	private WelcomePanel welcomePanel;
+	private BackgroundPanel backgroundPanel;
+	private InstructionPanel instructionPanel;
+	private GameOverPanel gameOverPanel;
+    //private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; 
 	private CardLayout cardLayout;
     private Board gameBoard; //JPanel object
 	private JPanel optionPanel;
-	private JPanel sidebarPanel;
+	private SidebarPanel sidebarPanel;
 	private JLabel titleLabel, blankLabelSmall, blankLabelWide, blankLabelQuit;
 	private JButton pause, quit, restart;
+	private String currentScreen;
 	
 	
 	public void init() {
@@ -78,16 +68,16 @@ public class InvasionGame extends JApplet {
 	    // Initialize panels
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    
-	    welcomePanel = new JPanel();
-	    welcomePanel.setBackground(Color.BLACK);
+	    welcomePanel = new WelcomePanel();
+	    sidebarPanel = new SidebarPanel();
 	    
-	    backgroundPanel = new JPanel();
+	    backgroundPanel = new BackgroundPanel();
 	    backgroundPanel.setBackground(Color.GRAY);
 	    
-	    instructionPanel = new JPanel();
+	    instructionPanel = new InstructionPanel();
 	    instructionPanel.setBackground(Color.GREEN);
 	    
-	    gameOverPanel = new JPanel();
+	    gameOverPanel = new GameOverPanel();
 	    gameOverPanel.setBackground(Color.MAGENTA);
 	    
 	    /*****************************************
@@ -108,8 +98,8 @@ public class InvasionGame extends JApplet {
 	    gameScreens.add(gameOverPanel, "Game Over Screen");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
-	    cardLayout.show(gameScreens, "Game"); //this command changes what's on the screen
-
+	    cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
+	    currentScreen = "Welcome Screen";
 	    
 	    //Other components of the applet
 	    optionPanel = new JPanel();
@@ -119,10 +109,6 @@ public class InvasionGame extends JApplet {
 	    titleLabel = new JLabel("");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setPreferredSize(new Dimension(450,40));
-
-	    sidebarPanel = new JPanel();
-	    sidebarPanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
-	    sidebarPanel.setBackground(Color.CYAN);
 	    
 	    quit = new JButton("Quit");
 	    quit.setPreferredSize(new Dimension(70,30));
@@ -156,44 +142,100 @@ public class InvasionGame extends JApplet {
 	public void paint( Graphics g ) {
 		Graphics2D g2 = (Graphics2D) g;
 		
-		editWelcomePanel(g2);
-		editBackgroundPanel(g2);
-		editInstructionPanel(g2);
-		editGameOverPanel(g2);
 	}
 	*/
 	
-	public void editWelcomePanel(Graphics2D g2) {
+
+	public class WelcomePanel extends JPanel {
+		private JButton startButton;
+	
+		public WelcomePanel() {
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
+			startButton = new JButton("START");
+			startButton.setPreferredSize(new Dimension(100, 50));
+			startButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					cardLayout.show(gameScreens, "Background");
+					currentScreen = "Background";
+				}
+				
+			});
+			add(startButton);
+		}
 		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.setColor(Color.RED);
+	        g2.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+	        
+	        BufferedImage background, logo;
+	        	        
+	        try {                
+	        	//add background image
+	        	background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
+	            g2.drawImage(background,0,0,this);
+	            
+	            	//add logo image
+	            	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
+	            	g2.drawImage(logo, 0, 50, this);
+	            
+	         } catch (IOException ex) {
+	              System.out.println("Error loading images");
+	         }
+            
+		}
 	}
 	
-	public class BackgroundPanel extends JPanel implements ActionListener {
+
+	public class BackgroundPanel extends JPanel {
 	
 		private String title = "";
 		private String instructions = "";
 		private JButton nextButton;
 		
 		public BackgroundPanel(){
-			
+			sidebarPanel.repaint();
 			initializeGUI();
+		}
+		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			BufferedImage background;
+			
+			try {
+				//add background image
+				background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
+	            g2.drawImage(background,0,0,this);
+			
+			} catch (IOException ex) {
+				System.out.println("Error loading images");
+			}
+			
+        	editBackgroundPanel(g);
+			
 		}
 		
 		private void initializeGUI(){
 			
-			JFrame backgroundWindow = new JFrame("Background Section");
 			JButton nextButton = new JButton("Next");
 			nextButton.setPreferredSize(new Dimension (100, 50));
 			nextButton.setBounds(105, 110, 100, 50);
-			nextButton.addActionListener(this);
-			backgroundWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			Container c = backgroundWindow.getContentPane();
-			this.setLayout(null);
-			this.add(nextButton);
-			c.add(this);
-			this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-			backgroundWindow.pack();
-			backgroundWindow.setLocationRelativeTo(null);
-			backgroundWindow.setVisible(true);
+			nextButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					cardLayout.show(gameScreens, "Instructions");
+					currentScreen = "Instructions";
+				}
+				
+			});
+			add(nextButton);
+
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 	
 		}
 		
@@ -207,29 +249,60 @@ public class InvasionGame extends JApplet {
 			graphicsObject.drawString(instructions,  75,  50);
 			
 		}
+	}
+	
+	public class InstructionPanel extends JPanel {
+		public InstructionPanel() {
+			sidebarPanel.repaint();
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			
-			EventObject actionEvent = null;
-			Object action = actionEvent.getSource();
-			
-			if (action == nextButton){
-				
-				//new instructions window
-				//dispose of background window
-			}
-		
 		}
-	
-	}
 
-	public void editInstructionPanel(Graphics2D g2) {
-	
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.setColor(Color.BLACK);
+			g2.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+		}
 	}
-
-	public void editGameOverPanel(Graphics2D g2) {
 	
+	public class GameOverPanel extends JPanel {
+		public GameOverPanel() {
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
+			
+		}
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+		}
+	}
+	
+	public class SidebarPanel extends JPanel {
+		public SidebarPanel() {
+			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
+			
+		}
+		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			BufferedImage background, logo;
+			
+			try {                
+	        	//add background image
+	        	background = ImageIO.read(getClass().getResource("/liver_cells_sidebar.png"));
+	            g2.drawImage(background,0,0,this);
+	            
+	            System.out.println(currentScreen);
+	            if(currentScreen.equals("Welcome Screen")){
+
+		            //add logo image
+		            logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
+		            g2.drawImage(logo, 0, 50, this);
+	            }
+	         } catch (IOException ex) {
+	              System.out.println("Error loading images");
+	         }
+		}
 	}
 	
 	

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Board extends JPanel implements Runnable,MouseListener {
+public class Board extends JPanel implements Runnable, MouseListener {
 
 	/******** CLASS VARIABLES ********/
 	private int gameHeight;
