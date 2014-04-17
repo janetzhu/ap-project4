@@ -14,14 +14,16 @@ public class Board extends JPanel {
 
 	private int gameHeight;
 	private int gameWidth;
-	ArrayList<Cell> cellList;
-	ArrayList<Virus> virusList;
-	Facts hivFacts;
-	String gameStatus;
-	int tCellCount;
-	int gameScore;
-	Timer gameTimer;
-	int difficultyLevel;
+	
+	//Class variables
+	private ArrayList<Cell> cellList;
+	private ArrayList<Virus> virusList;
+	private Facts hivFacts;
+	private String gameStatus;
+	private int tCellCount;
+	private int gameScore;
+	private Timer gameTimer;
+	private int difficultyLevel;
 	
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -42,8 +44,65 @@ public class Board extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
         g2.setColor(Color.RED);
-        
-        g2.fillRect(0, 0, gameWidth, gameHeight);
 	}
 
+	
+	public void initTimer() {
+		
+	}
+	
+	public void startGame() {
+		
+	}
+	
+	public void drawVirus() {
+		
+	}
+	
+	public void infectHIV() {
+		
+	}
+	
+	public void drawCells() {
+		
+	}
+	
+	public void getGameStatus() {
+		
+	}
+	
+	public void setGameStatus(String status) {
+		
+	}
+	public void mouseClicked() {
+		
+	}
+	
+	public void cycle() {
+		
+	}
+	
+	public void detectInfection() {
+		
+	}
+	
+	public void calibrateDifficulty() {
+		
+	}
+	public void introduceVirus() {
+		
+	}
+	
+	public void checkWallCollision() {
+		
+	}
+	
+	public void checkMembraneCollision() {
+		
+	}
+	
+	//obtains String from Fact object
+	public void getFact() {
+		
+	}
 }

@@ -24,16 +24,6 @@ public class InvasionGame extends JApplet implements Runnable {
 	private int OPTION_HEIGHT = 80;
 	private int SIDEBAR_WIDTH = 250;
 	
-	//Class variables
-	private ArrayList<Cell> cellList;
-	private ArrayList<Virus> virusList;
-	private Facts hivFacts;
-	private String gameStatus;
-	private int tCellCount;
-	private int gameScore;
-	private Timer gameTimer;
-	private int difficultyLevel;
-	
 	//Screen components
     private JPanel screens; //JPanel that flips between screens
 	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; //various screens
@@ -72,7 +62,6 @@ public class InvasionGame extends JApplet implements Runnable {
 	     ****************************************/
 	    
 	    screens = new JPanel(new CardLayout());
-	    
 	    
 	    screens.add(welcomePanel, "Welcome Screen");
 	    screens.add(backgroundPanel, "Background");
@@ -129,67 +118,10 @@ public class InvasionGame extends JApplet implements Runnable {
 	
 	}
 
-	public void initTimer() {
-		
-	}
+	
 	
 	//this method should be adding to the instructionPanel JPanel object
 	public void displayInstructions() {
-		
-	}
-	
-	public void startGame() {
-		
-	}
-	
-	public void drawVirus() {
-		
-	}
-	
-	public void infectHIV() {
-		
-	}
-	
-	public void drawCells() {
-		
-	}
-	
-	public void getGameStatus() {
-		
-	}
-	
-	public void setGameStatus(String status) {
-		
-	}
-	public void mouseClicked() {
-		
-	}
-	
-	public void cycle() {
-		
-	}
-	
-	public void detectInfection() {
-		
-	}
-	
-	public void calibrateDifficulty() {
-		
-	}
-	public void introduceVirus() {
-		
-	}
-	
-	public void checkWallCollision() {
-		
-	}
-	
-	public void checkMembraneCollision() {
-		
-	}
-	
-	//obtains String from Fact object
-	public void getFact() {
 		
 	}
 	
