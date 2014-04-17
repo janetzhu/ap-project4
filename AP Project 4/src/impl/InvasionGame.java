@@ -107,11 +107,7 @@ public class InvasionGame extends JApplet implements Runnable {
 	    gameScreens.add(gameOverPanel, "Game Over Screen");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
-<<<<<<< HEAD
 	    cardLayout.show(gameScreens, "Game"); //this command changes what's on the screen
-=======
-	    cardLayout.show(gameScreens, "Background"); //this command changes what's on the screen
->>>>>>> FETCH_HEAD
 	    
 	    //Other components of the applet
 	    optionPanel = new JPanel();

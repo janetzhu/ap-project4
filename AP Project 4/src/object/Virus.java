@@ -6,7 +6,6 @@ package object;
 
 public class Virus {
 
-<<<<<<< HEAD
 	// The x coordinate of the top-left of the virus
 	private int xCoord;
 	// The y coordinate of the top-left of the virus
@@ -18,27 +17,13 @@ public class Virus {
 	private int ySpeed;
 	
 	// The width of the virus object
-
-=======
-	// Location of the virus - x and y-coordinates
-	private int xCoord, yCoord;
-	// Velocity - x and y-velocity
-	private int xSpeed, ySpeed;
-	// Dimensions of the Virus object
->>>>>>> FETCH_HEAD
 	private int width;
 	// The height of the virus object
 	private int height;
-<<<<<<< HEAD
 	
 	// The strength of the virus (resistance to clicks)
 	private int strength;
 	// Alive is true if the virus is still alive, and false if it has been destroyed by the user
-=======
-	// Strength of the virus - determines how difficult it is to kill
-	private int strength;
-	// Whether the virus is alive, or has been killed 
->>>>>>> FETCH_HEAD
 	private boolean alive;
 	
 	public Virus() {
