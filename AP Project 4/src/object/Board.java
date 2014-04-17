@@ -149,21 +149,25 @@ public class Board extends JPanel implements Runnable,MouseListener {
 	 * Detects user mouse clicks.
 	 */
 	public void mousePressed(MouseEvent e) {
-		System.out.println("pressed");
-
 		// Check if the user click on top of an actual virus
 		for (int i = 0; i < virusList.size(); i++) {
 
 			// Iterate through all viruses
 			Virus virus = virusList.get(i);
+			int strength = virus.getStrength();
 			
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
-				// If so, kill virus
-				System.out.println("Killed");
-				virus.setAlive(false);
+				if (strength == 1) {
+					// If so, and strength is only 1, kill virus
+					virus.setAlive(false);
+				}
+				else if (strength > 1) {
+					// If so, but strength is greater than 1, decrement strength
+					virus.setStrength(strength - 1);
+				}
 				
-				// Replace virus with killed one
+				// Replace virus with killed one or one with weaker strength
 				virusList.set(i, virus);
 				//Break from loop
 				break;
@@ -358,7 +362,7 @@ public class Board extends JPanel implements Runnable,MouseListener {
 	 */
 	public void calibrateDifficulty() {
 		// TODO Auto-generated method stub
-
+		// Based on level of t cell count, loop through all viruses and increase strength respectively if need be
 	}
 	
 	/**
