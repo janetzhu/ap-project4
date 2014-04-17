@@ -33,7 +33,7 @@ public class InvasionGame extends JApplet {
 	private int GAME_WIDTH = 720;
 	private int OPTION_HEIGHT = 80;
 	private int SIDEBAR_WIDTH = 250;
-	
+
 	/******** CLASS VARIABLES ********/
 	// An ArrayList of Cell objects. Represents the body of cells.
 	private ArrayList<Cell> cellList;

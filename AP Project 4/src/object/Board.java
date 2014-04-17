@@ -445,11 +445,13 @@ public class Board extends JPanel implements Runnable,MouseListener {
 	public void drawVirus() {
 		
 	}
+
 	
 	public void drawCells() {
 		
 	}
 	
+
 	public void mouseClicked() {
 		
 	}
@@ -458,7 +460,7 @@ public class Board extends JPanel implements Runnable,MouseListener {
 		
 	}
 	
-	
+
 	public void checkWallCollision() {
 		
 	}
