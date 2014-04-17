@@ -26,6 +26,7 @@ import object.Virus;
 
 public class InvasionGame extends JApplet implements Runnable {
 	/******** GAME CONSTANTS ********/
+	// Heights and widths of the window and the various panels
 	private int WINDOW_WIDTH = 970; //should == GAME_WIDTH + SIDEBAR_WIDTH
 	private int WINDOW_HEIGHT = 800; //should == GAME_HEIGHT + OPTION_HEIGHT
 	private int GAME_HEIGHT = 720;
@@ -68,6 +69,7 @@ public class InvasionGame extends JApplet implements Runnable {
 	
 	
 	public void init() {
+		// Make the JApplet visible.
 		setVisible(true);
 		setLayout(new BorderLayout());
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -153,11 +155,19 @@ public class InvasionGame extends JApplet implements Runnable {
 	
 	}
 
+	
+	/**
+	 * Initializes the timer.
+	 */
+	
 	public void initTimer() {
 		
 	}
 	
-	//This method should add to the instructionPanel JPanel object
+	
+	/**
+	 * Adds to the instructionPanel JPanel object
+	 */
 	public void displayInstructions() {
 		
 	}
@@ -165,6 +175,10 @@ public class InvasionGame extends JApplet implements Runnable {
 	public void startGame() {
 		
 	}
+	
+	/**
+	 * Draws the virus on the board.
+	 */
 	
 	public void drawVirus() {
 		
@@ -182,20 +196,43 @@ public class InvasionGame extends JApplet implements Runnable {
 		
 	}
 	
+	/**
+	 * Draws cells on the board.
+	 */
+	
 	public void drawCells() {
 		
 	}
 	
-	public void getGameStatus() {
-		
+	/**
+	 * Returns the game status.
+	 * @return gameStatus
+	 */
+	
+	public String getGameStatus() {
+		return gameStatus;
 	}
+	
+	/**
+	 * Sets the game status.
+	 * @param status
+	 */
 	
 	public void setGameStatus(String status) {
 		
 	}
+	
+	/**
+	 * Detects user mouse clicks.
+	 */
+	
 	public void mouseClicked() {
 		
 	}
+	
+	/**
+	 * Handles the animation while in gameplay.
+	 */
 	
 	public void cycle() {
 		
@@ -219,30 +256,52 @@ public class InvasionGame extends JApplet implements Runnable {
 		
 	}
 	
+	/**
+	 * Introduces a new Virus instance.
+	 */
+	
 	public void introduceVirus() {
 		
 	}
+	
+	/**
+	 * Handles the collision of viruses with the four 'walls' of the board.
+	 */
 	
 	public void checkWallCollision() {
 		
 	}
 	
+	/**
+	 * Handles collision of viruses with the membrane.
+	 */
+	
 	public void checkMembraneCollision() {
 		
 	}
 	
-	//obtains String from Fact object
+	/**
+	 * Obtains fact String from the Fact object
+	 */
+	
 	public void getFact() {
 		
 	}
 	
-	//this method should be editing the gameOverPanel JPanel object
+	/**
+	 * Edits the gameOverPanel JPanel object
+	 */
+	
 	public void displayGameOverMessage() {
 		
 	}
 	
 	
 
+	/**
+	 * Overrides the run method of the Runnable.
+	 * Determines how the game objects and GUI are updated as the thread runs and reruns.
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
