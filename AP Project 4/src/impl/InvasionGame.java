@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.EventObject;
 
 import object.Board;
 import object.Cell;
@@ -113,7 +114,7 @@ public class InvasionGame extends JApplet {
 	    //Other components of the applet
 	    optionPanel = new JPanel();
 	    optionPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, OPTION_HEIGHT));
-	    optionPanel.setBackground(Color.BLUE);
+	    optionPanel.setBackground(Color.BLACK);
 	    
 	    titleLabel = new JLabel("");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -151,7 +152,7 @@ public class InvasionGame extends JApplet {
 	    setVisible(true);
 	}
 		
-
+	/* Not sure we need this--i could be wrong though
 	public void paint( Graphics g ) {
 		Graphics2D g2 = (Graphics2D) g;
 		
@@ -160,13 +161,67 @@ public class InvasionGame extends JApplet {
 		editInstructionPanel(g2);
 		editGameOverPanel(g2);
 	}
+	*/
 	
 	public void editWelcomePanel(Graphics2D g2) {
 		
 	}
 	
-	public void editBackgroundPanel(Graphics2D g2) {
+	public class BackgroundPanel extends JPanel implements ActionListener {
+	
+		private String title = "";
+		private String instructions = "";
+		private JButton nextButton;
 		
+		public BackgroundPanel(){
+			
+			initializeGUI();
+		}
+		
+		private void initializeGUI(){
+			
+			JFrame backgroundWindow = new JFrame("Background Section");
+			JButton nextButton = new JButton("Next");
+			nextButton.setPreferredSize(new Dimension (100, 50));
+			nextButton.setBounds(105, 110, 100, 50);
+			nextButton.addActionListener(this);
+			backgroundWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			Container c = backgroundWindow.getContentPane();
+			this.setLayout(null);
+			this.add(nextButton);
+			c.add(this);
+			this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+			backgroundWindow.pack();
+			backgroundWindow.setLocationRelativeTo(null);
+			backgroundWindow.setVisible(true);
+	
+		}
+		
+		public void editBackgroundPanel(Graphics g) {
+		
+			Graphics2D graphicsObject = (Graphics2D) g;
+			graphicsObject.setFont(new Font(title, 10, 18));
+			graphicsObject.setFont(new Font(instructions, 10, 18));
+			graphicsObject.setColor(Color.red);
+			graphicsObject.drawString(title, 80, 20);
+			graphicsObject.drawString(instructions,  75,  50);
+			
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			EventObject actionEvent = null;
+			Object action = actionEvent.getSource();
+			
+			if (action == nextButton){
+				
+				//new instructions window
+				//dispose of background window
+			}
+		
+		}
+	
 	}
 
 	public void editInstructionPanel(Graphics2D g2) {
