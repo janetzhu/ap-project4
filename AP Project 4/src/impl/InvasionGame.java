@@ -22,16 +22,16 @@ import object.Virus;
 
 /**
  * Main class. 
- * Contains three JPanels at any one time: screens, optionPanel, and sidebarPanel.
+ * Contains two JPanels at any one time: screens and sidebarPanel.
  * gameScreens uses a CardLayout and holds the various game screens 
  * (welcome menu, instructions, game over), displaying one at a time.
  * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of gameplay.
- * The optionPanel holds the menu bar at the top of the game.
  * The sidebarPanel is a sidebar that displays the facts to the user on the right side of the screen.
  *
  */
 
 public class InvasionGame extends JApplet {
+	
 	/******** GAME CONSTANTS ********/
 	// Heights and widths of the window and the various panels
 	private int WINDOW_WIDTH = 850; //should == GAME_WIDTH + SIDEBAR_WIDTH
@@ -309,7 +309,7 @@ public class InvasionGame extends JApplet {
 		}
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
-		}
+		} 
 	}
 	
 	public class SidebarPanel extends JPanel {
