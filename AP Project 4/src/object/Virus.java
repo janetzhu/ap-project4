@@ -15,4 +15,5 @@ public class Virus {
 		// TODO Auto-generated constructor stub
 	}
 
+	 * 
 }
