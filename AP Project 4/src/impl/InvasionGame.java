@@ -22,16 +22,21 @@ import object.Virus;
 
 /**
  * Main class. 
- * Contains three JPanels at any one time: screens, optionPanel, and sidebarPanel.
+ * Contains two JPanels at any one time: screens and sidebarPanel.
  * gameScreens uses a CardLayout and holds the various game screens 
  * (welcome menu, instructions, game over), displaying one at a time.
  * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of gameplay.
+<<<<<<< HEAD
  * The optionPanel holds the menu bar at the top of the game.
  * The sidebarPanel is a side bar that displays the facts to the user on the right side of the screen.
+=======
+ * The sidebarPanel is a sidebar that displays the facts to the user on the right side of the screen.
+>>>>>>> 46fba81a5353321caf74ab20d15351d3e678375c
  *
  */
 
 public class InvasionGame extends JApplet {
+	
 	/******** GAME CONSTANTS ********/
 	// Heights and widths of the window and the various panels
 	private int WINDOW_WIDTH = 850; //should == GAME_WIDTH + SIDEBAR_WIDTH
@@ -137,16 +142,13 @@ public class InvasionGame extends JApplet {
 	/*
 	 *loadImages()  
 	 * 
-	 * This method loads the pictures for the game which were created and designed to be 
-	 * geared towards an audience for kids. 
+	 * This method loads the pictures for the game
 	 * 
 	 * @param none 
 	 * @return none 
 	 * 
 	 */
-		
 	public void loadImages() {
-		//load images
 	    try {
 			//load background image
 			background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
@@ -165,6 +167,7 @@ public class InvasionGame extends JApplet {
 		}
 	}
 	
+	//adds color and styles to JButtons
 	public JButton styleButton(JButton button) {
 		button.setMargin(new Insets(10, 0, 0, 0));
 		button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
@@ -183,6 +186,7 @@ public class InvasionGame extends JApplet {
 	 * 
 	 */
 
+	//JPanel object that contains the logo and Start button
 	public class WelcomePanel extends JPanel {
 		private JButton startButton;
 	
@@ -220,6 +224,7 @@ public class InvasionGame extends JApplet {
 	 * 
 	 */
 
+	//JPanel that gives the user backgrond information about HIV/AIDS
 	public class BackgroundPanel extends JPanel {
 	
 		private String title = "HIV is a virus that makes your body very vulnerable to being attacked " 
@@ -244,10 +249,7 @@ public class InvasionGame extends JApplet {
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 			
-			g2.drawImage(background,0,0,this);
-			
-        	editBackgroundPanel(g);
-			
+			g2.drawImage(background,0,0,this);			
 		}
 		
 		private void initializeGUI(){
@@ -276,19 +278,12 @@ public class InvasionGame extends JApplet {
 			add(nextButton);
 		}
 		
-		public void editBackgroundPanel(Graphics g) {
-		
-			Graphics2D graphicsObject = (Graphics2D) g;
-			
-		}
 	}
-	
 	
 	/*
 	 * This class encompasses the Instruction Panel which 
 	 * tells the user what to do and how to play the game. 
 	 */
-	
 	public class InstructionPanel extends JPanel {
 		
 		private JTextArea instructionsText2;
@@ -347,7 +342,7 @@ public class InvasionGame extends JApplet {
 		}
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
-		}
+		} 
 	}
 	
 	public class SidebarPanel extends JPanel {
