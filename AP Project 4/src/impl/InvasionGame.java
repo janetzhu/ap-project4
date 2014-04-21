@@ -25,14 +25,9 @@ import object.Virus;
  * Contains two JPanels at any one time: screens and sidebarPanel.
  * gameScreens uses a CardLayout and holds the various game screens 
  * (welcome menu, instructions, game over), displaying one at a time.
- * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of gameplay.
-<<<<<<< HEAD
+ * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of game play.
  * The optionPanel holds the menu bar at the top of the game.
  * The sidebarPanel is a side bar that displays the facts to the user on the right side of the screen.
-=======
- * The sidebarPanel is a sidebar that displays the facts to the user on the right side of the screen.
->>>>>>> 46fba81a5353321caf74ab20d15351d3e678375c
- *
  */
 
 public class InvasionGame extends JApplet {
@@ -227,18 +222,18 @@ public class InvasionGame extends JApplet {
 	//JPanel that gives the user backgrond information about HIV/AIDS
 	public class BackgroundPanel extends JPanel {
 	
-		private String title = "HIV is a virus that makes your body very vulnerable to being attacked " 
+		private String background_information= "HIV is a virus that makes your body very vulnerable to being attacked " 
 				+ "by bad diseases that will harm you. The virus tries to attack all the good cells "
 				+ "in your body and if there are too few good cells then you may be in big trouble. "
 				+ "There are over 1.1 million people in America living with HIV. Approximately 25% of "
 				+ "new infections can affect a kid like you. Want to learn more but not have to read fifty "
 				+ "textbooks? This game will not only teach you the facts but also you will have fun playing it! "
-				+ "With your help, we can help stop the epidemic together and save lives. "
-				+ "Enter through each stage of the game and on completion you will be a AIDS/HIV scientist.";
+				+ "With your help, we can help stop the epidemic together and save lives!!"
+				+ "Enter through each stage of the game and on completion you will be a AIDS/HIV scientist!!!";
 		
 
 		private JButton nextButton;
-		private JTextArea instructionsText;
+		private JTextArea backgroundText;
 		
 		public BackgroundPanel(){
 			setLayout(null);
@@ -259,10 +254,11 @@ public class InvasionGame extends JApplet {
 			nextButton = styleButton(nextButton);
 			nextButton.setBounds(325, 560, 200, 50);
 			
-			instructionsText = new JTextArea(title,10,50);
-			instructionsText.setBounds(25, 25, 600, 300);
-			instructionsText.setLineWrap(true);
-			instructionsText.setWrapStyleWord(true);
+			backgroundText = new JTextArea(background_information,10,50);
+			backgroundText.setBounds(25, 25, 600, 300);
+			backgroundText.setLineWrap(true);
+			backgroundText.setWrapStyleWord(true);
+			backgroundText.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
 
 			nextButton.addActionListener(new ActionListener() {
 
@@ -274,7 +270,7 @@ public class InvasionGame extends JApplet {
 				}
 				
 			});
-			add(instructionsText);
+			add(backgroundText);
 			add(nextButton);
 		}
 		
@@ -286,7 +282,7 @@ public class InvasionGame extends JApplet {
 	 */
 	public class InstructionPanel extends JPanel {
 		
-		private JTextArea instructionsText2;
+		private JTextArea instructionsText;
 		
 		private String instructions = "Instructions: " +
 		"\n1. Double click on the black squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells." + 
@@ -319,12 +315,13 @@ public class InvasionGame extends JApplet {
 				
 			});
 			
-			instructionsText2 = new JTextArea(instructions,10,50);
-			instructionsText2.setBounds(25, 25, 600, 300);
-			instructionsText2.setLineWrap(true);
-			instructionsText2.setWrapStyleWord(true);
+			instructionsText = new JTextArea(instructions,10,50);
+			instructionsText.setBounds(25, 25, 600, 300);
+			instructionsText.setLineWrap(true);
+			instructionsText.setWrapStyleWord(true);
+			instructionsText.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
 			
-			add(instructionsText2);
+			add(instructionsText);
 			add(nextButton);
 		}
 
