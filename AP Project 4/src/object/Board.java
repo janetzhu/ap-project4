@@ -149,7 +149,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	Virus virus = virusList.get(i);
         	if (virus.isAlive()) {
 	        	g.drawRect((int) virus.getX(), (int) virus.getY(), (int) virus.getWidth(), (int) virus.getHeight());
-	        	g.setColor(Color.WHITE);
+	        	g.setColor(Color.YELLOW);
 	        	g.fillRect((int) virus.getX(), (int) virus.getY(), (int) virus.getWidth(), (int) virus.getHeight());
         	}
         	else if (!virus.isAlive()) {
