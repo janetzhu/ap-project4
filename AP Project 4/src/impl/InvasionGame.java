@@ -349,15 +349,35 @@ public class InvasionGame extends JApplet {
 	}
 	
 	public class GameOverPanel extends JPanel {
+		
+		private JTextArea gameOverText;
+
+		private String message = "GAME OVER";
+		
 		public GameOverPanel() {
-			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
+			
+			setLayout(null);
+			
+			initializeGUI();
 			
 		}
+		
+		public void initializeGUI() {
+			
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+			
+			gameOverText = new JTextArea(message,25,50);
+			gameOverText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			gameOverText = styleText(gameOverText);
+			
+			add(gameOverText);
+		}
+		
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.drawImage(background,0,0,this);
 		} 
-		
-		
 		
 	}
 	
