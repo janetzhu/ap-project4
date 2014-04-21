@@ -1,5 +1,7 @@
 package object;
 
+import impl.InvasionGame;
+
 import java.applet.Applet;
 import java.awt.*;
 
@@ -44,6 +46,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	private Timer gameTimer;
 	private int difficultyLevel;
+	
+	private InvasionGame ig;
 
 	
 	public Board(int height, int width) {
@@ -123,13 +127,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
      * @param g the graphics object that will be painted
      */
     private void drawCells(Graphics g) {
+    	
+    	Graphics2D g2d = (Graphics2D) g;
+    	
     	for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	Cell cell = cellList[i][j];
 	        	if (!cell.isInfected()) {
 		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
-		        	g.setColor(Color.WHITE);
+		        	g.setColor(Color.GREEN);
 		        	g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
+		        	//g.drawImage(ig.bodyCellImage, (int) cell.getX(), (int) cell.getY(), this);
 	        	}
 	        	if (cell.isInfected()) {
 		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());

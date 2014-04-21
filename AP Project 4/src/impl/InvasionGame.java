@@ -58,6 +58,7 @@ public class InvasionGame extends JApplet {
 	private JButton pause, quit, restart;
 	private String currentScreen;
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
+	public BufferedImage bodyCellImage;
 	
 	/*
 	 * initUI()
@@ -162,6 +163,9 @@ public class InvasionGame extends JApplet {
             
             //"What is HIV?" title image
             instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
+            
+            //Body Cell Image
+            bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
