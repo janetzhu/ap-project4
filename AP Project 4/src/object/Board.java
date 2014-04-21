@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * JPanel class that contains the portion of the window where the main gameplay occurs
+ * JPanel class that contains the portion of the window where the main game play occurs
  *
  */
 

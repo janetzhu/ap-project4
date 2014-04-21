@@ -41,11 +41,11 @@ public class InvasionGame extends JApplet {
 	private int SIDEBAR_WIDTH = 200;
 	
 	/******** WINDOW COMPONENTS ********/
-	// JPanel that holds all of the screens for the different stages of gameplay.
+	// JPanel that holds all of the screens for the different stages of game play.
 	// It only displays one at once, and can therefore be used to 'flip' between them.
     private JPanel gameScreens; 
     
-    // Various screens, for different stages of gameplay.
+    // Various screens, for different stages of game play.
 	private WelcomePanel welcomePanel;
 	private BackgroundPanel backgroundPanel;
 	private InstructionPanel instructionPanel;
@@ -95,7 +95,7 @@ public class InvasionGame extends JApplet {
 	    
 	    /*****************************************
 	     * The gameScreens variable holds the various game screens (welcome menu, 
-	     * instructions, game over, etc.) for the different stages of gameplay.
+	     * instructions, game over, etc.) for the different stages of game play.
 	     * It displays one at a time, and is therefore used to 'flip' between them.
 	     * There are 5 gameScreens, each a JPanel object: welcome, background, instructions, game, game over
 	     * cardLayout.show(gameScreens, "STRING") changes which JPanel is displayed
