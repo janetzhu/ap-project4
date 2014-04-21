@@ -57,7 +57,7 @@ public class InvasionGame extends JApplet {
 	private JLabel titleLabel, blankLabelSmall, blankLabelWide, blankLabelQuit;
 	private JButton pause, quit, restart;
 	private String currentScreen;
-	private BufferedImage background, logo, background_sidebar, logo_sidebar;
+	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	
 	
 	public void init() {
@@ -138,13 +138,19 @@ public class InvasionGame extends JApplet {
         	
         	//lode sidebar logo image
             logo_sidebar = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
+            
+            //"What is HIV?" title image
+            what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
+            
+            //"What is HIV?" title image
+            instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
 		}
 	}
 	
-	//adds color and styles to JButtons
+	//adds color and styles to JButton elements
 	public JButton styleButton(JButton button) {
 		button.setMargin(new Insets(10, 0, 0, 0));
 		button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
@@ -156,7 +162,20 @@ public class InvasionGame extends JApplet {
 		return button;
 	}
 	
+	//adds color and styles to JTextArea elements
+	public JTextArea styleText(JTextArea text) {
+		text.setMargin(new Insets(20, 20, 20, 20));
+		text.setLineWrap(true);
+		text.setWrapStyleWord(true);
+		text.setEditable(false);
+		text.setForeground(Color.WHITE);
+		text.setBackground(new Color(0,0,0, 150));
+		text.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
 
+		return text;
+		
+	}
+	
 	//JPanel object that contains the logo and Start button
 	public class WelcomePanel extends JPanel {
 		private JButton startButton;
@@ -204,7 +223,7 @@ public class InvasionGame extends JApplet {
 		
 
 		private JButton nextButton;
-		private JTextArea instructionsText;
+		private JTextArea backgroundText;
 		
 		public BackgroundPanel(){
 			setLayout(null);
@@ -215,7 +234,9 @@ public class InvasionGame extends JApplet {
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 			
-			g2.drawImage(background,0,0,this);			
+			g2.drawImage(background,0,0,this);	
+			g2.drawImage(what_is_hiv,0,6,this);
+
 		}
 		
 		private void initializeGUI(){
@@ -225,10 +246,9 @@ public class InvasionGame extends JApplet {
 			nextButton = styleButton(nextButton);
 			nextButton.setBounds(325, 560, 200, 50);
 			
-			instructionsText = new JTextArea(title,10,50);
-			instructionsText.setBounds(25, 25, 600, 300);
-			instructionsText.setLineWrap(true);
-			instructionsText.setWrapStyleWord(true);
+			backgroundText = new JTextArea(title,10,50);
+			backgroundText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			backgroundText = styleText(backgroundText);
 
 			nextButton.addActionListener(new ActionListener() {
 
@@ -240,7 +260,7 @@ public class InvasionGame extends JApplet {
 				}
 				
 			});
-			add(instructionsText);
+			add(backgroundText);
 			add(nextButton);
 		}
 		
@@ -249,12 +269,11 @@ public class InvasionGame extends JApplet {
 	//JPanel that contains instructions for gameplay
 	public class InstructionPanel extends JPanel {
 		
-		private JTextArea instructionsText2;
+		private JTextArea instructionsText;
 		
-		private String instructions = "Instructions: " +
-		"\n1. Double click on the black squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells." + 
-		"\n2. As the game gets harder, the bad cells become harder to take down." + 
-		"\n3. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
+		private String instructions = "1. Click on the incoming viruses as they emerge from the top of the screen to stop them from killing your healthy body cells at the bottom." + 
+		"\n2. As the game gets progresses, the viruses become harder to destroy." + 
+		"\n3. Be sure to read the facts as they appear in the sidebar for you useful information about what's occurring in your body at each stage of the process."; 
 		
 		
 		public InstructionPanel() {
@@ -282,12 +301,11 @@ public class InvasionGame extends JApplet {
 				
 			});
 			
-			instructionsText2 = new JTextArea(instructions,10,50);
-			instructionsText2.setBounds(25, 25, 600, 300);
-			instructionsText2.setLineWrap(true);
-			instructionsText2.setWrapStyleWord(true);
+			instructionsText = new JTextArea(instructions,10,50);
+			instructionsText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			instructionsText = styleText(instructionsText);
 			
-			add(instructionsText2);
+			add(instructionsText);
 			add(nextButton);
 		}
 
@@ -295,6 +313,7 @@ public class InvasionGame extends JApplet {
 			Graphics2D g2 = (Graphics2D) g;
 			
 			g2.drawImage(background,0,0,this);
+			g2.drawImage(instructions_img,0,6,this);
 		}
 	}
 	
