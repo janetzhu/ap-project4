@@ -180,8 +180,6 @@ public class InvasionGame extends JApplet {
 		return button;
 	}
 	
-<<<<<<< HEAD
-	
 	//adds color and styles to JTextArea elements
 	public JTextArea styleText(JTextArea text) {
 		text.setMargin(new Insets(20, 20, 20, 20));
@@ -200,14 +198,6 @@ public class InvasionGame extends JApplet {
  * to the next page. 
  * 
  */
-=======
-	/*
-	 * This class is the structure of the welcome screen where you hit start and directs you 
-	 * to the next page. Has a nice picture that encompasses a very attractive 
-	 * picture so kids can understand the theme of the game. 
-	 * 
-	 */
->>>>>>> FETCH_HEAD
 
 	//JPanel object that contains the logo and Start button
 	public class WelcomePanel extends JPanel {
@@ -285,15 +275,8 @@ public class InvasionGame extends JApplet {
 			nextButton.setBounds(325, 560, 200, 50);
 			
 			backgroundText = new JTextArea(background_information,10,50);
-<<<<<<< HEAD
 			backgroundText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			backgroundText = styleText(backgroundText);
-=======
-			backgroundText.setBounds(25, 25, 600, 300);
-			backgroundText.setLineWrap(true);
-			backgroundText.setWrapStyleWord(true);
-			backgroundText.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
->>>>>>> FETCH_HEAD
 
 			nextButton.addActionListener(new ActionListener() {
 
@@ -318,15 +301,7 @@ public class InvasionGame extends JApplet {
 	public class InstructionPanel extends JPanel {
 		
 		private JTextArea instructionsText;
-<<<<<<< HEAD
-=======
-		
-		private String instructions = "Instructions: " +
-		"\n1. Double click on the yellow squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells which are the white rectangles." + 
-		"\n2. Remember an infected cell turns red!!" +
-		"\n3. As the game gets harder, the bad cells become harder to take down." + 
-		"\n4. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
->>>>>>> FETCH_HEAD
+
 		
 		private String instructions = "1. Click on the incoming viruses as they emerge from the top of the screen to stop them from killing your healthy body cells at the bottom." + 
 		"\n2. As the game gets progresses, the viruses become harder to destroy." + 
@@ -358,15 +333,8 @@ public class InvasionGame extends JApplet {
 			});
 			
 			instructionsText = new JTextArea(instructions,10,50);
-<<<<<<< HEAD
 			instructionsText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			instructionsText = styleText(instructionsText);
-=======
-			instructionsText.setBounds(25, 25, 600, 300);
-			instructionsText.setLineWrap(true);
-			instructionsText.setWrapStyleWord(true);
-			instructionsText.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
->>>>>>> FETCH_HEAD
 			
 			add(instructionsText);
 			add(nextButton);
