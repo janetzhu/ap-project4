@@ -21,6 +21,9 @@ public class Cell {
 	// Infected is true if the cell has been infected by a virus or disease, false if healthy
 	private boolean infected;
 	
+	//Body Cell Count 
+	public int body_cell_count=18; 
+	
 	public Cell() {
 		xCoord = 0;
 		yCoord = 0;
@@ -135,5 +138,14 @@ public class Cell {
 			return 0;
 		}
 	}
+	
+	public void Decrement_Body_Cell_Count() { 
+			
+		body_cell_count=body_cell_count-1; 
+			
+	}
+	
+	
+	
 	
 }

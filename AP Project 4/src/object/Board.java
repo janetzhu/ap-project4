@@ -44,6 +44,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	private Timer gameTimer;
 	private int difficultyLevel;
+
 	
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -134,6 +135,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g.setColor(Color.RED);
 		        	g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
+		        	
 	        	}
 	        }
         }
@@ -171,9 +173,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
+				
 				if (strength == 1) {
 					// If so, and strength is only 1, kill virus
 					virus.setAlive(false);
+					virus.Decrement_Virus_Count(); 
+					System.out.println(virus.virus_count);
+					
 				}
 				else if (strength > 1) {
 					// If so, but strength is greater than 1, decrement strength
@@ -185,7 +191,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				//Break from loop
 				break;
 			}
+			
+			
 		}
+		
+		
 	}
 	
 	/**
