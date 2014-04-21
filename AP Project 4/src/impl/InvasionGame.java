@@ -285,9 +285,10 @@ public class InvasionGame extends JApplet {
 		private JTextArea instructionsText;
 		
 		private String instructions = "Instructions: " +
-		"\n1. Double click on the black squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells." + 
-		"\n2. As the game gets harder, the bad cells become harder to take down." + 
-		"\n3. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
+		"\n1. Double click on the yellow squares which are the bad cells to remove as many of them as possible which will stop them from killing the good cells which are the white rectangles." + 
+		"\n2. Remember an infected cell turns red!!" +
+		"\n3. As the game gets harder, the bad cells become harder to take down." + 
+		"\n4. Remember to read the facts which appear in the side window that give you useful information about the bad cells and why they are attacking the good ones."; 
 		
 		
 		public InstructionPanel() {
