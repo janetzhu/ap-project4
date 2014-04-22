@@ -43,25 +43,25 @@ public class Virus {
 		this.setAlive(true);
 	}
 	
-	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed) {
+	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int virusStrength) {
 		this.setX(xCoord);
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
 		this.setySpeed(ySpeed);
 		this.setWidth(40);
 		this.setHeight(40);
-		this.setStrength(1);
+		this.setStrength(virusStrength);
 		this.setAlive(true);
 	}
 	
-	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int width, int height, boolean isAlive) {
+	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int width, int height, int virusStrength, boolean isAlive) {
 		this.setX(xCoord);
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
 		this.setySpeed(ySpeed);
 		this.setWidth(width);
 		this.setHeight(height);
-		this.setStrength(1);
+		this.setStrength(virusStrength);
 		this.setAlive(isAlive);
 	}
 
