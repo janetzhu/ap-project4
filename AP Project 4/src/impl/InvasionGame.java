@@ -330,7 +330,7 @@ public class InvasionGame extends JApplet {
 				public void actionPerformed(ActionEvent event) {
 					cardLayout.show(gameScreens, "Game");
 					currentScreen = "Game";
-					gameBoard.initBoard();
+					gameBoard.initBoard(sidebarPanel);
 					sidebarPanel.repaint();
 				}
 				
@@ -386,19 +386,65 @@ public class InvasionGame extends JApplet {
 	}
 	
 	public class SidebarPanel extends JPanel {
+		private boolean dimmed, infected, inGame;
+		private JTextArea infectedText;
+		
 		public SidebarPanel() {
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
+			dimmed = false;
 			
+			infectedText = new JTextArea("You have been infected with HIV!");
+			infectedText.setForeground(Color.WHITE);
+			infectedText.setBackground(new Color(0,0,0,0));
+			infectedText.setEditable(false);
+			infectedText.setLineWrap(true);
+			infectedText.setWrapStyleWord(true);
+			infectedText.setVisible(false);
+			
+			add(infectedText);
 		}
 		
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
-			
+
 	        g2.drawImage(background_sidebar,0,0,this);
 	            
 	        if(currentScreen.equals("Welcome Screen"))
 	        	g2.drawImage(logo_sidebar, 0, 50, this);
 	        
+	        if(dimmed) {
+	        	g2.setColor(new Color(0,0,0,215));
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        }
+	        if(inGame) {
+	        	g2.setColor(new Color(0,0,0,150));
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        }
+	        if(infected) {
+	        	g2.setColor(Color.WHITE);
+	        	g2.drawString("You have been infected with HIV!", 0, 20);
+	        }
+		}
+		
+		public void inGame() {
+			inGame = true;
+			repaint();
+		}
+		
+		public void dimSidebar() {
+			inGame = false;
+			dimmed = true;
+			infectedText.setVisible(false);
+			repaint();
+		}
+		
+		public void lightenSidebar() {
+			dimmed = false;
+			repaint();
+		}
+		public void displayInfected() {
+			infectedText.setVisible(true);
+			revalidate();
 		}
 	}
 	
