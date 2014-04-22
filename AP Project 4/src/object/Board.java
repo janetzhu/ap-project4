@@ -1,7 +1,6 @@
 package object;
 
 import impl.InvasionGame;
-import impl.InvasionGame.SidebarPanel;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -39,10 +38,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final long GAME_WON_TIME = 60000;
     private final long HIV_INTRO_TIME = 10000;
     
-    SidebarPanel sidebarPanel; //send over sidebar panel from 
-    
-    BufferedImage gameOver_image, gameWon_image;
-    
     private long gameStartTime;
 	private int gameHeight;
 	private int gameWidth;
@@ -54,7 +49,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private String gameStatus;
 	
 	private int tCellCount;
-	private int gameScore;
+	private int gameScore=0;
 	
 	private Timer gameTimer;
 	private int difficultyLevel;
@@ -62,7 +57,19 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	private int cellCounter = 18;
 	
+	
 	private InvasionGame ig;
+	
+	public void calculate_score() {
+	
+	if(Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 15) {
+		
+		gameScore=gameScore+10;
+		
+	   }
+		
+	}
+	
 
 	
 	public Board(int height, int width) {
@@ -71,9 +78,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 	}
 	
-	//method called from InvasionGame class to start the gameplay
-	//sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
-	public void initBoard(SidebarPanel sidebar) {
+	//method called from InvasionGame class to start the game play
+	public void initBoard() {
 		
 		setVisible(true);
 		
@@ -83,9 +89,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		this.addMouseListener(this);
 		
 		infected = false;
-		
-		sidebarPanel = sidebar;
-		sidebarPanel.inGame();
 		
 		// Body Cells are created in a 3 x 6 array toward the bottom of the board
         for (int j = 0; j < CELL_ROWS; j++) {
@@ -101,21 +104,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         gameStartTime = System.currentTimeMillis();
         
-        loadImages();
-        
         repaint();
         
         start();
-	}
-	
-	//load all BufferedImage objects
-	public void loadImages() {
-		try {
-			gameOver_image = ImageIO.read(getClass().getResource("/game_over.png"));
-			gameWon_image = ImageIO.read(getClass().getResource("/game_won.png"));
-		} catch (IOException e) {
-			System.out.println("Error loading images");
-		}
 	}
 	
 	public void start() {
@@ -153,21 +144,21 @@ public class Board extends JPanel implements Runnable, MouseListener {
         drawCells(g);
         drawViruses(g);
         
+        //the score board 
+        g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        g2.setColor(Color.WHITE);
+        g2.drawString("Score: " + gameScore, 0 , 35);
+        
+        
+        
         if(gameStatus == "gameOver") {
-        	g2.setColor(new Color(0,0,0,215));
+        	g2.setColor(Color.RED);
         	g2.fillRect(0, 0, gameWidth, gameHeight);
-        	
-        	g2.drawImage(gameOver_image, 50, 150, this);
-        	sidebarPanel.dimSidebar();
         }
         
         if(gameStatus == "gameWon") {
-        	g2.setColor(new Color(0,0,0,215));
+        	g2.setColor(Color.GREEN);
         	g2.fillRect(0, 0, gameWidth, gameHeight);
-        	
-        	g2.drawImage(gameWon_image, 50, 150, this);
-        	sidebarPanel.dimSidebar();
-
         }
 	}
     
@@ -233,20 +224,25 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
-				
+			  if(virus.isAlive()) {	
 				if (strength == 1) {
 					// If so, and strength is only 1, kill virus
 					virus.setAlive(false);
+					repaint();
+					gameScore=gameScore+15;
 				}
 				else if (strength > 1) {
 					// If so, but strength is greater than 1, decrement strength
 					virus.setStrength(strength - 1);
 				}
 				
+			
 				// Replace virus with killed one or one with weaker strength
 				virusList.set(i, virus);
 				//Break from loop
 				break;
+			  }
+			
 			}
 			
 			
@@ -286,7 +282,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void infectHIV() {
 		System.out.println("Infected!");
 		infected = true;
-		sidebarPanel.displayInfected();
 	}
 	
 	/**
@@ -488,6 +483,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				
 				// Repaint objects
 				repaint();
+				
+				calculate_score();
 				
 				// Calibrate difficulty
 				calibrateDifficulty();
