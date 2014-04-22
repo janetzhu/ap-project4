@@ -330,7 +330,7 @@ public class InvasionGame extends JApplet {
 				public void actionPerformed(ActionEvent event) {
 					cardLayout.show(gameScreens, "Game");
 					currentScreen = "Game";
-					gameBoard.initBoard(sidebarPanel);
+					gameBoard.initBoard();
 					sidebarPanel.repaint();
 				}
 				
