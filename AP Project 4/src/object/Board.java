@@ -1,6 +1,7 @@
 package object;
 
 import impl.InvasionGame;
+import impl.InvasionGame.SidebarPanel;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -34,9 +35,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int INIT_VIRUS_Y_SPEED = 2;
     private final int CELL_ROWS = 3;
     private final int CELL_COLUMNS = 6;
-    private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
+    private final int START_VIRUS_COUNT = 3; //number of viruses at start of game
     private final long GAME_WON_TIME = 60000;
     private final long HIV_INTRO_TIME = 10000;
+    
+    SidebarPanel sidebarPanel; //send over sidebar panel from 
+    
+    BufferedImage gameOver_image, gameWon_image;
     
     private long gameStartTime;
 	private int gameHeight;
@@ -49,28 +54,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private String gameStatus;
 	
 	private int tCellCount;
-	private int gameScore=0;
+	private int gameScore;
 	
 	private Timer gameTimer;
 	private int difficultyLevel;
 	private boolean infected;
 	
-	private int cellCounter = 18;
-	
-	
-	private InvasionGame ig;
-	
-	public void calculate_score() {
-	
-	if(Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 15) {
-		
-		gameScore=gameScore+10;
-		
-	   }
-		
-	}
-	
+	private int cellCounter;
 
+	private InvasionGame ig;
 	
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -78,8 +70,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 	}
 	
-	//method called from InvasionGame class to start the game play
-	public void initBoard() {
+	 //method called from InvasionGame class to start the gameplay
+	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
+	 public void initBoard(SidebarPanel sidebar) {
 		
 		setVisible(true);
 		
@@ -89,6 +82,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		this.addMouseListener(this);
 		
 		infected = false;
+		cellCounter = 18;
+		gameScore = 0;
+		
+		sidebarPanel = sidebar;
+		sidebarPanel.inGame();
 		
 		// Body Cells are created in a 3 x 6 array toward the bottom of the board
         for (int j = 0; j < CELL_ROWS; j++) {
@@ -103,6 +101,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
         }
         
         gameStartTime = System.currentTimeMillis();
+        
+        loadImages();
         
         repaint();
         
@@ -119,6 +119,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
     
     public void destroy() {}
 	
+    //load all BufferedImage objects
+	public void loadImages() {
+		try {
+			gameOver_image = ImageIO.read(getClass().getResource("/game_over.png"));
+			gameWon_image = ImageIO.read(getClass().getResource("/game_won.png"));
+		} catch (IOException e) {
+			System.out.println("Error loading images");
+		}	
+    }
+    
 	/**
 	 * Re-Paints the objects to the screen
 	 * 
@@ -152,13 +162,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         
         if(gameStatus == "gameOver") {
-        	g2.setColor(Color.RED);
+        	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
+        	g2.drawImage(gameOver_image, 50, 150, this);
+        	sidebarPanel.dimSidebar();
         }
         
         if(gameStatus == "gameWon") {
-        	g2.setColor(Color.GREEN);
+        	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
+        	g2.drawImage(gameWon_image, 50, 150, this);
+        	sidebarPanel.dimSidebar();
         }
 	}
     
@@ -282,6 +296,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void infectHIV() {
 		System.out.println("Infected!");
 		infected = true;
+		sidebarPanel.displayInfected();
 	}
 	
 	/**
@@ -444,6 +459,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void calibrateDifficulty() {
 		// TODO Auto-generated method stub
 		// Based on level of t cell count, loop through all viruses and increase strength respectively if need be
+	}
+	
+	
+	public void calculate_score() {
+		if(Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 15) {	
+			gameScore=gameScore+10;
+		}
 	}
 	
 	/**
