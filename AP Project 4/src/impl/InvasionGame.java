@@ -2,11 +2,18 @@ package impl;
 
 import java.applet.Applet;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EventObject;
 
 import object.Board;
 import object.Cell;
@@ -15,84 +22,81 @@ import object.Virus;
 
 /**
  * Main class. 
- * Contains three JPanels at any one time: screens, optionPanel, and sidebarPanel.
+ * Contains two JPanels at any one time: screens and sidebarPanel.
  * gameScreens uses a CardLayout and holds the various game screens 
  * (welcome menu, instructions, game over), displaying one at a time.
- * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of gameplay.
+ * The CardLayout allows gameScreens to be used to 'flip' between screens for the different stages of game play.
  * The optionPanel holds the menu bar at the top of the game.
- * The sidebarPanel is a sidebar that displays the facts to the user on the right side of the screen.
- *
+ * The sidebarPanel is a side bar that displays the facts to the user on the right side of the screen.
  */
 
 public class InvasionGame extends JApplet {
+	
 	/******** GAME CONSTANTS ********/
 	// Heights and widths of the window and the various panels
-	private int WINDOW_WIDTH = 970; //should == GAME_WIDTH + SIDEBAR_WIDTH
-	private int WINDOW_HEIGHT = 800; //should == GAME_HEIGHT + OPTION_HEIGHT
-	private int GAME_HEIGHT = 720;
-	private int GAME_WIDTH = 720;
-	private int OPTION_HEIGHT = 80;
-	private int SIDEBAR_WIDTH = 250;
-	
-
-	/******** CLASS VARIABLES ********/
-	// An ArrayList of Cell objects. Represents the body of cells.
-	private ArrayList<Cell> cellList;
-	// An ArrayList of Virus objects. Holds the instances of the hostile viruses that are
-	// launched towards the body of cells throughout the game.
-	private ArrayList<Virus> virusList;
-	private Facts hivFacts;
-	
-	// Status of the game.
-	private String gameStatus;
-	// Count of the number of T-Cells. Determines the difficulty (number of clicks) of killing a virus.
-	private int tCellCount;
-	// User's score in the game, determined by number of viruses killed and time.
-	private int gameScore;
-	// Timer counting the time elapsed during the game. 
-	private Timer gameTimer;
-	// Difficulty of the game (number of clicks it takes to kill a virus, speed of viruses)
-	private int difficultyLevel;
+	private int WINDOW_WIDTH = 850; //should == GAME_WIDTH + SIDEBAR_WIDTH
+	private int WINDOW_HEIGHT = 650;
+	private int GAME_HEIGHT = 650;
+	private int GAME_WIDTH = 650;
+	private int SIDEBAR_WIDTH = 200;
 	
 	/******** WINDOW COMPONENTS ********/
-	// JPanel that holds all of the screens for the different stages of gameplay.
+	// JPanel that holds all of the screens for the different stages of game play.
 	// It only displays one at once, and can therefore be used to 'flip' between them.
     private JPanel gameScreens; 
     
-    // Various screens, for different stages of gameplay.
-	private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; 
+    // Various screens, for different stages of game play.
+	private WelcomePanel welcomePanel;
+	private BackgroundPanel backgroundPanel;
+	private InstructionPanel instructionPanel;
+	private GameOverPanel gameOverPanel;
+    //private JPanel welcomePanel, backgroundPanel, instructionPanel, gameOverPanel; 
 	private CardLayout cardLayout;
     private Board gameBoard; //JPanel object
-	private JPanel optionPanel;
-	private JPanel sidebarPanel;
+	private SidebarPanel sidebarPanel;
 	private JLabel titleLabel, blankLabelSmall, blankLabelWide, blankLabelQuit;
 	private JButton pause, quit, restart;
+	private String currentScreen;
+	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
+	public BufferedImage bodyCellImage;
 	
+	/*
+	 * initUI()
+	 * 
+	 * Sets up the game and and the initial sizes of the window, buttons, 
+	 * and text area. Essentially, the structure needed for the game. 
+	 * 
+	 * @param none
+	 * @return none 
+	 * 
+	 */
 	
 	public void init() {
 		// Make the JApplet visible.
 		setVisible(true);
 		setLayout(new BorderLayout());
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		
+		loadImages();
         
 	    // Initialize panels
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    
-	    welcomePanel = new JPanel();
-	    welcomePanel.setBackground(Color.BLACK);
+	    welcomePanel = new WelcomePanel();
+	    sidebarPanel = new SidebarPanel();
 	    
-	    backgroundPanel = new JPanel();
+	    backgroundPanel = new BackgroundPanel();
 	    backgroundPanel.setBackground(Color.GRAY);
 	    
-	    instructionPanel = new JPanel();
+	    instructionPanel = new InstructionPanel();
 	    instructionPanel.setBackground(Color.GREEN);
 	    
-	    gameOverPanel = new JPanel();
+	    gameOverPanel = new GameOverPanel();
 	    gameOverPanel.setBackground(Color.MAGENTA);
 	    
 	    /*****************************************
 	     * The gameScreens variable holds the various game screens (welcome menu, 
-	     * instructions, game over, etc.) for the different stages of gameplay.
+	     * instructions, game over, etc.) for the different stages of game play.
 	     * It displays one at a time, and is therefore used to 'flip' between them.
 	     * There are 5 gameScreens, each a JPanel object: welcome, background, instructions, game, game over
 	     * cardLayout.show(gameScreens, "STRING") changes which JPanel is displayed
@@ -108,64 +112,343 @@ public class InvasionGame extends JApplet {
 	    gameScreens.add(gameOverPanel, "Game Over Screen");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
-	    cardLayout.show(gameScreens, "Game"); //this command changes what's on the screen
-	    
-	    //Other components of the applet
-	    optionPanel = new JPanel();
-	    optionPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, OPTION_HEIGHT));
-	    optionPanel.setBackground(Color.BLUE);
+	    cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
+	    currentScreen = "Welcome Screen";
 	    
 	    titleLabel = new JLabel("");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setPreferredSize(new Dimension(450,40));
-
-	    sidebarPanel = new JPanel();
-	    sidebarPanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
-	    sidebarPanel.setBackground(Color.CYAN);
 	    
-	    add(optionPanel, BorderLayout.NORTH);
+	    restart = new JButton("Restart");
+	    restart.setPreferredSize(new Dimension(120,50));
+	    restart = styleButton(restart);
+	    //restart.addActionListener((ActionListener) this);
+	    
+	    pause = new JButton("Pause");
+	    pause.setPreferredSize(new Dimension(100,50));
+	    pause = styleButton(pause);
+	    //pause.addActionListener((ActionListener) this);
+	    
 	    add(sidebarPanel, BorderLayout.EAST);
 	    add(gameScreens, BorderLayout.CENTER); //adding center screen to layout
 	    
 	    setVisible(true);
 	}
+	
+	/*
+	 *loadImages()  
+	 * 
+	 * This method loads the pictures for the game
+	 * 
+	 * @param none 
+	 * @return none 
+	 * 
+	 */
+	public void loadImages() {
+	    try {
+			//load background image
+			background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
+			
+			//add logo image
+        	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
+        	
+        	//load sidebar background
+        	background_sidebar = ImageIO.read(getClass().getResource("/liver_cells_sidebar.png"));
+        	
+        	//lode sidebar logo image
+            logo_sidebar = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
+            
+            //"What is HIV?" title image
+            what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
+            
+            //"What is HIV?" title image
+            instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
+            
+            //Body Cell Image
+            bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
+
+		} catch (IOException ex) {
+			System.out.println("Error loading image");
+		}
+	}
+	
+	//adds color and styles to JButton elements
+	public JButton styleButton(JButton button) {
+		button.setMargin(new Insets(10, 0, 0, 0));
+		button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 17));
+    	Border line = new LineBorder(new Color(85,1,14));
+  	  	button.setBorder(line);
+  	  	button.setBackground(new Color(85,1,14));
+  	  	button.setOpaque(true);
+    	button.setForeground(Color.WHITE);
+		return button;
+	}
+	
+	//adds color and styles to JTextArea elements
+	public JTextArea styleText(JTextArea text) {
+		text.setMargin(new Insets(20, 20, 20, 20));
+		text.setLineWrap(true);
+		text.setWrapStyleWord(true);
+		text.setEditable(false);
+		text.setForeground(Color.WHITE);
+		text.setBackground(new Color(0,0,0, 150));
+		text.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
+		return text;
+		
+	}
+	
+/*
+ * This class is the structure of the welcome screen where you hit start and directs you 
+ * to the next page. 
+ * 
+ */
+
+	//JPanel object that contains the logo and Start button
+	public class WelcomePanel extends JPanel {
+		private JButton startButton;
+	
+		public WelcomePanel() {
+			setLayout(null);
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
+			startButton = new JButton("START GAME!");
+			startButton = styleButton(startButton);
+			startButton.setBounds(325, 560, 200, 50);
+			startButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					cardLayout.show(gameScreens, "Background");
+					currentScreen = "Background";
+					sidebarPanel.repaint();
+				}
+				
+			});
+			add(startButton);
+		}
+		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+	        
+	        g2.drawImage(background, 0, 0, this);
+	        g2.drawImage(logo, 0, 50, this);
+            
+		}
+	}
+	
+	/*
+	 * This class tells the user the background and reason for playing 
+	 * the game and why it is important. It is directed toward a kid audience. 
+	 * 
+	 */
+
+	//JPanel that gives the user backgrond information about HIV/AIDS
+	public class BackgroundPanel extends JPanel {
+	
+		private String background_information= "HIV is a virus that makes your body very vulnerable to being attacked " 
+				+ "by bad diseases that will harm you. The virus tries to attack all the good cells "
+				+ "in your body and if there are too few good cells then you may be in big trouble. "
+				+ "There are over 1.1 million people in America living with HIV. Approximately 25% of "
+				+ "new infections can affect a kid like you. Want to learn more but not have to read fifty "
+				+ "textbooks? This game will not only teach you the facts but also you will have fun playing it! "
+				+ "With your help, we can help stop the epidemic together and save lives!!"
+				+ "Enter through each stage of the game and on completion you will be a AIDS/HIV scientist!!!";
 		
 
-	public void paint( Graphics g ) {
-		Graphics2D g2 = (Graphics2D) g;
+		private JButton nextButton;
+		private JTextArea backgroundText;
 		
-		editWelcomePanel(g2);
-		editBackgroundPanel(g2);
-		editInstructionPanel(g2);
-		editGameOverPanel(g2);
-	}
-	
-	public void editWelcomePanel(Graphics2D g2) {
+		public BackgroundPanel(){
+			setLayout(null);
+			sidebarPanel.repaint();
+			initializeGUI();
+		}
 		
-	}
-	
-	public void editBackgroundPanel(Graphics2D g2) {
-		
-	}
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.drawImage(background,0,0,this);	
+			g2.drawImage(what_is_hiv,0,6,this);
 
-	public void editInstructionPanel(Graphics2D g2) {
-	
-	}
+		}
+		
+		private void initializeGUI(){
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 
-	public void editGameOverPanel(Graphics2D g2) {
-	
-	}
-	
-	
-	//this method should be adding to the instructionPanel JPanel object
-	public void displayInstructions() {
+			nextButton = new JButton("NEXT PAGE");
+			nextButton = styleButton(nextButton);
+			nextButton.setBounds(325, 560, 200, 50);
+			
+			backgroundText = new JTextArea(background_information,10,50);
+			backgroundText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			backgroundText = styleText(backgroundText);
+
+			nextButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					cardLayout.show(gameScreens, "Instructions");
+					currentScreen = "Instructions";
+					sidebarPanel.repaint();
+				}
+				
+			});
+			add(backgroundText);
+			add(nextButton);
+		}
 		
 	}
 	
-	//this method should be editing the gameOverPanel JPanel object
-	public void displayGameOverMessage() {
+	/*
+	 * This class encompasses the Instruction Panel which 
+	 * tells the user what to do and how to play the game. 
+	 */
+	public class InstructionPanel extends JPanel {
+		
+		private JTextArea instructionsText;
+
+		
+		private String instructions = "1. Click on the incoming viruses as they emerge from the top of the screen to stop them from killing your healthy body cells at the bottom." + 
+		"\n2. As the game gets progresses, the viruses become harder to destroy." + 
+		"\n3. Be sure to read the facts as they appear in the sidebar for you useful information about what's occurring in your body at each stage of the process."; 
+		
+		public InstructionPanel() {
+			setLayout(null);
+			
+			initializeGUI();
+		}
+		
+		public void initializeGUI() {
+			sidebarPanel.repaint();
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
+			
+			JButton nextButton = new JButton("PLAY GAME");
+			nextButton = styleButton(nextButton);
+			nextButton.setBounds(325, 560, 200, 50);
+			nextButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					cardLayout.show(gameScreens, "Game");
+					currentScreen = "Game";
+					gameBoard.initBoard(sidebarPanel);
+					sidebarPanel.repaint();
+				}
+				
+			});
+			
+			instructionsText = new JTextArea(instructions,10,50);
+			instructionsText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			instructionsText = styleText(instructionsText);
+			
+			add(instructionsText);
+			add(nextButton);
+		}
+
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.drawImage(background,0,0,this);
+			g2.drawImage(instructions_img,0,6,this);
+		}
+	}
+	
+	public class GameOverPanel extends JPanel {
+		
+		private JTextArea gameOverText;
+
+		private String message = "GAME OVER";
+		
+		public GameOverPanel() {
+			
+			setLayout(null);
+			
+			initializeGUI();
+			
+		}
+		
+		public void initializeGUI() {
+			
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+			
+			gameOverText = new JTextArea(message,25,50);
+			gameOverText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			gameOverText = styleText(gameOverText);
+			
+			add(gameOverText);
+		}
+		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.drawImage(background,0,0,this);
+		} 
 		
 	}
+	
+	public class SidebarPanel extends JPanel {
+		private boolean dimmed, infected, inGame;
+		private JTextArea infectedText;
 		
+		public SidebarPanel() {
+			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
+			dimmed = false;
+			
+			infectedText = new JTextArea("You have been infected with HIV!");
+			infectedText.setForeground(Color.WHITE);
+			infectedText.setBackground(new Color(0,0,0,0));
+			infectedText.setEditable(false);
+			infectedText.setLineWrap(true);
+			infectedText.setWrapStyleWord(true);
+			infectedText.setVisible(false);
+			
+			add(infectedText);
+		}
+		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+
+	        g2.drawImage(background_sidebar,0,0,this);
+	            
+	        if(currentScreen.equals("Welcome Screen"))
+	        	g2.drawImage(logo_sidebar, 0, 50, this);
+	        
+	        if(dimmed) {
+	        	g2.setColor(new Color(0,0,0,215));
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        }
+	        if(inGame) {
+	        	g2.setColor(new Color(0,0,0,150));
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        }
+	        if(infected) {
+	        	g2.setColor(Color.WHITE);
+	        	g2.drawString("You have been infected with HIV!", 0, 20);
+	        }
+		}
+		
+		public void inGame() {
+			inGame = true;
+			repaint();
+		}
+		
+		public void dimSidebar() {
+			inGame = false;
+			dimmed = true;
+			infectedText.setVisible(false);
+			repaint();
+		}
+		
+		public void lightenSidebar() {
+			dimmed = false;
+			repaint();
+		}
+		public void displayInfected() {
+			infectedText.setVisible(true);
+			revalidate();
+		}
+	}
+	
+	
+
 		  
 }
