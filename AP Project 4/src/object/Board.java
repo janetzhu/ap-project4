@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * JPanel class that contains the portion of the window where the main game play occurs
@@ -24,14 +25,20 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 
 	/******** CLASS VARIABLES ********/
-	private final int DELAY = 15;
+	private final int DELAY = 20;
 	private final int VIRUS_POS_XMIN = 15;
-    private final int VIRUS_POS_XMAX = 700;
+    private final int VIRUS_POS_XMAX = 635;
     private final int VIRUS_POS_YMIN = 10;
-    private final int VIRUS_POS_YMAX = 375;
+    private final int VIRUS_POS_YMAX = 325;
+    private final int INIT_VIRUS_X_SPEED = 2;
+    private final int INIT_VIRUS_Y_SPEED = 2;
     private final int CELL_ROWS = 3;
     private final int CELL_COLUMNS = 6;
     private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
+    private final long GAME_WON_TIME = 60000;
+    private final long HIV_INTRO_TIME = 10000;
+    
+    private long gameStartTime;
 	private int gameHeight;
 	private int gameWidth;
 	
@@ -46,6 +53,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	private Timer gameTimer;
 	private int difficultyLevel;
+	private boolean infected;
+	
+	private int cellCounter = 18;
 	
 	private InvasionGame ig;
 
@@ -66,17 +76,21 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 		this.addMouseListener(this);
 		
-		// Body Cells are created in a 3 x 10 array toward the bottom of the board
+		infected = false;
+		
+		// Body Cells are created in a 3 x 6 array toward the bottom of the board
         for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	// locations are spaced apart slightly
-	        	cellList[i][j] = new Cell(100*i+15,400+60*j,95,50, false);
+	        	cellList[i][j] = new Cell(100*i+15,450+60*j,95,50, false);
 	        }
         }
         
         for(int i = 0; i < START_VIRUS_COUNT; i++){
         	introduceVirus();
         }
+        
+        gameStartTime = System.currentTimeMillis();
         
         repaint();
         
@@ -117,6 +131,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         drawCells(g);
         drawViruses(g);
+        
+        if(gameStatus == "gameOver") {
+        	g2.setColor(Color.RED);
+        	g2.fillRect(0, 0, gameWidth, gameHeight);
+        }
+        
+        if(gameStatus == "gameWon") {
+        	g2.setColor(Color.GREEN);
+        	g2.fillRect(0, 0, gameWidth, gameHeight);
+        }
 	}
     
 	
@@ -185,9 +209,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				if (strength == 1) {
 					// If so, and strength is only 1, kill virus
 					virus.setAlive(false);
-					virus.Decrement_Virus_Count(); 
-					System.out.println(virus.virus_count);
-					
 				}
 				else if (strength > 1) {
 					// If so, but strength is greater than 1, decrement strength
@@ -235,7 +256,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * 
 	 */
 	public void infectHIV() {
-		
+		System.out.println("Infected!");
+		infected = true;
 	}
 	
 	/**
@@ -266,8 +288,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	    int randomNumberX = VIRUS_POS_XMIN + (int)(Math.random() * ((VIRUS_POS_XMAX - VIRUS_POS_XMIN) + 1));
 	    int randomNumberY = VIRUS_POS_YMIN + (int)(Math.random() * ((VIRUS_POS_YMAX - VIRUS_POS_YMIN) + 1));
 	    
+	    Random random = new Random();
+	    
 	    // Initializes virus at the random location each time a new one is introduced
-	    Virus newVirus = new Virus(randomNumberX,randomNumberY,1,1);
+	    Virus newVirus = new Virus(randomNumberX,randomNumberY, INIT_VIRUS_X_SPEED*(random.nextBoolean() ? 1 : -1), INIT_VIRUS_Y_SPEED);
 	    	    
 	    virusList.add(newVirus);
     }
@@ -319,23 +343,25 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	    	        		// Hit bottom of cell, infect cell
 	    	        		thisVirus.setAlive(false);
 	    	        		cellList[i][j].setInfected(true);
+	    	        		cellCounter--;
 	    	        	}
 	    	        	else if ((Math.abs(thisVirus.getBound(3) -top) < 4) && thisVirus.getBound(2) >= left && thisVirus.getBound(4) <= right) {
 	    	        		// Hit top of cell, infect cell
 	    	        		thisVirus.setAlive(false);
 	    	        		cellList[i][j].setInfected(true);
+	    	        		cellCounter--;
 	    	        	}
 	    	        	else if ((Math.abs(thisVirus.getBound(2) - left) < 4) && thisVirus.getBound(3) >= top && thisVirus.getBound(1) <= bottom) {
 	    	        		// Hit left of cell, infect cell
 	    	        		thisVirus.setAlive(false);
 	    	        		cellList[i][j].setInfected(true);
-	
+	    	        		cellCounter--;
 	    	        	}
 	    	        	else if ((Math.abs(thisVirus.getBound(4) - right) < 4) && thisVirus.getBound(3) >= top && thisVirus.getBound(1) <= bottom) {
 	    	        		// Hit right of cell, infect cell
 	    	        		thisVirus.setAlive(false);
 	    	        		cellList[i][j].setInfected(true);
-	
+	    	        		cellCounter--;
 	    	        	}
     	        	}
     	        }
@@ -399,8 +425,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	/**
 	 * Edits the gameOverPanel JPanel object
 	 */
-	public void displayGameOverMessage() {
-		// TODO Auto-generated method stub
+	public boolean displayGameOverMessage() {
+		if (gameStatus == "gameOver") {
+			// Show game lost screen
+			System.out.println("LOST!");
+			return true;
+		}
+		else if (gameStatus == "gameWon") {
+			// Show game won screen
+			System.out.println("WON!");
+			return true;
+		}
+		return false;
 		
 	}
 
@@ -427,6 +463,25 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				// Calibrate difficulty
 				calibrateDifficulty();
 				
+				if (System.currentTimeMillis() - gameStartTime > HIV_INTRO_TIME) {
+					if (!infected) {
+						infectHIV();
+					}
+				}
+				
+				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 25) {
+					introduceVirus();
+				}
+				
+				//Check game timer, if > time value, end game (Win)
+				if (cellCounter == 0) {
+					gameStatus = "gameOver";
+				}
+				
+				if (System.currentTimeMillis() - gameStartTime > GAME_WON_TIME) {
+					gameStatus = "gameWon";
+				}
+				
 				// See if the method are running at the
 	            // same rate. If not, sleep.
 	            timeDiff = System.currentTimeMillis() - beforeTime;
@@ -445,7 +500,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	            beforeTime = System.currentTimeMillis();
 			}
 			
-			displayGameOverMessage();
+			if(displayGameOverMessage()){
+				repaint();
+				break;
+			}
 		}
 		
 	}

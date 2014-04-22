@@ -224,11 +224,4 @@ public class Virus {
 		}
 	}
 	
-	
-	public void Decrement_Virus_Count() {
-		
-		virus_count=virus_count-1; 
-		
-	}
-	
 }
