@@ -1,6 +1,7 @@
 package object;
 
 import impl.InvasionGame;
+import impl.InvasionGame.SidebarPanel;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -38,6 +39,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final long GAME_WON_TIME = 60000;
     private final long HIV_INTRO_TIME = 10000;
     
+    SidebarPanel sidebarPanel; //send over sidebar panel from 
+    
+    BufferedImage gameOver_image, gameWon_image;
+    
     private long gameStartTime;
 	private int gameHeight;
 	private int gameWidth;
@@ -67,7 +72,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	//method called from InvasionGame class to start the gameplay
-	public void initBoard() {
+	//sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
+	public void initBoard(SidebarPanel sidebar) {
 		
 		setVisible(true);
 		
@@ -77,6 +83,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		this.addMouseListener(this);
 		
 		infected = false;
+		
+		sidebarPanel = sidebar;
+		sidebarPanel.inGame();
 		
 		// Body Cells are created in a 3 x 6 array toward the bottom of the board
         for (int j = 0; j < CELL_ROWS; j++) {
@@ -92,9 +101,21 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         gameStartTime = System.currentTimeMillis();
         
+        loadImages();
+        
         repaint();
         
         start();
+	}
+	
+	//load all BufferedImage objects
+	public void loadImages() {
+		try {
+			gameOver_image = ImageIO.read(getClass().getResource("/game_over.png"));
+			gameWon_image = ImageIO.read(getClass().getResource("/game_won.png"));
+		} catch (IOException e) {
+			System.out.println("Error loading images");
+		}
 	}
 	
 	public void start() {
@@ -133,13 +154,20 @@ public class Board extends JPanel implements Runnable, MouseListener {
         drawViruses(g);
         
         if(gameStatus == "gameOver") {
-        	g2.setColor(Color.RED);
+        	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
+        	
+        	g2.drawImage(gameOver_image, 50, 150, this);
+        	sidebarPanel.dimSidebar();
         }
         
         if(gameStatus == "gameWon") {
-        	g2.setColor(Color.GREEN);
+        	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
+        	
+        	g2.drawImage(gameWon_image, 50, 150, this);
+        	sidebarPanel.dimSidebar();
+
         }
 	}
     
@@ -258,6 +286,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void infectHIV() {
 		System.out.println("Infected!");
 		infected = true;
+		sidebarPanel.displayInfected();
 	}
 	
 	/**
