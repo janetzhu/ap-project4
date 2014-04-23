@@ -386,14 +386,15 @@ public class InvasionGame extends JApplet {
 	}
 	
 	public class SidebarPanel extends JPanel {
-		private boolean dimmed, infected, inGame;
+		private boolean dimmed, inGame;
 		private JTextArea infectedText;
+		private String displayText;
 		
 		public SidebarPanel() {
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 			dimmed = false;
 			
-			infectedText = new JTextArea("You have been infected with HIV!");
+			infectedText = new JTextArea();
 			infectedText.setForeground(Color.WHITE);
 			infectedText.setBackground(new Color(0,0,0,0));
 			infectedText.setEditable(false);
@@ -420,10 +421,10 @@ public class InvasionGame extends JApplet {
 	        	g2.setColor(new Color(0,0,0,150));
 	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
 	        }
-	        if(infected) {
+	        /*if(infected) {
 	        	g2.setColor(Color.WHITE);
 	        	g2.drawString("You have been infected with HIV!", 0, 20);
-	        }
+	        }*/
 		}
 		
 		public void inGame() {
@@ -443,9 +444,17 @@ public class InvasionGame extends JApplet {
 			repaint();
 		}
 		public void displayInfected() {
+			infectedText.setText("You have been infected with HIV!");
 			infectedText.setVisible(true);
 			revalidate();
 		}
+		
+		public void changeText(String newText) {
+			infectedText.setText(newText);
+			
+			revalidate();
+		}
+		
 	}
 	
 	
