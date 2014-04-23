@@ -60,7 +60,7 @@ public class InvasionGame extends JApplet {
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	public BufferedImage bodyCellImage;
 	
-	/*
+	/**
 	 * initUI()
 	 * 
 	 * Sets up the game and and the initial sizes of the window, buttons, 
