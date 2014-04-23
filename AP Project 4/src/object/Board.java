@@ -41,7 +41,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     
     SidebarPanel sidebarPanel; //send over sidebar panel from 
     
-    BufferedImage gameOver_image, gameWon_image;
+    BufferedImage gameOverImage, gameWonImage;
     
     private long gameStartTime;
 	private int gameHeight;
@@ -85,6 +85,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		cellCounter = 18;
 		gameScore = 0;
 		tCellCount = 1000;
+		difficultyLevel = 1;
 		
 		sidebarPanel = sidebar;
 		sidebarPanel.inGame();
@@ -123,8 +124,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
     //load all BufferedImage objects
 	public void loadImages() {
 		try {
-			gameOver_image = ImageIO.read(getClass().getResource("/game_over.png"));
-			gameWon_image = ImageIO.read(getClass().getResource("/game_won.png"));
+			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
+			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
 		} catch (IOException e) {
 			System.out.println("Error loading images");
 		}	
@@ -168,14 +169,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
         if(gameStatus == "gameOver") {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
-        	g2.drawImage(gameOver_image, 50, 150, this);
+        	g2.drawImage(gameOverImage, 50, 150, this);
         	sidebarPanel.dimSidebar();
         }
         
         if(gameStatus == "gameWon") {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
-        	g2.drawImage(gameWon_image, 50, 150, this);
+        	g2.drawImage(gameWonImage, 50, 150, this);
         	sidebarPanel.dimSidebar();
         }
 	}
@@ -225,16 +226,19 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		        		g.setColor(Color.YELLOW);
 		        		break;
 			    	case 2:
-			    		g.setColor(Color.ORANGE);
+			    		g.setColor(Color.RED);
 			    		break;
 				    case 3:
-						g.setColor(Color.RED);
+						g.setColor(Color.MAGENTA);
 						break;
 				    case 4:
 						g.setColor(Color.DARK_GRAY);
 						break;
 					case 5:
 						g.setColor(Color.BLACK);
+						break;
+					case 6:
+						g.setColor(Color.CYAN);
 						break;
 					default:
 						g.setColor(Color.YELLOW);
@@ -289,13 +293,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	/**
-	 * Starts the game play by setting gameStatus to "playing"
-	 */
-	public void startGame() {
-		
-	}
-	
-	/**
 	 * Called after a certain amount of time has passed in the game. 
 	 * Starts decrementing the T-cell count. 
 	 * After this method is called, the game becomes increasingly difficult
@@ -339,7 +336,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	    Random random = new Random();
 	    
 	    // Initializes virus at the random location each time a new one is introduced
-	    Virus newVirus = new Virus(randomNumberX,randomNumberY, INIT_VIRUS_X_SPEED*(random.nextBoolean() ? 1 : -1), INIT_VIRUS_Y_SPEED);
+	    Virus newVirus = new Virus(randomNumberX,randomNumberY, INIT_VIRUS_X_SPEED*(random.nextBoolean() ? 1 : -1), INIT_VIRUS_Y_SPEED, difficultyLevel);
 	    	    
 	    virusList.add(newVirus);
     }
@@ -467,46 +464,52 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void calibrateDifficulty() {
 		// Based on level of t cell count, loop through all viruses and increase strength respectively if need be
-		if (tCellCount == 750) {
-			System.out.println("T Cells at 750");
+		
+		if (tCellCount == 950) {
+			difficultyLevel = 2;
+			
+			//sidebarPanel.changeText("The difficulty level has now been increased to two clicks");
+			
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
-				System.out.println("Checking alive for " + i);
 				if (thisVirus.isAlive()) {
-					System.out.println("Changing strength for " + i);
-					thisVirus.setStrength(2);
+					thisVirus.setStrength(difficultyLevel);
  					virusList.set(i, thisVirus);
 				}
 			}
 		}
 		else if (tCellCount == 500) {
+			difficultyLevel = 3;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
 				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(3);
+					thisVirus.setStrength(difficultyLevel);
 					virusList.set(i, thisVirus);
 				}
 			}
 		}
 		else if (tCellCount == 350) {
+			difficultyLevel = 4;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
 				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(4);
+					thisVirus.setStrength(difficultyLevel);
 					virusList.set(i, thisVirus);
 				}
 			}
 		}
 		else if (tCellCount == 200) {
+			difficultyLevel = 5;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
 				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(5);
+					thisVirus.setStrength(difficultyLevel);
 					virusList.set(i, thisVirus);
 				}
 			}
 		}
 		else if (tCellCount == 100) {
+			difficultyLevel = 6;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
 				if (thisVirus.isAlive()) {
@@ -515,13 +518,19 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 		}
+		
 	}
 	
 	
-	public void calculate_score() {
+	public void calculateScore() {
 		if(Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 15) {	
 			gameScore = gameScore + 10;
 		}
+	}
+	
+	//obtains String from Fact object
+	public void getFact() {
+		
 	}
 	
 	/**
@@ -560,7 +569,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				// Animate objects
 				cycle();
 				
-				calculate_score();
+				calculateScore();
 				
 				// Calibrate difficulty
 				calibrateDifficulty();
@@ -641,10 +650,5 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-	}
-	
-	//obtains String from Fact object
-	public void getFact() {
-		
 	}
 }
