@@ -130,8 +130,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	public void start() {
-    	Thread th = new Thread (this);
-    	th.start();
+    	Thread gamePlayThread = new Thread (this);
+    	gamePlayThread.start();
     	gameStatus = "playing";
     }
 	
@@ -227,11 +227,44 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);
         
         
+        JTextArea takeawaysText;
+        
+        String takeaways = 
+        					"Remember...prevention is the best way to avoid getting HIV/AIDS " +
+        					"You should practice the following preventive methods: " +
+        					"Abstain from sex (don't have sex) " + 
+        					"Only have one partner at a time " +
+        					"Use a condom during sex " +
+        					"Avoid blood to blood contact ";
+        
         
         if(gameStatus == "gameOver") {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameOverImage, 50, 150, this);
+        	
+        	/*
+        	takeawaysText = new JTextArea(takeaways,25,50);
+        	takeawaysText.setBounds(25, 75, 400, 300);
+        	takeawaysText = styleText(takeawaysText);
+			
+			add(takeawaysText);
+			*/
+			
+        	/*
+        	//the takeaway message 
+            g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+            g2.setColor(Color.WHITE);
+            g2.drawString(
+            		"Remember...prevention is the best way to avoid getting " +
+					"\n HIV/AIDS. You should practice the following preventive " +
+            		"\n methods: " +
+					"\n Abstain from sex (don't have sex) " + 
+					"\n Only have one partner at a time " +
+					"\n Use a condom during sex " +
+					"\n Avoid blood to blood contact ", 10 , 35);
+			*/
+            
         	sidebarPanel.dimSidebar();
         }
         
@@ -244,6 +277,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
     
 	
+	private JTextArea styleText(JTextArea takeawaysText) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
      * Draw the body cells currently in the cellList as rectangles.  Set the color to black to show they're not infected
      * and fill the cells.
