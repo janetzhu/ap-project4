@@ -572,56 +572,19 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 		if (tCellCount == LEVEL_2_BENCHMARK) {
 			difficultyLevel = 2;
-			
 			//sidebarPanel.changeText("The difficulty level has now been increased to two clicks");
-			
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
- 					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_3_BENCHMARK) {
 			difficultyLevel = 3;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_4_BENCHMARK) {
 			difficultyLevel = 4;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_5_BENCHMARK) {
 			difficultyLevel = 5;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_6_BENCHMARK) {
 			difficultyLevel = 6;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(6);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		
 	}
