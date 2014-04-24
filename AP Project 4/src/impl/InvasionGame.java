@@ -322,12 +322,11 @@ public class InvasionGame extends JApplet implements Runnable{
 			backgroundText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			backgroundText = styleText(backgroundText);
 
-			BufferedImage HIV_image = null;
+			
 			try {
 				HIV_image = ImageIO.read(new File("HIV_attack.jpg"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Error loading image");
 			}
 
 			picLabel = new JLabel(new ImageIcon(HIV_image));
