@@ -33,13 +33,22 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int VIRUS_POS_YMAX = 250;
     private final int INIT_VIRUS_X_SPEED = 2;
     private final int INIT_VIRUS_Y_SPEED = 2;
+    
     private final int CELL_ROWS = 3;
     private final int CELL_COLUMNS = 9;
     private final int CELL_WIDTH = 66;
     private final int CELL_HEIGHT = 50;
+    
     private final int START_VIRUS_COUNT = 2; //number of viruses at start of game
+    
     private final long GAME_WON_TIME = 60000;
     private final long HIV_INTRO_TIME = 10000;
+    
+    private final int LEVEL_2_BENCHMARK = 950;
+    private final int LEVEL_3_BENCHMARK = 940;
+    private final int LEVEL_4_BENCHMARK = 930;
+    private final int LEVEL_5_BENCHMARK = 920;
+    private final int LEVEL_6_BENCHMARK = 910;
     
     private SidebarPanel sidebarPanel; //send over sidebar panel from 
     
@@ -488,7 +497,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void calibrateDifficulty() {
 		// Based on level of t cell count, loop through all viruses and increase strength respectively if need be
 		
-		if (tCellCount == 950) {
+		if (tCellCount == LEVEL_2_BENCHMARK) {
 			difficultyLevel = 2;
 			
 			//sidebarPanel.changeText("The difficulty level has now been increased to two clicks");
@@ -501,7 +510,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 		}
-		else if (tCellCount == 500) {
+		else if (tCellCount == LEVEL_3_BENCHMARK) {
 			difficultyLevel = 3;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
@@ -511,7 +520,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 		}
-		else if (tCellCount == 350) {
+		else if (tCellCount == LEVEL_4_BENCHMARK) {
 			difficultyLevel = 4;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
@@ -521,7 +530,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 		}
-		else if (tCellCount == 200) {
+		else if (tCellCount == LEVEL_5_BENCHMARK) {
 			difficultyLevel = 5;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
@@ -531,7 +540,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 		}
-		else if (tCellCount == 100) {
+		else if (tCellCount == LEVEL_6_BENCHMARK) {
 			difficultyLevel = 6;
 			for (int i = 0; i < virusList.size(); i++) {
 				Virus thisVirus = virusList.get(i);
