@@ -63,13 +63,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private int tCellCount;
 	private int gameScore;
 	
-	private Timer gameTimer;
 	private int difficultyLevel;
 	private boolean infected;
 	
 	private int cellCounter;
-
-	private InvasionGame ig;
 	
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -346,11 +343,19 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	     */
 	    int randomNumberX = VIRUS_POS_XMIN + (int)(Math.random() * ((VIRUS_POS_XMAX - VIRUS_POS_XMIN) + 1));
 	    int randomNumberY = VIRUS_POS_YMIN + (int)(Math.random() * ((VIRUS_POS_YMAX - VIRUS_POS_YMIN) + 1));
+	    int randomNumberDifficulty;
 	    
+	    if (difficultyLevel > 1) {
+		    randomNumberDifficulty = 2 + (int)(Math.random() * ((difficultyLevel - 2) + 1));
+	    }
+	    else {
+	    	randomNumberDifficulty = difficultyLevel;
+	    }
+
 	    Random random = new Random();
 	    
 	    // Initializes virus at the random location each time a new one is introduced
-	    Virus newVirus = new Virus(randomNumberX,randomNumberY, INIT_VIRUS_X_SPEED*(random.nextBoolean() ? 1 : -1), INIT_VIRUS_Y_SPEED, difficultyLevel);
+	    Virus newVirus = new Virus(randomNumberX,randomNumberY, INIT_VIRUS_X_SPEED*(random.nextBoolean() ? 1 : -1), INIT_VIRUS_Y_SPEED, randomNumberDifficulty);
 	    	    
 	    virusList.add(newVirus);
     }
