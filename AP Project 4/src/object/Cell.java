@@ -51,7 +51,7 @@ public class Cell {
 	}
 	
 	/**
-	 * @return the xCoord
+	 * @return xCoord
 	 */
 	public int getX() {
 		return xCoord;
@@ -65,7 +65,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the yCoord
+	 * @return yCoord
 	 */
 	public int getY() {
 		return yCoord;
@@ -79,7 +79,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the width
+	 * @return width
 	 */
 	public int getWidth() {
 		return width;
@@ -93,7 +93,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the height
+	 * @return height
 	 */
 	public int getHeight() {
 		return height;
@@ -107,7 +107,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the infected
+	 * @return infected
 	 */
 	public boolean isInfected() {
 		return infected;

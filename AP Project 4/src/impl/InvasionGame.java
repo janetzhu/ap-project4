@@ -235,7 +235,7 @@ public class InvasionGame extends JApplet {
 		}
 	}
 	
-	/*
+	/**
 	 * This class tells the user the background and reason for playing 
 	 * the game and why it is important. It is directed toward a kid audience. 
 	 * 
@@ -256,6 +256,10 @@ public class InvasionGame extends JApplet {
 
 		private JButton nextButton;
 		private JTextArea backgroundText;
+		
+		/**
+		 * Constructor for the background panel class.
+		 */
 		
 		public BackgroundPanel(){
 			setLayout(null);
@@ -384,6 +388,11 @@ public class InvasionGame extends JApplet {
 		} 
 		
 	}
+	
+	/**
+	 * Sidebar panel class.
+	 *
+	 */
 	
 	public class SidebarPanel extends JPanel {
 		private boolean dimmed, inGame;
