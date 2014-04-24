@@ -293,7 +293,7 @@ public class InvasionGame extends JApplet {
 			}
 			
 			picLabel = new JLabel(new ImageIcon(HIV_image));
-			picLabel.setBounds(0, 300, GAME_WIDTH-50, 300);
+			picLabel.setBounds(-100, 300, GAME_WIDTH-50, 300);
 			
 			nextButton.addActionListener(new ActionListener() {
 
