@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
  */
 
 public class Virus {
+	private final int VIRUS_WIDTH = 60;
+	private final int VIRUS_HEIGHT = 60;
 
 	// The x coordinate of the top-left of the virus
 	private int xCoord;
@@ -48,8 +50,8 @@ public class Virus {
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
 		this.setySpeed(ySpeed);
-		this.setWidth(40);
-		this.setHeight(40);
+		this.setWidth(VIRUS_WIDTH);
+		this.setHeight(VIRUS_HEIGHT);
 		this.setStrength(virusStrength);
 		this.setAlive(true);
 	}
