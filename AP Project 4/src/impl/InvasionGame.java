@@ -60,8 +60,6 @@ public class InvasionGame extends JApplet {
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	public BufferedImage bodyCellImage;
 	
-	
-	
 	/*
 	 * initUI()
 	 * 
@@ -168,8 +166,6 @@ public class InvasionGame extends JApplet {
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
-            
-            
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
@@ -392,16 +388,6 @@ public class InvasionGame extends JApplet {
 		private JTextArea gameOverText;
 
 		private String message = "GAME OVER";
-		
-		private JTextArea takeawaysText;
-        
-        private String takeaways = 
-        					"Remember...prevention is the best way to avoid getting HIV/AIDS " +
-        					"You should practice the following preventive methods: " +
-        					"Abstain from sex (don't have sex) " + 
-        					"Only have one partner at a time " +
-        					"Use a condom during sex " +
-        					"Avoid blood to blood contact ";
         
 		public GameOverPanel() {
 			
@@ -419,12 +405,7 @@ public class InvasionGame extends JApplet {
 			gameOverText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			gameOverText = styleText(gameOverText);
 			
-			takeawaysText = new JTextArea(takeaways,10,50);
-			takeawaysText.setBounds(25, 400, 400, 300);
-			takeawaysText = styleText(takeawaysText);
-			
 			add(gameOverText);
-			add(takeawaysText);
 		}
 		
 		public void paintComponent(Graphics g) {
