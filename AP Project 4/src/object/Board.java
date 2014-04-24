@@ -346,7 +346,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	    int randomNumberDifficulty;
 	    
 	    if (difficultyLevel > 1) {
-		    randomNumberDifficulty = 2 + (int)(Math.random() * ((difficultyLevel - 2) + 1));
+	    	int minDifficulty = difficultyLevel - 3;
+	    	if (minDifficulty < 1) {
+	    		minDifficulty = 1;
+	    	}
+		    randomNumberDifficulty = minDifficulty + (int)(Math.random() * ((difficultyLevel - minDifficulty) + 1));
 	    }
 	    else {
 	    	randomNumberDifficulty = difficultyLevel;
