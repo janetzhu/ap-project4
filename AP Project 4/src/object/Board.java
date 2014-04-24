@@ -77,13 +77,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	private int cellCounter;
 	
+	public BufferedImage progressImage1; 
+	
+	public BufferedImage progressImage2;
+	
 	public Board(int height, int width) {
 		gameHeight = height;
 		gameWidth = width;
 		
 	}
 	
-	 //method called from InvasionGame class to start the gameplay
+	 //method called from InvasionGame class to start the game play
 	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
 	 public void initBoard(SidebarPanel sidebar) {
 		
@@ -140,6 +144,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		try {
 			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
+			
+			//Progress Bar Image 
+            progressImage1=ImageIO.read(getClass().getResource("/Progress Bar.png"));
+            progressImage2=ImageIO.read(getClass().getResource("/Progress Bar2.png"));
 			
 			bodyCells = new BufferedImage[4];
 			for(int i = 1; i <= 4; i++) {
@@ -205,6 +213,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         g2.setColor(Color.WHITE);
         g2.drawString("Score: " + gameScore, 10 , 35);
+        
+        //Progress Bar
+        g2.drawImage(progressImage1, 0, 40, this);
+        
+      if(gameScore > 100) {
+    	  
+    	  g2.drawImage(progressImage2, 0, 40, this);
+      }
+        
         
         //the T-Cell counter 
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);

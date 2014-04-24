@@ -60,7 +60,6 @@ public class InvasionGame extends JApplet {
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	public BufferedImage bodyCellImage;
 
-
 	/*
 	 * initUI()
 	 * 
@@ -326,7 +325,6 @@ public class InvasionGame extends JApplet {
 		private BufferedImage HIV_picture;
 		private JLabel pictureLabel;
 
-
 		private String instructions = "1. Click on the invading viruses to destroy them as they emerge from the top of the screen." + 
 		"\n2. Stop them from infecting the good cells at the bottom of the screen." +
 		"\n3. As the game moves along, the viruses become harder to destroy." + 
@@ -361,7 +359,6 @@ public class InvasionGame extends JApplet {
 			instructionsText = new JTextArea(instructions,10,50);
 			instructionsText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			instructionsText = styleText(instructionsText);
-
 			BufferedImage HIV_picture = null;
 			try {
 				HIV_picture = ImageIO.read(new File("HIV_invasion.jpg"));
@@ -372,7 +369,7 @@ public class InvasionGame extends JApplet {
 
 			pictureLabel = new JLabel(new ImageIcon(HIV_picture));
 			pictureLabel.setBounds(-75, 375, GAME_WIDTH-50, 300);
-
+			
 			add(instructionsText);
 			add(nextButton);
 			add(pictureLabel);
@@ -391,7 +388,7 @@ public class InvasionGame extends JApplet {
 		private JTextArea gameOverText;
 
 		private String message = "GAME OVER";
-
+		
 		private JTextArea takeawaysText;
         
         private String takeaways = 
