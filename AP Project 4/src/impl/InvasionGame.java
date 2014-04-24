@@ -288,7 +288,6 @@ public class InvasionGame extends JApplet {
 			try {
 				HIV_image = ImageIO.read(new File("HIV_attack.jpg"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
