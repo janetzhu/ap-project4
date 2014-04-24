@@ -77,13 +77,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	private int cellCounter;
 	
+	public BufferedImage progressImage1; 
+	
+	public BufferedImage progressImage2;
+	
 	public Board(int height, int width) {
 		gameHeight = height;
 		gameWidth = width;
 		
 	}
 	
-	 //method called from InvasionGame class to start the gameplay
+	 //method called from InvasionGame class to start the game play
 	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
 	 public void initBoard(SidebarPanel sidebar) {
 		
@@ -140,6 +144,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		try {
 			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
+			
+			//Progress Bar Image 
+            progressImage1=ImageIO.read(getClass().getResource("/Progress Bar.png"));
+            progressImage2=ImageIO.read(getClass().getResource("/Progress Bar2.png"));
 			
 			bodyCells = new BufferedImage[4];
 			for(int i = 1; i <= 4; i++) {
@@ -206,15 +214,57 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.setColor(Color.WHITE);
         g2.drawString("Score: " + gameScore, 10 , 35);
         
+        //Progress Bar
+        g2.drawImage(progressImage1, 0, 40, this);
+        
+      if(gameScore > 100) {
+    	  
+    	  g2.drawImage(progressImage2, 0, 40, this);
+      }
+        
+        
         //the T-Cell counter 
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);
         
+        
+        JTextArea takeawaysText;
+        
+        String takeaways = 
+        					"Remember...prevention is the best way to avoid getting HIV/AIDS " +
+        					"You should practice the following preventive methods: " +
+        					"Abstain from sex (don't have sex) " + 
+        					"Only have one partner at a time " +
+        					"Use a condom during sex " +
+        					"Avoid blood to blood contact ";
         
         
         if(gameStatus == "gameOver") {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameOverImage, 50, 150, this);
+        	
+        	/*
+        	takeawaysText = new JTextArea(takeaways,25,50);
+        	takeawaysText.setBounds(25, 75, 400, 300);
+        	takeawaysText = styleText(takeawaysText);
+			
+			add(takeawaysText);
+			*/
+			
+        	/*
+        	//the takeaway message 
+            g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+            g2.setColor(Color.WHITE);
+            g2.drawString(
+            		"Remember...prevention is the best way to avoid getting " +
+					"\n HIV/AIDS. You should practice the following preventive " +
+            		"\n methods: " +
+					"\n Abstain from sex (don't have sex) " + 
+					"\n Only have one partner at a time " +
+					"\n Use a condom during sex " +
+					"\n Avoid blood to blood contact ", 10 , 35);
+			*/
+            
         	sidebarPanel.dimSidebar();
         }
         
@@ -227,6 +277,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
     
 	
+	private JTextArea styleText(JTextArea takeawaysText) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
      * Draw the body cells currently in the cellList as rectangles.  Set the color to black to show they're not infected
      * and fill the cells.
