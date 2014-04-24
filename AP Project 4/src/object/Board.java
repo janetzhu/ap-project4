@@ -376,13 +376,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				//Break from loop
 				break;
 			  }
-			
-			}
-			
-			
-		}
-		
-		
+			}		
+		}	
 	}
 	
 	/**
