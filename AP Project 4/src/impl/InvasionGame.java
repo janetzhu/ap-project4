@@ -297,7 +297,7 @@ public class InvasionGame extends JApplet {
 			}
 			
 			picLabel = new JLabel(new ImageIcon(HIV_image));
-			picLabel.setBounds(-100, 300, GAME_WIDTH-50, 300);
+			picLabel.setBounds(-120, 375, GAME_WIDTH-50, 250);
 			
 			nextButton.addActionListener(new ActionListener() {
 
@@ -372,7 +372,7 @@ public class InvasionGame extends JApplet {
 			}
 			
 			pictureLabel = new JLabel(new ImageIcon(HIV_picture));
-			pictureLabel.setBounds(100, 300, GAME_WIDTH-50, 300);
+			pictureLabel.setBounds(-75, 375, GAME_WIDTH-50, 300);
 			
 			add(instructionsText);
 			add(nextButton);
@@ -393,6 +393,16 @@ public class InvasionGame extends JApplet {
 
 		private String message = "GAME OVER";
 		
+		private JTextArea takeawaysText;
+        
+        private String takeaways = 
+        					"Remember...prevention is the best way to avoid getting HIV/AIDS " +
+        					"You should practice the following preventive methods: " +
+        					"Abstain from sex (don't have sex) " + 
+        					"Only have one partner at a time " +
+        					"Use a condom during sex " +
+        					"Avoid blood to blood contact ";
+        
 		public GameOverPanel() {
 			
 			setLayout(null);
@@ -409,7 +419,12 @@ public class InvasionGame extends JApplet {
 			gameOverText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			gameOverText = styleText(gameOverText);
 			
+			takeawaysText = new JTextArea(takeaways,10,50);
+			takeawaysText.setBounds(25, 400, 400, 300);
+			takeawaysText = styleText(takeawaysText);
+			
 			add(gameOverText);
+			add(takeawaysText);
 		}
 		
 		public void paintComponent(Graphics g) {
