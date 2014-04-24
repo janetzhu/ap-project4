@@ -244,18 +244,20 @@ public class InvasionGame extends JApplet {
 	//JPanel that gives the user backgrond information about HIV/AIDS
 	public class BackgroundPanel extends JPanel {
 	
-		private String background_information= "HIV is a virus that makes your body very vulnerable to being attacked " 
-				+ "by bad diseases that will harm you. The virus tries to attack all the good cells "
-				+ "in your body and if there are too few good cells then you may be in big trouble. "
+		private String background_information= "HIV is a virus that weakens your body's defense systems, leaving it " 
+				+ "vulnerable to attack from other diseases . The virus tries to infect all the good cells "
+				+ "in your body, and over time, you may be in big trouble if you lose too many of the good cells. "
 				+ "There are over 1.1 million people in America living with HIV. Approximately 25% of "
-				+ "new infections can affect a kid like you. Want to learn more but not have to read fifty "
-				+ "textbooks? This game will not only teach you the facts but also you will have fun playing it! "
-				+ "With your help, we can help stop the epidemic together and save lives!!"
-				+ "Enter through each stage of the game and on completion you will be a AIDS/HIV scientist!!!";
+				+ "new infections affect a kid like you. Want to learn more in a fun way? "
+				+ "In this game, you will get to destroy the bad, invading viruses and learn some important information "
+				+ "about HIV along the way. With your help, we can help stop the epidemic together and save lives!! "
+				+ "After playing the game, you will be an HIV/AIDS expert!!!";
 		
 
 		private JButton nextButton;
 		private JTextArea backgroundText;
+		private BufferedImage HIV_image;
+		private JLabel picLabel;
 		
 		public BackgroundPanel(){
 			setLayout(null);
@@ -281,7 +283,18 @@ public class InvasionGame extends JApplet {
 			backgroundText = new JTextArea(background_information,10,50);
 			backgroundText.setBounds(25, 75, GAME_WIDTH-50, 300);
 			backgroundText = styleText(backgroundText);
-
+			
+			BufferedImage HIV_image = null;
+			try {
+				HIV_image = ImageIO.read(new File("HIV_attack.jpg"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			picLabel = new JLabel(new ImageIcon(HIV_image));
+			picLabel.setBounds(0, 300, GAME_WIDTH-50, 300);
+			
 			nextButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -294,6 +307,8 @@ public class InvasionGame extends JApplet {
 			});
 			add(backgroundText);
 			add(nextButton);
+			add(picLabel);
+			
 		}
 		
 	}
@@ -307,9 +322,11 @@ public class InvasionGame extends JApplet {
 		private JTextArea instructionsText;
 
 		
-		private String instructions = "1. Click on the incoming viruses as they emerge from the top of the screen to stop them from killing your healthy body cells at the bottom." + 
-		"\n2. As the game gets progresses, the viruses become harder to destroy." + 
-		"\n3. Be sure to read the facts as they appear in the sidebar for you useful information about what's occurring in your body at each stage of the process."; 
+		private String instructions = "1. Click on the incoming viruses to destroy them as they emerge from the top of the screen." + 
+		"\n2. Stop them from infecting the good cells at the bottom of the screen." +
+		"\n3. As the game moves along, the viruses become harder to destroy." + 
+		"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
+		"\n5. Good Luck!";
 		
 		public InstructionPanel() {
 			setLayout(null);
