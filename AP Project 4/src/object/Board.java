@@ -30,24 +30,31 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private final int VIRUS_POS_XMIN = 15;
     private final int VIRUS_POS_XMAX = 635;
     private final int VIRUS_POS_YMIN = 10;
-    private final int VIRUS_POS_YMAX = 325;
+    private final int VIRUS_POS_YMAX = 250;
     private final int INIT_VIRUS_X_SPEED = 2;
     private final int INIT_VIRUS_Y_SPEED = 2;
     private final int CELL_ROWS = 3;
-    private final int CELL_COLUMNS = 6;
+    private final int CELL_COLUMNS = 9;
+    private final int CELL_WIDTH = 66;
+    private final int CELL_HEIGHT = 50;
     private final int START_VIRUS_COUNT = 2; //number of viruses at start of game
     private final long GAME_WON_TIME = 60000;
     private final long HIV_INTRO_TIME = 10000;
     
-    SidebarPanel sidebarPanel; //send over sidebar panel from 
+    private SidebarPanel sidebarPanel; //send over sidebar panel from 
     
-    BufferedImage gameOverImage, gameWonImage;
+    private BufferedImage gameOverImage, gameWonImage, bodyCell1;
+    private BufferedImage[] bodyCells;
+    private BufferedImage[] infectedCells;
+    private BufferedImage[] virusImages = new BufferedImage[6];
     
     private long gameStartTime;
 	private int gameHeight;
 	private int gameWidth;
 	
 	private Cell[][] cellList = new Cell[CELL_COLUMNS][CELL_ROWS];
+	private BufferedImage[][] cellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
+	private BufferedImage[][] infectedCellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private ArrayList<Virus> virusList = new ArrayList<Virus>();
 	private Facts hivFacts;
 		
@@ -94,7 +101,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	// locations are spaced apart slightly
-	        	cellList[i][j] = new Cell(100*i+15,450+60*j,95,50, false);
+	        	cellList[i][j] = new Cell(70*i+15,450+60*j,CELL_WIDTH, CELL_HEIGHT, false);
 	        }
         }
         
@@ -105,6 +112,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         gameStartTime = System.currentTimeMillis();
         
         loadImages();
+        initCells();
         
         repaint();
         
@@ -126,10 +134,41 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		try {
 			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
+			
+			bodyCells = new BufferedImage[4];
+			for(int i = 1; i <= 4; i++) {
+				String imagePath = "/cell_images/body_cell" + i + ".png";
+				bodyCells[i-1] = ImageIO.read(getClass().getResource(imagePath));
+			}
+			
+			infectedCells = new BufferedImage[4];
+			for(int i = 1; i <= 4; i++) {
+				String imagePath = "/cell_images/infected_cell" + i + ".png";
+				infectedCells[i-1] = ImageIO.read(getClass().getResource(imagePath));
+			}
+			
+			for(int i = 1; i <= 6; i++) {
+				String imagePath = "/cell_images/virus" + i + ".png";
+				virusImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
+			}
+
 		} catch (IOException e) {
 			System.out.println("Error loading images");
 		}	
     }
+	
+	//initialize all cell images by randomly choosing from four image options for each index
+	public void initCells() {
+		int randInt;
+		
+		for (int j = 0; j < CELL_ROWS; j++) {
+	        for (int i = 0; i < CELL_COLUMNS; i++) {
+	        	randInt = (int)(Math.random() * 4);
+	        	cellImages[i][j] = bodyCells[randInt];
+	        	infectedCellImages[i][j] = infectedCells[randInt];
+	        }
+		}
+	}
     
 	/**
 	 * Re-Paints the objects to the screen
@@ -190,22 +229,21 @@ public class Board extends JPanel implements Runnable, MouseListener {
      */
     private void drawCells(Graphics g) {
     	
-    	Graphics2D g2d = (Graphics2D) g;
+    	Graphics2D g2 = (Graphics2D) g;
     	
     	for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	Cell cell = cellList[i][j];
 	        	if (!cell.isInfected()) {
-		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
-		        	g.setColor(Color.GREEN);
-		        	g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
-		        	//g.drawImage(ig.bodyCellImage, (int) cell.getX(), (int) cell.getY(), this);
+		        	//g.setColor(Color.GREEN);
+		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
+		        	g2.drawImage(cellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 	        	}
 	        	if (cell.isInfected()) {
-		        	g.drawRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
-		        	g.setColor(Color.RED);
-		        	g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
-		        	
+		        	//g.setColor(Color.RED);
+		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
+		        	g2.drawImage(infectedCellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
+
 	        	}
 	        }
         }
@@ -217,36 +255,12 @@ public class Board extends JPanel implements Runnable, MouseListener {
      * @param g the graphics object that will be painted
      */
     private void drawViruses(Graphics g) {
+    	Graphics2D g2 = (Graphics2D) g;
         for (int i = 0; i < virusList.size(); i++) {
         	Virus virus = virusList.get(i);
+        	//only draw virus if it is alive
         	if (virus.isAlive()) {
-	        	g.drawRect((int) virus.getX(), (int) virus.getY(), (int) virus.getWidth(), (int) virus.getHeight());
-	        	switch (virus.getStrength()) {
-		        	case 1:
-		        		g.setColor(Color.YELLOW);
-		        		break;
-			    	case 2:
-			    		g.setColor(Color.RED);
-			    		break;
-				    case 3:
-						g.setColor(Color.MAGENTA);
-						break;
-				    case 4:
-						g.setColor(Color.DARK_GRAY);
-						break;
-					case 5:
-						g.setColor(Color.BLACK);
-						break;
-					case 6:
-						g.setColor(Color.CYAN);
-						break;
-					default:
-						g.setColor(Color.YELLOW);
-				}
-	        	g.fillRect((int) virus.getX(), (int) virus.getY(), (int) virus.getWidth(), (int) virus.getHeight());
-        	}
-        	else if (!virus.isAlive()) {
-        		// Do nothing, do not draw virus if it is dead
+	        	g2.drawImage(virusImages[virus.getStrength()-1], virus.getX(), virus.getY(), this);
         	}
         }
     }
