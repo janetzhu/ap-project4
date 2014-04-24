@@ -244,15 +244,16 @@ public class InvasionGame extends JApplet {
 	//JPanel that gives the user backgrond information about HIV/AIDS
 	public class BackgroundPanel extends JPanel {
 	
-		private String background_information= "HIV is a virus that weakens your body's defense systems, leaving it " 
-				+ "vulnerable to attack from other diseases . The virus tries to infect all the good cells "
-				+ "in your body, and over time, you may be in big trouble if you lose too many of the good cells. "
-				+ "There are over 1.1 million people in America living with HIV. Approximately 25% of "
-				+ "new infections affect a kid like you. Want to learn more in a fun way? "
-				+ "In this game, you will get to destroy the bad, invading viruses and learn some important information "
-				+ "about HIV along the way. With your help, we can help stop the epidemic together and save lives!! "
-				+ "After playing the game, you will be an HIV/AIDS expert!!!";
-		
+		private String background_information= 
+				"HIV is a virus that weakens the body's defense system (immune system)."
+				+ "It destroys good helper T cells that protect the body from harmful "
+				+ "infections, viruses, and diseases.\n\n"
+				+ "HIV gradually reproduces itself and kills more T-cells, making the "
+				+ "immune system weaker and weaker.\n\n" 
+				+ "After a certain point, the good T cells can no longer fight against  " 
+				+ "the HIV virus or protect the body against other diseases.\n\n" 
+				+ "Now, AIDS has developed, and diseases are free to attack the body.";
+						
 
 		private JButton nextButton;
 		private JTextArea backgroundText;
