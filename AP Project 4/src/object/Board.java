@@ -126,8 +126,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	public void start() {
-    	Thread th = new Thread (this);
-    	th.start();
+    	Thread gamePlayThread = new Thread (this);
+    	gamePlayThread.start();
     	gameStatus = "playing";
     }
 	
