@@ -43,7 +43,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     
     private SidebarPanel sidebarPanel; //send over sidebar panel from 
     
-    private BufferedImage gameOverImage, gameWonImage, bodyCell1;
+    private BufferedImage gameOverImage, gameWonImage;
     private BufferedImage[] bodyCells;
     private BufferedImage[] infectedCells;
     private BufferedImage[] virusImages = new BufferedImage[6];
