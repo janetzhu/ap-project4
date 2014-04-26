@@ -53,7 +53,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int LEVEL_5_BENCHMARK = 920;
     private final int LEVEL_6_BENCHMARK = 910;
     
-    private SidebarPanel sidebarPanel; //send over sidebar panel from 
+    private SidebarPanel sidebarPanel; //send over side bar panel from 
     
     //Resource objects
     private BufferedImage gameOverImage, gameWonImage;
@@ -85,6 +85,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public BufferedImage progressImage1; 
 	
 	public BufferedImage progressImage2;
+	
+	public BufferedImage progressImage3; 
+	
+	public BufferedImage progressImage4;
 	
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -150,10 +154,12 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
 			
-			//Progress Bar Image 
+			//Progress Bar Images 
             progressImage1=ImageIO.read(getClass().getResource("/Progress Bar.png"));
             progressImage2=ImageIO.read(getClass().getResource("/Progress Bar2.png"));
-			
+            progressImage3=ImageIO.read(getClass().getResource("/Progress Bar3.png"));
+			progressImage4=ImageIO.read(getClass().getResource("/Progress Bar4.png"));
+            
 			bodyCells = new BufferedImage[4];
 			for(int i = 1; i <= 4; i++) {
 				String imagePath = "/cell_images/body_cell" + i + ".png";
@@ -232,12 +238,25 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.setColor(Color.WHITE);
         g2.drawString("Score: " + gameScore, 10 , 35);
         
-        //Progress Bar
+        //Progress Bar Initial
         g2.drawImage(progressImage1, 0, 40, this);
         
+      if(gameScore > 50) {  
+    	
+        g2.drawImage(progressImage4, 0, 40, this); 
+     
+      }
+      
       if(gameScore > 100) {
     	  
-    	  g2.drawImage(progressImage2, 0, 40, this);
+    	 g2.drawImage(progressImage2, 0, 40, this);
+    	  
+      }
+      
+      if(gameScore > 150) {
+    	  
+    	  g2.drawImage(progressImage3, 0, 40, this);
+    	  
       }
         
         
@@ -262,7 +281,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	g2.drawImage(gameOverImage, 50, 150, this);
         	
         	/*
-        	takeawaysText = new JTextArea(takeaways,25,50);
+        	takeawaysText = new JTextArea(take aways,25,50);
         	takeawaysText.setBounds(25, 75, 400, 300);
         	takeawaysText = styleText(takeawaysText);
 			
