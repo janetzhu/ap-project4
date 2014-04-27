@@ -70,23 +70,6 @@ public class InvasionGame extends JApplet { //implements Runnable{
 	
 	private boolean playingGame;
 	
-	private String background_information= 
-			"HIV is a virus that weakens the body's defense system (immune system)."
-			+ "It destroys good helper T cells that protect the body from harmful "
-			+ "infections, viruses, and diseases.\n\n"
-			+ "HIV gradually reproduces itself and kills more T-cells, making the "
-			+ "immune system weaker and weaker.\n\n" 
-			+ "After a certain point, the good T cells can no longer fight against  " 
-			+ "the HIV virus or protect the body against other diseases.\n\n" 
-			+ "Now, AIDS has developed, and diseases are free to attack the body.";
-	
-	private String instructions = "1. Click on the incoming viruses to destroy them as they emerge from the top of the screen." + 
-			"\n2. Stop them from infecting the good cells at the bottom of the screen." +
-			"\n3. As the game moves along, the viruses become harder to destroy." + 
-			"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
-			"\n5. Good Luck!";
-	
-
 
 	/*
 	 * initUI()
