@@ -13,7 +13,9 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -40,7 +42,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int CELL_HEIGHT = 50;
     
     private final int START_VIRUS_COUNT = 2; //number of viruses at start of game
-    
+    private final int START_TCELL_COUNT = 1000;
+    private final int START_DIFFICULTY_LEVEL = 1;
     private final long GAME_WON_TIME = 60000;
     private final long HIV_INTRO_TIME = 10000;
     
@@ -52,10 +55,12 @@ public class Board extends JPanel implements Runnable, MouseListener {
     
     private SidebarPanel sidebarPanel; //send over sidebar panel from 
     
+    //Resource objects
     private BufferedImage gameOverImage, gameWonImage;
     private BufferedImage[] bodyCells;
     private BufferedImage[] infectedCells;
     private BufferedImage[] virusImages = new BufferedImage[6];
+    private Font displayFont;
     
     private long gameStartTime;
 	private int gameHeight;
@@ -99,10 +104,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		this.addMouseListener(this);
 		
 		infected = false;
-		cellCounter = 18;
+		cellCounter = CELL_ROWS * CELL_COLUMNS;
 		gameScore = 0;
-		tCellCount = 1000;
-		difficultyLevel = 1;
+		tCellCount = START_TCELL_COUNT;
+		difficultyLevel = START_DIFFICULTY_LEVEL;
 		
 		sidebarPanel = sidebar;
 		sidebarPanel.inGame();
@@ -111,7 +116,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	// locations are spaced apart slightly
-	        	cellList[i][j] = new Cell(70*i+15,450+60*j,CELL_WIDTH, CELL_HEIGHT, false);
+	        	cellList[i][j] = new Cell((CELL_WIDTH + 5) * i + 10, 450 + (CELL_HEIGHT + 10) * j,CELL_WIDTH, CELL_HEIGHT, false);
 	        }
         }
         
@@ -121,7 +126,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         gameStartTime = System.currentTimeMillis();
         
-        loadImages();
+        loadResources();
         initCells();
         
         repaint();
@@ -130,8 +135,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	public void start() {
-    	Thread th = new Thread (this);
-    	th.start();
+    	Thread gamePlayThread = new Thread (this);
+    	gamePlayThread.start();
     	gameStatus = "playing";
     }
 	
@@ -139,8 +144,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
     
     public void destroy() {}
 	
-    //load all BufferedImage objects
-	public void loadImages() {
+    //load all BufferedImage objects and Fonts
+	public void loadResources() {
 		try {
 			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
@@ -166,9 +171,22 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				virusImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
 
+//			File fontFile = new File("/DS-DIGI.TTF");
+//			displayFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 15f);
+//				
+//			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//			ge.registerFont(displayFont);
+//			InputStream inStream = getClass().getResourceAsStream("/DS-DIGI.TTF");
+//			Font displayFont = Font.createFont(Font.TRUETYPE_FONT, inStream);
+//
+//			displayFont = displayFont.deriveFont(12f);
+			//myLabel.setFont(siFont);
+			
 		} catch (IOException e) {
 			System.out.println("Error loading images");
-		}	
+		} //catch (FontFormatException e) {
+//			System.out.println("Error loading fonts");
+//		}
     }
 	
 	//initialize all cell images by randomly choosing from four image options for each index
@@ -227,11 +245,44 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);
         
         
+        JTextArea takeawaysText;
+        
+        String takeaways = 
+        					"Remember...prevention is the best way to avoid getting HIV/AIDS " +
+        					"You should practice the following preventive methods: " +
+        					"Abstain from sex (don't have sex) " + 
+        					"Only have one partner at a time " +
+        					"Use a condom during sex " +
+        					"Avoid blood to blood contact ";
+        
         
         if(gameStatus == "gameOver") {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameOverImage, 50, 150, this);
+        	
+        	/*
+        	takeawaysText = new JTextArea(takeaways,25,50);
+        	takeawaysText.setBounds(25, 75, 400, 300);
+        	takeawaysText = styleText(takeawaysText);
+			
+			add(takeawaysText);
+			*/
+			
+        	/*
+        	//the takeaway message 
+            g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+            g2.setColor(Color.WHITE);
+            g2.drawString(
+            		"Remember...prevention is the best way to avoid getting " +
+					"\n HIV/AIDS. You should practice the following preventive " +
+            		"\n methods: " +
+					"\n Abstain from sex (don't have sex) " + 
+					"\n Only have one partner at a time " +
+					"\n Use a condom during sex " +
+					"\n Avoid blood to blood contact ", 10 , 35);
+			*/
+            
         	sidebarPanel.dimSidebar();
         }
         
@@ -244,6 +295,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
     
 	
+	private JTextArea styleText(JTextArea takeawaysText) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
      * Draw the body cells currently in the cellList as rectangles.  Set the color to black to show they're not infected
      * and fill the cells.
@@ -320,13 +376,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				//Break from loop
 				break;
 			  }
-			
-			}
-			
-			
-		}
-		
-		
+			}		
+		}	
 	}
 	
 	/**
@@ -339,7 +390,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void infectHIV() {
 		System.out.println("Infected!");
 		infected = true;
-		sidebarPanel.displayInfected();
+		sidebarPanel.addTextToPane("You have been infected with HIV!\n");
 	}
 	
 	/**
@@ -516,56 +567,19 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 		if (tCellCount == LEVEL_2_BENCHMARK) {
 			difficultyLevel = 2;
-			
 			//sidebarPanel.changeText("The difficulty level has now been increased to two clicks");
-			
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
- 					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_3_BENCHMARK) {
 			difficultyLevel = 3;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_4_BENCHMARK) {
 			difficultyLevel = 4;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_5_BENCHMARK) {
 			difficultyLevel = 5;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(difficultyLevel);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		else if (tCellCount == LEVEL_6_BENCHMARK) {
 			difficultyLevel = 6;
-			for (int i = 0; i < virusList.size(); i++) {
-				Virus thisVirus = virusList.get(i);
-				if (thisVirus.isAlive()) {
-					thisVirus.setStrength(6);
-					virusList.set(i, thisVirus);
-				}
-			}
 		}
 		
 	}

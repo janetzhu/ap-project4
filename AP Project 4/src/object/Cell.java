@@ -3,11 +3,14 @@ package object;
 
 /**
  * Contains data and methods associated with an individual Cell object.
+ * Includes data about the location (coordinates) and size of the cell, and
+ * whether it has been infected with HIV.
  *
  */
 
 public class Cell {
 
+	/******** CLASS VARIABLES ********/
 	// The x coordinate of the top-left corner of the cell
 	private int xCoord;
 	// The x coordinate of the top-left corner of the cell
@@ -21,8 +24,15 @@ public class Cell {
 	// Infected is true if the cell has been infected by a virus or disease, false if healthy
 	private boolean infected;
 	
-	//Body Cell Count 
-	public int body_cell_count=18; 
+	//Body cell count 
+	public int bodyCellCount = 18; 
+	
+	
+	/******** METHODS ********/
+	
+	/**
+	 * Constructor. Initializes variables to 0 and false
+	 */
 	
 	public Cell() {
 		xCoord = 0;
@@ -41,7 +51,7 @@ public class Cell {
 	}
 	
 	/**
-	 * @return the xCoord
+	 * @return xCoord
 	 */
 	public int getX() {
 		return xCoord;
@@ -55,7 +65,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the yCoord
+	 * @return yCoord
 	 */
 	public int getY() {
 		return yCoord;
@@ -69,7 +79,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the width
+	 * @return width
 	 */
 	public int getWidth() {
 		return width;
@@ -83,7 +93,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the height
+	 * @return height
 	 */
 	public int getHeight() {
 		return height;
@@ -97,7 +107,7 @@ public class Cell {
 	}
 
 	/**
-	 * @return the infected
+	 * @return infected
 	 */
 	public boolean isInfected() {
 		return infected;
@@ -139,9 +149,9 @@ public class Cell {
 		}
 	}
 	
-	public void Decrement_Body_Cell_Count() { 
+	public void decrementBodyCellCount() { 
 			
-		body_cell_count=body_cell_count-1; 
+		bodyCellCount--; 
 			
 	}
 	
