@@ -60,7 +60,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private BufferedImage[] bodyCells;
     private BufferedImage[] infectedCells;
     private BufferedImage[] virusImages = new BufferedImage[6];
-    private Font displayFont;
+    private BufferedImage[] progressImages = new BufferedImage[10];
+    private BufferedImage currentProgressImage;
     
     private long gameStartTime;
 	private int gameHeight;
@@ -81,10 +82,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private boolean infected;
 	
 	private int cellCounter;
-	
-	public BufferedImage progressImage1; 
-	
-	public BufferedImage progressImage2;
 	
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -127,6 +124,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         gameStartTime = System.currentTimeMillis();
         
         loadResources();
+        currentProgressImage = progressImages[0];
         initCells();
         
         repaint();
@@ -150,9 +148,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
 			
-			//Progress Bar Image 
-            progressImage1=ImageIO.read(getClass().getResource("/Progress Bar.png"));
-            progressImage2=ImageIO.read(getClass().getResource("/Progress Bar2.png"));
+			//Load progress bar images
+			for(int i = 1; i <= 10; i++) {
+				String imagePath = "/progress_images/progress_bar" + i + ".png";
+				progressImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
+			}
 			
 			bodyCells = new BufferedImage[4];
 			for(int i = 1; i <= 4; i++) {
@@ -230,16 +230,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
         //the score board 
         g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
         g2.setColor(Color.WHITE);
-        g2.drawString("Score: " + gameScore, 10 , 35);
+        g2.drawString("Score: " + gameScore, 10, 35);
         
         //Progress Bar
-        g2.drawImage(progressImage1, 0, 40, this);
-        
-      if(gameScore > 100) {
-    	  
-    	  g2.drawImage(progressImage2, 0, 40, this);
-      }
-        
+        g2.drawImage(currentProgressImage, 40, 5, this);
         
         //the T-Cell counter 
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);
@@ -358,6 +352,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
 			  if(virus.isAlive()) {	
+					System.out.println("Virus clicked");
+
 				if (strength == 1) {
 					// If so, and strength is only 1, kill virus
 					virus.setAlive(false);
@@ -626,6 +622,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			int cellReduceCounter = 0;
 	
 	        beforeTime = System.currentTimeMillis();
+	        
+	        
 	        
 	        // Run this while loop by the game is being played
 			while(gameStatus == "playing") {

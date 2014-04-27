@@ -63,6 +63,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	public BufferedImage bodyCellImage;
 	
 	private boolean playingGame;
+	private Thread mainThread;
 	
 	private String background_information= "HIV is a virus that weakens your body's defense systems, leaving it " 
 			+ "vulnerable to attack from other diseases . The virus tries to infect all the good cells "
@@ -153,7 +154,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	    
 	    setVisible(true);
 	    
-	    Thread mainThread = new Thread (this);
+	    mainThread = new Thread (this);
 	    mainThread.start();
 	}
 	
@@ -499,7 +500,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			
 			sidebarPanel.repaint();
 		}
-				
+		//mainThread;
 	}
 	
 	
