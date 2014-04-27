@@ -71,6 +71,8 @@ public class InvasionGame extends JApplet { //implements Runnable{
 	private boolean playingGame;
 	
 
+	
+	
 	/*
 	 * initUI()
 	 * 
