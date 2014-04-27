@@ -32,7 +32,7 @@ public class Virus {
 	// Alive is true if the virus is still alive, and false if it has been destroyed by the user
 	private boolean alive;
 	
-	public int virus_count=5; 
+	public int virusCount=5; 
 	
 	public Virus() {
 		this.setX(0);

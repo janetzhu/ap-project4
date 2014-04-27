@@ -53,7 +53,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int LEVEL_5_BENCHMARK = 920;
     private final int LEVEL_6_BENCHMARK = 910;
     
-    private SidebarPanel sidebarPanel; //send over sidebar panel from 
+    private SidebarPanel sidebarPanel; //send over side bar panel from 
     
     //Resource objects
     private BufferedImage gameOverImage, gameWonImage;
@@ -150,11 +150,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Load progress bar images
 			for(int i = 1; i <= 10; i++) {
-<<<<<<< HEAD
-				String imagePath = "/progress_images/progress_bar" + i + ".png";
-=======
 				String imagePath = "/progress_images/progress_bar_" + i + ".png";
->>>>>>> Janet
 				progressImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
 			
@@ -237,11 +233,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.drawString("Score: " + gameScore, 10, 35);
         
         //Progress Bar
-<<<<<<< HEAD
-        g2.drawImage(currentProgressImage, 40, 5, this);
-=======
+
         g2.drawImage(currentProgressImage, 135, 17, this);
->>>>>>> Janet
         
         //the T-Cell counter 
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);
@@ -264,7 +257,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	g2.drawImage(gameOverImage, 50, 150, this);
         	
         	/*
-        	takeawaysText = new JTextArea(takeaways,25,50);
+        	takeawaysText = new JTextArea(take aways,25,50);
         	takeawaysText.setBounds(25, 75, 400, 300);
         	takeawaysText = styleText(takeawaysText);
 			
