@@ -87,6 +87,7 @@ public class InvasionGame extends JApplet { //implements Runnable{
 			"\n5. Good Luck!";
 	
 
+
 	/*
 	 * initUI()
 	 * 
@@ -209,6 +210,8 @@ public class InvasionGame extends JApplet { //implements Runnable{
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
+            
+            
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
@@ -427,8 +430,51 @@ public class InvasionGame extends JApplet { //implements Runnable{
 			g2.drawImage(instructions_img,0,6,this);
 		}
 
-	}*/
 
+		private String message = "GAME OVER";
+		
+		private JTextArea takeawaysText;
+        
+        private String takeaways = 
+        					"Remember...prevention is the best way to avoid getting HIV/AIDS " +
+        					"You should practice the following preventive methods: " +
+        					"Abstain from sex (don't have sex) " + 
+        					"Only have one partner at a time " +
+        					"Use a condom during sex " +
+        					"Avoid blood to blood contact ";
+        
+		public GameOverPanel() {
+			
+			setLayout(null);
+			
+			initializeGUI();
+			
+		}
+		
+		public void initializeGUI() {
+			
+			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+			
+			gameOverText = new JTextArea(message,25,50);
+			gameOverText.setBounds(25, 75, GAME_WIDTH-50, 300);
+			gameOverText = styleText(gameOverText);
+			
+			takeawaysText = new JTextArea(takeaways,10,50);
+			takeawaysText.setBounds(25, 400, 400, 300);
+			takeawaysText = styleText(takeawaysText);
+			
+			add(gameOverText);
+			add(takeawaysText);
+		}
+		
+		public void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D) g;
+			
+			g2.drawImage(background,0,0,this);
+		} 
+		
+	}
+*/
 	
 	public class SidebarPanel extends JPanel {
 		private boolean dimmed, inGame;
