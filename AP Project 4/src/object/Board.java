@@ -27,7 +27,7 @@ import java.util.Random;
 public class Board extends JPanel implements Runnable, MouseListener {
 	
 
-	/******** CLASS VARIABLES ********/
+	/******** CLASS  VARIABLES ********/
 	private final int DELAY = 20;
 	private final int VIRUS_POS_XMIN = 15;
     private final int VIRUS_POS_XMAX = 635;
@@ -150,7 +150,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Load progress bar images
 			for(int i = 1; i <= 10; i++) {
+<<<<<<< HEAD
 				String imagePath = "/progress_images/progress_bar" + i + ".png";
+=======
+				String imagePath = "/progress_images/progress_bar_" + i + ".png";
+>>>>>>> Janet
 				progressImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
 			
@@ -233,7 +237,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
         g2.drawString("Score: " + gameScore, 10, 35);
         
         //Progress Bar
+<<<<<<< HEAD
         g2.drawImage(currentProgressImage, 40, 5, this);
+=======
+        g2.drawImage(currentProgressImage, 135, 17, this);
+>>>>>>> Janet
         
         //the T-Cell counter 
         g2.drawString("T-Cells Remaining: " + tCellCount, 360 , 35);
@@ -384,7 +392,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * 
 	 */
 	public void infectHIV() {
-		System.out.println("Infected!");
 		infected = true;
 		sidebarPanel.displayInfected();
 	}
@@ -627,10 +634,20 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	        
 	        // Run this while loop by the game is being played
 			while(gameStatus == "playing") {
+				//if(System.currentTimeMillis)
 				// Animate objects
 				cycle();
 				
 				calculateScore();
+				
+				int oneTenthTime = (int) (GAME_WON_TIME / 10);
+				
+				//Progress bar is incremented as the game time progresses
+				for(int i = 0; i < 10; i++) {
+					if((System.currentTimeMillis() - gameStartTime) > oneTenthTime * i) {
+						currentProgressImage = progressImages[i];
+					}
+				}
 				
 				// Calibrate difficulty
 				calibrateDifficulty();
