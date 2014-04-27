@@ -101,11 +101,11 @@ public class InvasionGame extends JApplet { //implements Runnable{
 	    sidebarPanel = new SidebarPanel();
 	    
 	    //backgroundPanel = new BackgroundPanel();
-	    backgroundPanel = new DisplayPanel("Next Page", background_information, 1);
+	    backgroundPanel = new DisplayPanel("Next Page", "background_information", 1);
 	    backgroundPanel.setBackground(Color.GRAY);
 	    
 	    //instructionPanel = new InstructionPanel();
-	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
+	    instructionPanel = new DisplayPanel("Start Game!", "instructions", 2);
 	    instructionPanel.setBackground(Color.GREEN);
 	    	    
 
