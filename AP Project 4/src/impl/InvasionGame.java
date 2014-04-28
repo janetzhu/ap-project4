@@ -453,12 +453,19 @@ public class InvasionGame extends JApplet implements Runnable{
 		// OLD JTEXT AREA IMPLEMENTATION private JTextArea infectedText;
 		private String displayText;
 		
-		// JTextPane variables
+		/****JTextPane Variables ****/
 		private JTextPane sidebarTextPane;
 		private JScrollPane scrollPane;
+		// Interface for a generic styled document. 
+		// Handles styling for JTextPane text.
 		StyledDocument doc;
+		// ArrayList that holds all of the text that will be added to the sidebar.
+		// New text can be pushed to the ArrayList.
 		ArrayList<String> sidebarText = new ArrayList<String>();
+		// Holds the styles for sidebar text. 2 possible styles: red or white text,
+		// set to alternate for each fact that pops up on the sidebar
 		String[] textStyles = {"red", "white"};
+		// Transparent color
 		Color transparentBackground = new Color (0,0,0,0);
 		SimpleAttributeSet background;
 
@@ -479,11 +486,15 @@ public class InvasionGame extends JApplet implements Runnable{
 			*/
 			
 			/**** JTEXTPANE IMPLEMENTATION ****/
+			// Call the createTextPane method to create text pane and add styles
 			sidebarTextPane = createTextPane();
+			// Set the background of the sidebar to transparent
 			sidebarTextPane.setBackground(new Color(0,0,0,0));
 			sidebarTextPane.setEditable(false);
 			sidebarTextPane.setVisible(true);
 			
+			// Add the sidebar to a JScrollPane. Enables scrolling functionality
+			// so that user can scroll back to old text.
 			scrollPane = new JScrollPane(sidebarTextPane);
 			scrollPane.setAlignmentX(RIGHT_ALIGNMENT);
 			scrollPane.setVerticalScrollBarPolicy(
