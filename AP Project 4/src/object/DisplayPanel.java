@@ -91,7 +91,6 @@ public class DisplayPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("Button Clicked");
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
 			
@@ -122,11 +121,11 @@ public class DisplayPanel extends JPanel {
         }
         else if (GAME_SCREENS[panelType] == "Background") {
 			g2.drawImage(what_is_hiv,0,6,this);
-			g2.drawImage(HIV_attacks, 0, 200, this);
+			g2.drawImage(HIV_attacks, 25, 375, this);
         }
         else if (GAME_SCREENS[panelType] == "Instructions") {
 			g2.drawImage(instructions_img,0,6,this);
-			g2.drawImage(HIV_invasion, 0, 200, this);
+			g2.drawImage(HIV_invasion, 25, 350, this);
         }   
        
 	}
