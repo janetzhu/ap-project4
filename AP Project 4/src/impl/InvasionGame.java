@@ -15,7 +15,6 @@ package impl;
  * game. The user learns the time constraints of such a fatal disease and also pauses through certain 
  * sections of the game to learn more information about HIV/AIDS. 
  * 
- * 
  */
 
 import java.applet.Applet;

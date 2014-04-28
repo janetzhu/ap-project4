@@ -675,6 +675,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				
 				// Repaint objects
 				repaint();
+				setDoubleBuffered(true);
 				
 				// See if the method are running at the
 	            // same rate. If not, sleep.
