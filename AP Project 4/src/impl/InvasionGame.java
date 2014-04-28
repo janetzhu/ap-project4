@@ -426,22 +426,12 @@ public class InvasionGame extends JApplet {
 		private boolean dimmed, inGame;
 		private JTextArea infectedText;
 		private String displayText;
-		
-		
-		private JTextPane sidebarTextPane;
-		private JScrollPane scrollPane;
-		StyledDocument doc;
-		ArrayList<String> sidebarText = new ArrayList<String>();
-		String[] textStyles = {"red", "white"};
-		Color transparentBackground = new Color (0,0,0,0);
-		SimpleAttributeSet background;
 
 		public SidebarPanel() {
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 			dimmed = false;
 
-			/**** AD HOC IMPLEMENTATION ***/
-			/*
+
 			infectedText = new JTextArea();
 			infectedText.setForeground(Color.WHITE);
 			infectedText.setBackground(new Color(0,0,0,0));
@@ -451,96 +441,8 @@ public class InvasionGame extends JApplet {
 			infectedText.setVisible(false);
 
 			add(infectedText);
-			*/
-			
-			/**** JTEXTPANE IMPLEMENTATION ****/
-			sidebarTextPane = createTextPane();
-			sidebarTextPane.setBackground(new Color(0,0,0,0));
-			sidebarTextPane.setEditable(false);
-			sidebarTextPane.setVisible(true);
-			
-			scrollPane = new JScrollPane(sidebarTextPane);
-			scrollPane.setAlignmentX(RIGHT_ALIGNMENT);
-			scrollPane.setVerticalScrollBarPolicy(
-	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
-			scrollPane.setMinimumSize(new Dimension(10, 10));
-			scrollPane.setBackground(new Color (0,0,0,0));
-			scrollPane.setBorder(null);
-			scrollPane.setVisible(true);
-			
-			add(scrollPane);
-		}
-		
-		private JTextPane createTextPane() {
 			
 			
-			JTextPane textPane = new JTextPane();
-			textPane.setEditable(false);
-			
-			// Define a default background color attribute
-	        background = new SimpleAttributeSet();
-	        StyleConstants.setBackground(background, transparentBackground);
-			
-			
-			doc = textPane.getStyledDocument();
-			doc.setParagraphAttributes(0, 
-		            textPane.getDocument().getLength(), background, false);
-	        addStylesToDocument(doc);
-	
-	        
-	        			
-	        
-	        try {
-	            for (int i=0; i < sidebarText.size(); i++) {
-	                doc.insertString(doc.getLength(), sidebarText.get(i),
-	                                 doc.getStyle(textStyles[i]));
-	            }
-	        } catch (BadLocationException ble) {
-	            System.err.println("Couldn't insert initial text into text pane.");
-	        }
-	        
-	 
-	        return textPane;
-			
-		}
-		
-		public void addTextToPane(String textToAdd) {
-			sidebarText.add(textToAdd);
-			
-			 try {
-				 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
-                         doc.getStyle(textStyles[sidebarText.size() -1]));
-		        } catch (BadLocationException ble) {
-		            System.err.println("Couldn't insert text into text pane.");
-		        }
-			 
-			 
-			 
-		 
-		}
-		
-		protected void addStylesToDocument(StyledDocument doc) {
-			//Initialize some styles.
-	        Style def = StyleContext.getDefaultStyleContext().
-	                        getStyle(StyleContext.DEFAULT_STYLE);
-	 
-	        Style red = doc.addStyle("red", def);
-	        StyleConstants.setAlignment(red, StyleConstants.ALIGN_CENTER);
-	        StyleConstants.setFontFamily(red, "Sans Serif");
-	        StyleConstants.setFontSize(red, 14);
-	        StyleConstants.setForeground(red, Color.RED);
-	 
-	        Style white = doc.addStyle("white", red);
-	        StyleConstants.setForeground(white, Color.WHITE);
-	        
-	     
-	        
-
-	        
-	     
-	        // And remove default (white) margin
-	        //textPane.setBorder(BorderFactory.createEmptyBorder());
 		}
 
 		public void paintComponent(Graphics g) {
@@ -579,16 +481,15 @@ public class InvasionGame extends JApplet {
 			//infectedText.setVisible(false);
 			repaint();
 		}
+		
 
 		public void lightenSidebar() {
-			System.out.println("Lighten");
 			dimmed = false;
 			repaint();
 		}
 		
 		
-		/**** AD HOC IMPLEMENTATION ****/
-		/*
+
 		public void displayInfected() {
 			infectedText.setText("You have been infected with HIV!");
 			infectedText.setVisible(true);
@@ -600,8 +501,7 @@ public class InvasionGame extends JApplet {
 
 			revalidate();
 		}
-		
-		*/
+
 
 	}
 

@@ -377,8 +377,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void infectHIV() {
 		System.out.println("Infected!");
 		infected = true;
-		sidebarPanel.addTextToPane("You have been infected with HIV!\n");
-		sidebarPanel.addTextToPane("That's bad!");
 	}
 
 	/**
