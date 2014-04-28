@@ -4,6 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/*
+ * The unit tests for VirusTest class. The word test is placed before each 
+ * method name of the virus class to indicate the method is being tested. 
+ * 
+ */
+
 public class VirusTest {
 
 	@Test

@@ -4,6 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/*
+ * The unit tests for the Cell Class, each 
+ * method name is used with the word test before it to indicate 
+ * that the method is being tested. 
+ * 
+ */
+
 public class CellTest {
 
 	@Test
