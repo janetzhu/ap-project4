@@ -597,7 +597,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	/**
-	 * Re-Calabrates the difficulty of the game (number of clicks needed to kill a virus, virus speed).
+	 * Re-calibrates the difficulty of the game (number of clicks needed to kill a virus).
 	 * Responds to changes in T-cell count.
 	 * 
 	 */
@@ -630,10 +630,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		}
 	}
 	
-	//obtains String from Fact object
+	//obtains String from Fact object and sends it to sidebarPanel 
 	public void getFact() {
-		
+		//sidebarPanel.addTextToPane(FACT);
 	}
+	
 	
 	/**
 	 * Edits the gameOverPanel JPanel object
