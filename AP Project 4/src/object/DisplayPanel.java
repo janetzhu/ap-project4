@@ -91,7 +91,6 @@ public class DisplayPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("Button Clicked");
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
 			
