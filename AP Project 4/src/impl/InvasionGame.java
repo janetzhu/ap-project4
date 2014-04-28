@@ -545,8 +545,15 @@ private JTextPane createTextPane() {
 			sidebarText.add(textToAdd);
 			
 			 try {
-				 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
-                         doc.getStyle(textStyles[sidebarText.size() -1]));
+				 // If the last item in the sidebar is in an even position or 0, style text as red
+				 // Else, style text as white
+				 if ((sidebarText.size() - 1 % 2 == 0) || sidebarText.size() == 0) {
+					 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
+	                         doc.getStyle(textStyles[0]));
+				 } else {
+					 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
+	                         doc.getStyle(textStyles[1]));
+				 }
 		        } catch (BadLocationException ble) {
 		            System.err.println("Couldn't insert text into text pane.");
 		        }
