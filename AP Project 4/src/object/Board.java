@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -54,7 +56,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int LEVEL_6_BENCHMARK = 910;
     
     private SidebarPanel sidebarPanel; //send over side bar panel from 
-    
+        
     //Resource objects
     private BufferedImage gameOverImage, gameWonImage;
     private BufferedImage[] bodyCells;
@@ -62,6 +64,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private BufferedImage[] virusImages = new BufferedImage[6];
     private BufferedImage[] progressImages = new BufferedImage[10];
     private BufferedImage currentProgressImage;
+    private JButton restartButton;
     
     private long gameStartTime;
 	private int gameHeight;
@@ -71,6 +74,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private BufferedImage[][] cellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private BufferedImage[][] infectedCellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private ArrayList<Virus> virusList = new ArrayList<Virus>();
+	public Virus thisVirus=new Virus();
+	
+	
 	private Facts hivFacts;
 		
 	private String gameStatus;
@@ -88,6 +94,61 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		gameWidth = width;
 		
 	}
+	
+	public int getgameHeight() {
+		
+		return gameHeight;
+		
+		
+	}
+	
+	public int getgameWidth() {
+		
+		return gameWidth;
+		
+	}
+	
+	public int getTCellCount() {
+		
+		return tCellCount; 	
+	}
+	
+	public void setTCellCount(int number) {
+			
+		tCellCount=number;	
+	}
+	
+	public int getDiffcultyLevel() {
+		
+		return difficultyLevel;	
+	}
+	
+	public int getGameScore() {
+		
+		return gameScore;	
+	}
+	
+	public void setGameScore(int score) {
+		
+		gameScore = score;
+	}
+	
+	public long getGameStartTime() {
+		
+		return gameStartTime;
+	}
+	
+	public void setGameStartTime(long time) {
+		
+		gameStartTime = time;
+	}
+	
+	public void setVirusList(Virus v, int i) {
+		
+		virusList.set(i, v);
+		
+	}
+	
 	
 	 //method called from InvasionGame class to start the game play
 	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
@@ -124,6 +185,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
         currentProgressImage = progressImages[0];
         initCells();
         
+        restartButton = new JButton("Restart Game");
+    	restartButton.setBounds(325, 560, 200, 50);
+    	restartButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.out.println("Game Restarted");
+				restartGame();
+			}
+			
+		});
+        
         repaint();
   	}
 	
@@ -133,13 +206,35 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		sidebarPanel.inGame();
         gameStartTime = System.currentTimeMillis();
         
-    	Thread gamePlayThread = new Thread (this);
+        Thread gamePlayThread = new Thread (this);
     	gamePlayThread.start();
     }
 	
     public void stop() {}
     
     public void destroy() {}
+    
+    public void restartGame() {
+    	gameStatus = "playing";
+
+    	restartButton.setBounds(0, 0, 0, 0);
+    	
+    	virusList.clear();
+    	
+    	for (int j = 0; j < CELL_ROWS; j++) {
+	        for (int i = 0; i < CELL_COLUMNS; i++) {
+	        	cellList[i][j].setInfected(false);
+	        }
+        }
+    	
+    	this.initBoard(sidebarPanel);
+    	
+    	sidebarPanel.inGame();
+        gameStartTime = System.currentTimeMillis();
+    	
+        Thread gamePlayThread = new Thread(this);
+    	gamePlayThread.start();
+    }
 	
     //load all BufferedImage objects and Fonts
 	public void loadResources() {
@@ -254,6 +349,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameOverImage, 50, 150, this);
+
+        	add(restartButton);
+        	
         	
         	/*
         	takeawaysText = new JTextArea(take aways,25,50);
@@ -285,6 +383,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameWonImage, 50, 150, this);
         	sidebarPanel.dimSidebar();
+        	
+        	add(restartButton);
         }
 	}
     
@@ -387,7 +487,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void infectHIV() {
 		infected = true;
-		sidebarPanel.displayInfected();
+		sidebarPanel.addTextToPane("You have been infected with HIV!\n");
 	}
 	
 	/**
@@ -518,7 +618,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Handles the collision of viruses with the four 'walls' of the board.
 	 */
 	public void checkWallCollision(int virusIndex) {
-		Virus thisVirus = virusList.get(virusIndex);
+		 thisVirus = virusList.get(virusIndex);
 		
 		// Check the bounds of the game board for a collision between this virus and one of the walls.
 		// If there is a collision, change the direction vector of the virus so that it will bounce
@@ -555,7 +655,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	/**
-	 * Re-Calabrates the difficulty of the game (number of clicks needed to kill a virus, virus speed).
+	 * Re-calibrates the difficulty of the game (number of clicks needed to kill a virus).
 	 * Responds to changes in T-cell count.
 	 * 
 	 */
@@ -588,10 +688,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		}
 	}
 	
-	//obtains String from Fact object
+	//obtains String from Fact object and sends it to sidebarPanel 
 	public void getFact() {
-		
+		//sidebarPanel.addTextToPane(FACT);
 	}
+	
 	
 	/**
 	 * Edits the gameOverPanel JPanel object
@@ -624,7 +725,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	        beforeTime = System.currentTimeMillis();
 	        
-	        
+	        System.out.println("About to play game...");
 	        
 	        // Run this while loop by the game is being played
 			while(gameStatus == "playing") {
@@ -660,7 +761,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 				
 				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
-					System.out.println("Virus Introduced!");
 					introduceVirus();
 				}
 				
@@ -675,6 +775,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				
 				// Repaint objects
 				repaint();
+				setDoubleBuffered(true);
 				
 				// See if the method are running at the
 	            // same rate. If not, sleep.

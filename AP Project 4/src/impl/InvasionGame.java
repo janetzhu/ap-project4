@@ -15,7 +15,6 @@ package impl;
  * game. The user learns the time constraints of such a fatal disease and also pauses through certain 
  * sections of the game to learn more information about HIV/AIDS. 
  * 
- * 
  */
 
 import java.applet.Applet;
@@ -24,6 +23,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -65,7 +70,8 @@ public class InvasionGame extends JApplet implements Runnable{
     private JPanel gameScreens; 
     
     // Various screens, for different stages of game play.
-    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel;
+    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel, takeawaysPanel,
+    					 gameOverPanel, gameWonPanel;
 	//private WelcomePanel welcomePanel;
 	//private BackgroundPanel backgroundPanel;
 	//private InstructionPanel instructionPanel;
@@ -100,6 +106,13 @@ public class InvasionGame extends JApplet implements Runnable{
 			"\n3. As the game moves along, the viruses become harder to destroy." + 
 			"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
 			"\n5. Good Luck!";
+	
+	private String takeaways = "Remember...prevention is the best way to avoid getting HIV/AIDS " +
+			"You should practice the following preventive methods: " +
+			"Abstain from sex (don't have sex) " + 
+			"Only have one partner at a time " +
+			"Use a condom during sex " +
+			"Avoid blood to blood contact ";
 	
 
 	/*
@@ -143,6 +156,20 @@ public class InvasionGame extends JApplet implements Runnable{
 	    // New game board Panel to play game
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
+	    
+	    /*
+	    //Game Over and Game Won Panels
+	    gameOverPanel = new DisplayPanel("Next Page", 3);
+	    gameOverPanel.setBackground(Color.GRAY);
+	    
+	    gameWonPanel = new DisplayPanel("Next Page", 3);
+	    gameWonPanel.setBackground(Color.GRAY);
+	    
+	    */
+	    
+	    //takeawaysPanel = new TakeawaysPanel();
+	    takeawaysPanel = new DisplayPanel("Finish", takeaways, 4);
+	    takeawaysPanel.setBackground(Color.GRAY);
 	    	    
 
 	    /*****************************************
@@ -160,6 +187,11 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameScreens.add(backgroundPanel, "Background");
 	    gameScreens.add(instructionPanel, "Instructions");
 	    gameScreens.add(gameBoard, "Game");
+	    /*
+	    gameScreens.add(gameOverPanel, "Game Over");
+	    gameScreens.add(gameWonPanel, "Game Won");
+	    */
+	    gameScreens.add(takeawaysPanel, "Takeaways");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
 	    
@@ -224,6 +256,7 @@ public class InvasionGame extends JApplet implements Runnable{
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
+            
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
@@ -447,13 +480,38 @@ public class InvasionGame extends JApplet implements Runnable{
 	
 	public class SidebarPanel extends JPanel {
 		private boolean dimmed, inGame;
-		private JTextArea infectedText;
+		// OLD JTEXT AREA IMPLEMENTATION private JTextArea infectedText;
 		private String displayText;
+		
+		/****JTextPane Variables ****/
+		// Variables to hold the text and scroll pane objects
+		private JTextPane sidebarTextPane;
+		private JScrollPane scrollPane;
+		
+		// Interface for a generic styled document. 
+		// Handles styling for JTextPane text.
+		StyledDocument doc;
+		
+		// ArrayList that holds all of the text that will be added to the sidebar.
+		// New text can be pushed to the ArrayList.
+		ArrayList<String> sidebarText = new ArrayList<String>();
+		
+		// Holds the styles for sidebar text. 2 possible styles: red or white text.
+		// Colors alternate for the facts that pop up on the sidebar.
+		String[] textStyles = {"red", "white"};
+		
+		// Transparent color
+		SimpleAttributeSet background;
 
+		/**
+		 * Constructor.
+		 */
 		public SidebarPanel() {
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 			dimmed = false;
 
+			/**** OLD JTEXTAREA IMPLEMENTATION ****/
+			/*
 			infectedText = new JTextArea();
 			infectedText.setForeground(Color.WHITE);
 			infectedText.setBackground(new Color(0,0,0,0));
@@ -461,8 +519,94 @@ public class InvasionGame extends JApplet implements Runnable{
 			infectedText.setLineWrap(true);
 			infectedText.setWrapStyleWord(true);
 			infectedText.setVisible(false);
-
 			add(infectedText);
+			*/
+			
+			/**** JTEXTPANE IMPLEMENTATION ****/
+			// Call the createTextPane method to create text pane and add styles
+			sidebarTextPane = createTextPane();
+			// Set the background of the sidebar to transparent
+			sidebarTextPane.setBackground(new Color(0,0,0,0));
+			sidebarTextPane.setEditable(false);
+			sidebarTextPane.setVisible(true);
+			
+			// Add the sidebar to a JScrollPane. Enables scrolling functionality
+			// so that user can scroll back to old text.
+			scrollPane = new JScrollPane(sidebarTextPane);
+			// Set the scrollbar to only show up as needed, i.e. once sidebar is filled
+			scrollPane.setVerticalScrollBarPolicy(
+	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
+			scrollPane.setMinimumSize(new Dimension(10, 10));
+			scrollPane.setBackground(new Color (0,0,0,0));
+			scrollPane.setBorder(null);
+			scrollPane.setVisible(true);
+			
+			// Add the JScrollPane to the sidebarPanel
+			add(scrollPane);
+		}
+		
+		/**
+		 * Create JTextPane
+		 * @return textPane		
+		 */
+		
+		private JTextPane createTextPane() {
+			
+			// Allocates memory for new text pane
+			JTextPane textPane = new JTextPane();
+			textPane.setEditable(false);
+			
+			// Define a default transparent background color attribute
+			Color transparentBackground = new Color (0,0,0,0);
+	        background = new SimpleAttributeSet();
+	        StyleConstants.setBackground(background, transparentBackground);
+			
+			// Set the paragraph attributes of StyledDocument to have transparent background
+			doc = textPane.getStyledDocument();
+			doc.setParagraphAttributes(0, 
+		            textPane.getDocument().getLength(), background, false);
+	        addStylesToDocument(doc);     
+	 
+	        return textPane;
+			
+		}
+		
+		public void addTextToPane(String textToAdd) {
+			sidebarText.add(textToAdd);
+			
+			 try {
+
+				 // If the last item in the sidebar is in an even position or 0, 
+				 // add text to JTextPane and style as red
+				 // Else, add text to JTextPane and style as white
+				 if (((sidebarText.size() - 1) % 2 == 0) || sidebarText.size() == 0) {
+					 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
+	                         doc.getStyle(textStyles[0]));
+				 } else {
+					 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
+	                         doc.getStyle(textStyles[1]));
+				 }
+		        } catch (BadLocationException ble) {
+		            System.err.println("Couldn't insert text into text pane.");
+		        }
+			 
+
+		}
+		
+		protected void addStylesToDocument(StyledDocument doc) {
+			//Initialize some styles.
+	        Style def = StyleContext.getDefaultStyleContext().
+	                        getStyle(StyleContext.DEFAULT_STYLE);
+	 
+	        Style red = doc.addStyle("red", def);
+	        StyleConstants.setAlignment(red, StyleConstants.ALIGN_CENTER);
+	        StyleConstants.setFontFamily(red, "Sans Serif");
+	        StyleConstants.setFontSize(red, 14);
+	        StyleConstants.setForeground(red, Color.RED);
+	 
+	        Style white = doc.addStyle("white", red);
+	        StyleConstants.setForeground(white, Color.WHITE);
 		}
 
 		public void paintComponent(Graphics g) {
@@ -500,7 +644,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		public void dimSidebar() {
 			inGame = false;
 			dimmed = true;
-			infectedText.setVisible(false);
+			//infectedText.setVisible(false);
 			repaint();
 		}
 
@@ -508,6 +652,10 @@ public class InvasionGame extends JApplet implements Runnable{
 			dimmed = false;
 			repaint();
 		}
+		
+		
+		/**** OLD JTEXTAREA ****/
+		/*
 		public void displayInfected() {
 			infectedText.setText("You have been infected with HIV!");
 			infectedText.setVisible(true);
@@ -519,6 +667,7 @@ public class InvasionGame extends JApplet implements Runnable{
 
 			revalidate();
 		}
+		*/
 
 	}
 
