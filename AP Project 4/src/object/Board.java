@@ -92,6 +92,37 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 	}
 	
+	public int getgameHeight() {
+		
+		return gameHeight;
+		
+		
+	}
+	
+	public int getgameWidth() {
+		
+		return gameWidth;
+		
+	}
+	
+	public int getTCellCount() {
+		
+		return tCellCount; 
+		
+	}
+	
+	public void setTCellCount(int number) {
+			
+		tCellCount=number;
+			
+	}
+	
+	public int getDiffcultyLevel() {
+		
+		return difficultyLevel;
+		
+	}
+	
 	 //method called from InvasionGame class to start the game play
 	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
 	 public void initBoard(SidebarPanel sidebar) {
