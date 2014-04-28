@@ -74,6 +74,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private BufferedImage[][] cellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private BufferedImage[][] infectedCellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private ArrayList<Virus> virusList = new ArrayList<Virus>();
+	public Virus thisVirus=new Virus();
+	
+	
 	private Facts hivFacts;
 		
 	private String gameStatus;
@@ -91,6 +94,61 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		gameWidth = width;
 		
 	}
+	
+	public int getgameHeight() {
+		
+		return gameHeight;
+		
+		
+	}
+	
+	public int getgameWidth() {
+		
+		return gameWidth;
+		
+	}
+	
+	public int getTCellCount() {
+		
+		return tCellCount; 	
+	}
+	
+	public void setTCellCount(int number) {
+			
+		tCellCount=number;	
+	}
+	
+	public int getDiffcultyLevel() {
+		
+		return difficultyLevel;	
+	}
+	
+	public int getGameScore() {
+		
+		return gameScore;	
+	}
+	
+	public void setGameScore(int score) {
+		
+		gameScore = score;
+	}
+	
+	public long getGameStartTime() {
+		
+		return gameStartTime;
+	}
+	
+	public void setGameStartTime(long time) {
+		
+		gameStartTime = time;
+	}
+	
+	public void setVirusList(Virus v, int i) {
+		
+		virusList.set(i, v);
+		
+	}
+	
 	
 	 //method called from InvasionGame class to start the game play
 	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
@@ -560,7 +618,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Handles the collision of viruses with the four 'walls' of the board.
 	 */
 	public void checkWallCollision(int virusIndex) {
-		Virus thisVirus = virusList.get(virusIndex);
+		 thisVirus = virusList.get(virusIndex);
 		
 		// Check the bounds of the game board for a collision between this virus and one of the walls.
 		// If there is a collision, change the direction vector of the virus so that it will bounce
@@ -735,6 +793,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				
 				// Repaint objects
 				repaint();
+				setDoubleBuffered(true);
 				
 				// See if the method are running at the
 	            // same rate. If not, sleep.
