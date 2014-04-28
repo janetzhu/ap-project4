@@ -36,7 +36,8 @@ public class DisplayPanel extends JPanel {
 	
 	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game", "Takeaways"};
 
-	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, HIV_attacks, HIV_invasion;
+	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, 
+						  HIV_attacks, HIV_invasion, preventHIVImage;
 	
 	private JButton progressButton;
 	private JTextArea contentText;
@@ -129,6 +130,7 @@ public class DisplayPanel extends JPanel {
         }   
         else if (GAME_SCREENS[panelType] == "Takeaways") {
         	g2.drawImage(instructions_img, 0, 6, this);
+        	g2.drawImage(preventHIVImage, 25, 350, this);
         }
        
 	}
@@ -168,6 +170,9 @@ public class DisplayPanel extends JPanel {
             // HIV attacks T-cells
             HIV_invasion = ImageIO.read(getClass().getResource("/HIV_invasion.jpg"));
 
+            //Prevent HIV
+            preventHIVImage = ImageIO.read(getClass().getResource("/prevent_HIV.png"));
+            
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
 		}

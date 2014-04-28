@@ -239,6 +239,7 @@ public class InvasionGame extends JApplet implements Runnable{
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
+            
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
