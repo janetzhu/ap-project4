@@ -565,6 +565,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		if (tCellCount == LEVEL_2_BENCHMARK) {
 			difficultyLevel = 2;
 			//sidebarPanel.changeText("The difficulty level has now been increased to two clicks");
+			sidebarPanel.addTextToPane("The difficulty level has now been increased to two clicks");
 		}
 		else if (tCellCount == LEVEL_3_BENCHMARK) {
 			difficultyLevel = 3;
