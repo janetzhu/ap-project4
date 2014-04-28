@@ -207,7 +207,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * 
 	 * @param g
 	 */
-	public void paint(Graphics g) {
+	public void paintComponent (Graphics g) {
 		Graphics2D g2 = (Graphics2D)g;
 				
 		// Turn on anti-aliasing to smooth out shapes
@@ -344,6 +344,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void mousePressed(MouseEvent e) {
 		// Check if the user click on top of an actual virus
+				
 		for (int i = 0; i < virusList.size(); i++) {
 
 			// Iterate through all viruses
@@ -352,6 +353,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
+
 			  if(virus.isAlive()) {	
 					System.out.println("Virus clicked");
 
