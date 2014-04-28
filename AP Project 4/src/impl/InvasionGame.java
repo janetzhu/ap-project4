@@ -122,8 +122,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		
 		playingGame = false;
         
-	    // Initialize panels
-	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
+	    // Initialize panels   
 	    
 	    //welcomePanel = new WelcomePanel();
 	    welcomePanel = new DisplayPanel("Play Game!", 0);
@@ -137,6 +136,10 @@ public class InvasionGame extends JApplet implements Runnable{
 	    //instructionPanel = new InstructionPanel();
 	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
 	    instructionPanel.setBackground(Color.GREEN);
+	    
+	    // New game board Panel to play game
+	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
+	    gameBoard.initBoard(sidebarPanel);
 	    	    
 
 	    /*****************************************
@@ -182,11 +185,9 @@ public class InvasionGame extends JApplet implements Runnable{
 	
 	public static void changeDisplayPanel (String newDisplayPanel) {
 		//cardLayout.show(gameScreens, newDisplayPanel);
-		//System.out.println(newDisplayPanel);
+		//System.out.println("Changing display panel to " + newDisplayPanel);
 		currentScreen = newDisplayPanel;
 	}
-
-	
 	
 
 	/*
@@ -521,12 +522,12 @@ public class InvasionGame extends JApplet implements Runnable{
 	    
 		while (!playingGame) {
 			if (currentScreen == "Game"){
-				gameBoard.initBoard(sidebarPanel);
+				gameBoard.start();
 				playingGame = true;
 			}
-			
+
 			cardLayout.show(gameScreens, currentScreen);
-			
+		
 			sidebarPanel.repaint();
 		}
 		//mainThread;

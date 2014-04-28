@@ -128,9 +128,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         initCells();
         
         repaint();
-        
-        start();
-	}
+  	}
 	
 	public void start() {
     	Thread gamePlayThread = new Thread (this);
@@ -355,7 +353,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			if (virus.withinVirus(e.getX(), e.getY())) {
 
 			  if(virus.isAlive()) {	
-					System.out.println("Virus clicked");
+					//System.out.println("Virus clicked");
 
 				if (strength == 1) {
 					// If so, and strength is only 1, kill virus

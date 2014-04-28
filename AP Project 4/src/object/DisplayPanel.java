@@ -91,6 +91,7 @@ public class DisplayPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
+				System.out.println("Button Clicked");
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
 			
@@ -110,6 +111,7 @@ public class DisplayPanel extends JPanel {
 		repaint();
 	}
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
         
@@ -126,7 +128,7 @@ public class DisplayPanel extends JPanel {
 			g2.drawImage(instructions_img,0,6,this);
 			g2.drawImage(HIV_invasion, 0, 200, this);
         }   
-        
+       
 	}
 	
 	/*
