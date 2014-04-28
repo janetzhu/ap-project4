@@ -623,6 +623,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		
 	}
 	
+	public void useAntiretrovirals() {
+		tCellCount += 50;
+	}
+	
 	
 	public void calculateScore() {
 		if(Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 15) {	
@@ -705,6 +709,20 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
 					introduceVirus();
 				}
+				
+				
+				/**
+				 * Timing of when to initiate treatment has been a source of controversy.
+				 * An NA-ACCORD study observed patients who started antiretroviral 
+				 * therapy either at a CD4 count of less than 500 versus less than 350 
+				 * and showed that patients who started ART at lower CD4 counts had a 
+				 * 69% increase in the risk of death
+				 */
+				
+				if (tCellCount == 500) {
+					
+				}
+				
 				
 				//Check game timer, if > time value, end game (Win)
 				if (cellCounter == 0) {
