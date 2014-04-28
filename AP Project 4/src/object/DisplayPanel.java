@@ -103,7 +103,7 @@ public class DisplayPanel extends JPanel {
 	public void initDisplayPanel() {		
         add(progressButton);
 		
-		if (GAME_SCREENS[panelType] != "Welcome Screen") {
+		if (GAME_SCREENS[panelType] != "Welcome Screen" && GAME_SCREENS[panelType] != "Instructions") {
 			add(contentText);
 		}
 		
@@ -125,8 +125,9 @@ public class DisplayPanel extends JPanel {
 			g2.drawImage(HIV_attacks, 0, 200, this);
         }
         else if (GAME_SCREENS[panelType] == "Instructions") {
-			g2.drawImage(instructions_img,0,6,this);
-			g2.drawImage(HIV_invasion, 0, 200, this);
+        	g2.drawImage(instructions_img,0,0,this);
+			//g2.drawImage(instructions_img,0,6,this);
+			//g2.drawImage(HIV_invasion, 0, 200, this);
         }   
        
 	}
@@ -157,8 +158,8 @@ public class DisplayPanel extends JPanel {
             //"What is HIV?" title image
             what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
             
-            //"What is HIV?" title image
-            instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
+            //instructions image
+            instructions_img = ImageIO.read(getClass().getResource("/instructions_screen.png"));
             
             // HIV attacks T-cells
             HIV_attacks = ImageIO.read(getClass().getResource("/HIV_attack.jpg"));

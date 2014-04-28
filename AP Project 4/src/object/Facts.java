@@ -46,11 +46,12 @@ public class Facts {
 	private String science5 = "These drugs can help a person live 10 to 20 years longer.";
 	
 	//T-Cell Facts
-	private String cell1 = "People without HIV infection have around 700 to 1000 CD4 cells in a pea sized drop of blood.";
-	private String cell2 = "HIV positive people are considered to have normal CD4 counts if the number is above 500 in the same sample size.";
-
+	private String cell1 = "Normal t-cell level is about 700 to 1000 cells in a pea sized drop of blood.";
+	private String cell2 = "HIV positive people are considered to have a normal t-cell count if the number is above 500 cells per drop.";
+	private String cell3 = "You should begin treatment when your t-cell count falls below 350 cells per drop";
+	
 	public Facts() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	public void connectToDB(String name, String user, String pass) {
@@ -75,6 +76,10 @@ public class Facts {
 			  System.out.print("SQLState1: " + ex.getSQLState());
 			  System.out.print("VendorError1: " + ex.getErrorCode());
 		  }//end catch
+	}
+	
+	public void getTipFromDB() {
+		
 	}
 	
 	public void getFactFromDB() {
