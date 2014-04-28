@@ -44,7 +44,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int CELL_WIDTH = 66;
     private final int CELL_HEIGHT = 50;
     
-    private final int START_VIRUS_COUNT = 30; //number of viruses at start of game
+    private final int START_VIRUS_COUNT = 1; //number of viruses at start of game
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
     private final long GAME_WON_TIME = 60000;
@@ -711,8 +711,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	//obtains String from Fact object and sends it to sidebarPanel 
-	public void getFact() {
-		//sidebarPanel.addTextToPane(FACT);
+	public void displayFact() {
+		sidebarPanel.addTextToPane("Hello\n");
 	}
 	
 	
@@ -777,6 +777,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 						cellReduceCounter = 0;
 					}
 				}
+			}
+			
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+				displayFact();
 			}
 			
 			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {

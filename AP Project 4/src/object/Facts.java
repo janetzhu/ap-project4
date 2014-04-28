@@ -43,7 +43,7 @@ public class Facts {
 	private String science3 = "Without treatment, HIV usually causes the disease AIDS in 2 to 10 years.";
 	private String science4 = "There is currently no cure for HIV but there are drugs, which can strengthen the immune system.";
 	private String science5 = "These drugs can help a person live 10 to 20 years longer.";
-	
+ 
 	//T-Cell Facts
 	private String cell1 = "Normal t-cell level is about 700 to 1000 cells in a pea sized drop of blood.";
 	private String cell2 = "HIV positive people are considered to have a normal t-cell count if the number is above 500 cells per drop.";
