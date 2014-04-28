@@ -70,7 +70,8 @@ public class InvasionGame extends JApplet implements Runnable{
     private JPanel gameScreens; 
     
     // Various screens, for different stages of game play.
-    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel, takeawaysPanel;
+    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel, takeawaysPanel,
+    					 gameOverPanel, gameWonPanel;
 	//private WelcomePanel welcomePanel;
 	//private BackgroundPanel backgroundPanel;
 	//private InstructionPanel instructionPanel;
@@ -149,13 +150,23 @@ public class InvasionGame extends JApplet implements Runnable{
 	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
 	    instructionPanel.setBackground(Color.GREEN);
 	    
-	    //takeawaysPanel = new TakeawaysPanel();
-	    takeawaysPanel = new DisplayPanel("Finish", takeaways, 3);
-	    takeawaysPanel.setBackground(Color.GRAY);
-	    
 	    // New game board Panel to play game
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
+	    
+	    /*
+	    //Game Over and Game Won Panels
+	    gameOverPanel = new DisplayPanel("Next Page", 3);
+	    gameOverPanel.setBackground(Color.GRAY);
+	    
+	    gameWonPanel = new DisplayPanel("Next Page", 3);
+	    gameWonPanel.setBackground(Color.GRAY);
+	    
+	    */
+	    
+	    //takeawaysPanel = new TakeawaysPanel();
+	    takeawaysPanel = new DisplayPanel("Finish", takeaways, 4);
+	    takeawaysPanel.setBackground(Color.GRAY);
 	    	    
 
 	    /*****************************************
@@ -173,6 +184,10 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameScreens.add(backgroundPanel, "Background");
 	    gameScreens.add(instructionPanel, "Instructions");
 	    gameScreens.add(gameBoard, "Game");
+	    /*
+	    gameScreens.add(gameOverPanel, "Game Over");
+	    gameScreens.add(gameWonPanel, "Game Won");
+	    */
 	    gameScreens.add(takeawaysPanel, "Takeaways");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();

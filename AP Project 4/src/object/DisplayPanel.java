@@ -34,7 +34,8 @@ public class DisplayPanel extends JPanel {
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	
-	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game", "Takeaways"};
+	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game", "Takeaways",
+										   "Game Over", "Game Won"};
 
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, 
 						  HIV_attacks, HIV_invasion, preventHIVImage;
@@ -127,9 +128,19 @@ public class DisplayPanel extends JPanel {
         else if (GAME_SCREENS[panelType] == "Instructions") {
 			g2.drawImage(instructions_img,0,6,this);
 			g2.drawImage(HIV_invasion, 25, 350, this);
-        }   
+        }  
+        /*
+        else if (GAME_SCREENS[panelType] == "Game Over") {
+			g2.drawImage(instructions_img,0,6,this);
+			//g2.drawImage(HIV_invasion, 25, 350, this);
+        }
+        else if (GAME_SCREENS[panelType] == "Game Won") {
+			g2.drawImage(instructions_img,0,6,this);
+			//g2.drawImage(HIV_invasion, 25, 350, this);
+        }  
+        */
         else if (GAME_SCREENS[panelType] == "Takeaways") {
-        	g2.drawImage(instructions_img, 0, 6, this);
+        	//g2.drawImage(instructions_img, 0, 6, this);
         	g2.drawImage(preventHIVImage, 25, 350, this);
         }
        
