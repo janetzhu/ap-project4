@@ -454,21 +454,29 @@ public class InvasionGame extends JApplet implements Runnable{
 		private String displayText;
 		
 		/****JTextPane Variables ****/
+		// Variables to hold the text and scroll pane objects
 		private JTextPane sidebarTextPane;
 		private JScrollPane scrollPane;
+		
 		// Interface for a generic styled document. 
 		// Handles styling for JTextPane text.
 		StyledDocument doc;
+		
 		// ArrayList that holds all of the text that will be added to the sidebar.
 		// New text can be pushed to the ArrayList.
 		ArrayList<String> sidebarText = new ArrayList<String>();
-		// Holds the styles for sidebar text. 2 possible styles: red or white text,
-		// set to alternate for each fact that pops up on the sidebar
+		
+		// Holds the styles for sidebar text. 2 possible styles: red or white text.
+		// Colors alternate for the facts that pop up on the sidebar.
 		String[] textStyles = {"red", "white"};
+		
 		// Transparent color
-		Color transparentBackground = new Color (0,0,0,0);
+		
 		SimpleAttributeSet background;
 
+		/**
+		 * Constructor.
+		 */
 		public SidebarPanel() {
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 			dimmed = false;
@@ -496,7 +504,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			// Add the sidebar to a JScrollPane. Enables scrolling functionality
 			// so that user can scroll back to old text.
 			scrollPane = new JScrollPane(sidebarTextPane);
-			scrollPane.setAlignmentX(RIGHT_ALIGNMENT);
+			// Set the scrollbar to only show up as needed, i.e. once sidebar is filled
 			scrollPane.setVerticalScrollBarPolicy(
 	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
@@ -505,37 +513,31 @@ public class InvasionGame extends JApplet implements Runnable{
 			scrollPane.setBorder(null);
 			scrollPane.setVisible(true);
 			
+			// Add the JScrollPane to the sidebarPanel
 			add(scrollPane);
 		}
 		
-private JTextPane createTextPane() {
+		/**
+		 * Create JTextPane
+		 * @return textPane		
+		 */
+		
+		private JTextPane createTextPane() {
 			
-			
+			// Allocates memory for new text pane
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);
 			
-			// Define a default background color attribute
+			// Define a default transparent background color attribute
+			Color transparentBackground = new Color (0,0,0,0);
 	        background = new SimpleAttributeSet();
 	        StyleConstants.setBackground(background, transparentBackground);
 			
-			
+			// Set the paragraph attributes of StyledDocument to have transparent background
 			doc = textPane.getStyledDocument();
 			doc.setParagraphAttributes(0, 
 		            textPane.getDocument().getLength(), background, false);
-	        addStylesToDocument(doc);
-	
-	        
-	        			
-	        
-	        try {
-	            for (int i=0; i < sidebarText.size(); i++) {
-	                doc.insertString(doc.getLength(), sidebarText.get(i),
-	                                 doc.getStyle(textStyles[i]));
-	            }
-	        } catch (BadLocationException ble) {
-	            System.err.println("Couldn't insert initial text into text pane.");
-	        }
-	        
+	        addStylesToDocument(doc);     
 	 
 	        return textPane;
 			
@@ -545,9 +547,10 @@ private JTextPane createTextPane() {
 			sidebarText.add(textToAdd);
 			
 			 try {
-				 // If the last item in the sidebar is in an even position or 0, style text as red
-				 // Else, style text as white
-				 if ((sidebarText.size() - 1 % 2 == 0) || sidebarText.size() == 0) {
+				 // If the last item in the sidebar is in an even position or 0, 
+				 // add text to JTextPane and style as red
+				 // Else, add text to JTextPane and style as white
+				 if (((sidebarText.size() - 1) % 2 == 0) || sidebarText.size() == 0) {
 					 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
 	                         doc.getStyle(textStyles[0]));
 				 } else {
