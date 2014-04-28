@@ -41,7 +41,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int CELL_WIDTH = 66;
     private final int CELL_HEIGHT = 50;
     
-    private final int START_VIRUS_COUNT = 2; //number of viruses at start of game
+    private final int START_VIRUS_COUNT = 1; //number of viruses at start of game
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
     private final long GAME_WON_TIME = 60000;
@@ -107,7 +107,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		difficultyLevel = START_DIFFICULTY_LEVEL;
 		
 		sidebarPanel = sidebar;
-		sidebarPanel.inGame();
 		
 		// Body Cells are created in a 3 x 6 array toward the bottom of the board
         for (int j = 0; j < CELL_ROWS; j++) {
@@ -120,9 +119,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         for(int i = 0; i < START_VIRUS_COUNT; i++){
         	introduceVirus();
         }
-        
-        gameStartTime = System.currentTimeMillis();
-        
+                
         loadResources();
         currentProgressImage = progressImages[0];
         initCells();
@@ -131,9 +128,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
   	}
 	
 	public void start() {
+    	gameStatus = "playing";
+
+		sidebarPanel.inGame();
+        gameStartTime = System.currentTimeMillis();
+        
     	Thread gamePlayThread = new Thread (this);
     	gamePlayThread.start();
-    	gameStatus = "playing";
     }
 	
     public void stop() {}
@@ -658,7 +659,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 					}
 				}
 				
-				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 25) {
+				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+					System.out.println("Virus Introduced!");
 					introduceVirus();
 				}
 				
