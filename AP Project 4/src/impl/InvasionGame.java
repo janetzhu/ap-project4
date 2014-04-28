@@ -86,8 +86,9 @@ public class InvasionGame extends JApplet implements Runnable{
 	private JLabel titleLabel, blankLabelSmall, blankLabelWide, blankLabelQuit;
 	private JButton pause, quit, restart;
 	private static String currentScreen;
-	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
+	private BufferedImage background, logo, background_sidebar, instructions_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	public BufferedImage bodyCellImage;
+	private Facts gameFacts;
 
 	
 	private boolean playingGame;
@@ -136,6 +137,8 @@ public class InvasionGame extends JApplet implements Runnable{
 
 		loadImages();
 		
+		gameFacts = new Facts();
+		
 		playingGame = false;
         
 	    // Initialize panels   
@@ -150,7 +153,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	    backgroundPanel.setBackground(Color.GRAY);
 	    
 	    //instructionPanel = new InstructionPanel();
-	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
+	    instructionPanel = new DisplayPanel("Start Game!", 2);
 	    instructionPanel.setBackground(Color.GREEN);
 	    
 	    latch = new CountDownLatch(1);
@@ -246,8 +249,8 @@ public class InvasionGame extends JApplet implements Runnable{
             //"What is HIV?" title image
             what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
             
-            //"What is HIV?" title image
-            instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
+            //instructions sidebar
+            instructions_sidebar = ImageIO.read(getClass().getResource("/instructions_sidebar.png"));
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
@@ -607,7 +610,12 @@ public class InvasionGame extends JApplet implements Runnable{
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 			
-	        g2.drawImage(background_sidebar,0,0,this);
+			if(!currentScreen.equals("Instructions"))
+				g2.drawImage(background_sidebar,0,0,this);
+			else {
+				g2.drawImage(instructions_sidebar,0,0,this);
+			}
+
 
 	        if(currentScreen.equals("Welcome Screen"))
 	        	g2.drawImage(logo_sidebar, 0, 50, this);
