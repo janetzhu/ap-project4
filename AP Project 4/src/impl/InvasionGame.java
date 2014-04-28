@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.concurrent.CountDownLatch;
 
 import object.Board;
 import object.Cell;
@@ -63,6 +64,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	private int SIDEBAR_WIDTH = 200;
+	
+    public CountDownLatch latch;
 
 	/******** WINDOW COMPONENTS ********/
 	// JPanel that holds all of the screens for the different stages of game play.
@@ -150,22 +153,19 @@ public class InvasionGame extends JApplet implements Runnable{
 	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
 	    instructionPanel.setBackground(Color.GREEN);
 	    
+	    latch = new CountDownLatch(1);
 	    // New game board Panel to play game
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
 	    
-	    /*
 	    //Game Over and Game Won Panels
-	    gameOverPanel = new DisplayPanel("Next Page", 3);
+	    gameOverPanel = new DisplayPanel("Next Page", 4);
 	    gameOverPanel.setBackground(Color.GRAY);
 	    
-	    gameWonPanel = new DisplayPanel("Next Page", 3);
+	    gameWonPanel = new DisplayPanel("Next Page", 5);
 	    gameWonPanel.setBackground(Color.GRAY);
 	    
-	    */
-	    
-	    //takeawaysPanel = new TakeawaysPanel();
-	    takeawaysPanel = new DisplayPanel("Finish", takeaways, 4);
+	    takeawaysPanel = new DisplayPanel("Replay", takeaways, 6);
 	    takeawaysPanel.setBackground(Color.GRAY);
 	    	    
 
@@ -184,10 +184,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameScreens.add(backgroundPanel, "Background");
 	    gameScreens.add(instructionPanel, "Instructions");
 	    gameScreens.add(gameBoard, "Game");
-	    /*
 	    gameScreens.add(gameOverPanel, "Game Over");
 	    gameScreens.add(gameWonPanel, "Game Won");
-	    */
 	    gameScreens.add(takeawaysPanel, "Takeaways");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
@@ -646,7 +644,8 @@ public class InvasionGame extends JApplet implements Runnable{
 		}
 		
 		
-		/**** OLD JTEXTAREA ****/
+		/**** OLD JTEXTAREA 
+		 * @return ****/
 		/*
 		public void displayInfected() {
 			infectedText.setText("You have been infected with HIV!");
@@ -669,15 +668,34 @@ public class InvasionGame extends JApplet implements Runnable{
 		cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
 	    currentScreen = "Welcome Screen";
 	    
-		while (!playingGame) {
-			if (currentScreen == "Game"){
-				gameBoard.start();
-				playingGame = true;
+		while (true) {
+			if (playingGame) {
+				try {
+					latch.await();
+					latch = new CountDownLatch(1);
+					playingGame = false;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			else {
+				if (currentScreen == "Game"){
+					gameBoard.start(latch);
+					playingGame = true;
+				}
+				
+				try {
+					mainThread.sleep(300);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				cardLayout.show(gameScreens, currentScreen);
 
-			cardLayout.show(gameScreens, currentScreen);
-		
-			sidebarPanel.repaint();
+				sidebarPanel.repaint();
+			}
 		}
 		//mainThread;
 	}
