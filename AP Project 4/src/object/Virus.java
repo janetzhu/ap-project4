@@ -16,24 +16,24 @@ public class Virus {
 	private int xCoord;
 	// The y coordinate of the top-left of the virus
 	private int yCoord;
-	
+
 	// The speed in the x-direction of the virus being animated
 	private int xSpeed;
 	// The speed in the y-direction of the virus being animated
 	private int ySpeed;
-	
+
 	// The width of the virus object
 	private int width;
 	// The height of the virus object
 	private int height;
-	
+
 	// The strength of the virus (resistance to clicks)
 	private int strength;
 	// Alive is true if the virus is still alive, and false if it has been destroyed by the user
 	private boolean alive;
-	
+
 	public int virus_count=5; 
-	
+
 	public Virus() {
 		this.setX(0);
 		this.setY(0);
@@ -44,7 +44,7 @@ public class Virus {
 		this.setStrength(1);
 		this.setAlive(true);
 	}
-	
+
 	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int virusStrength) {
 		this.setX(xCoord);
 		this.setY(yCoord);
@@ -55,7 +55,7 @@ public class Virus {
 		this.setStrength(virusStrength);
 		this.setAlive(true);
 	}
-	
+
 	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int width, int height, int virusStrength, boolean isAlive) {
 		this.setX(xCoord);
 		this.setY(yCoord);
@@ -178,7 +178,7 @@ public class Virus {
 	public void setAlive(boolean isAlive) {
 		this.alive = isAlive;
 	}
-	
+
 	/**
 	 * This method takes in an integer that refers to one of the 4 "sides" of the virus object, and returns the x or y
 	 * coordinate of that side as an integer value.  This is used to accommodate for the virus size.
@@ -213,7 +213,7 @@ public class Virus {
 		setX(this.getX() + this.getxSpeed());
     	setY(this.getY() + this.getySpeed());
 	}
-	
+
 	/**
 	 * Checks if a coordinate is within the bounds of the virus
 	 */
@@ -225,5 +225,5 @@ public class Virus {
 			return false;
 		}
 	}
-	
+
 }
