@@ -10,6 +10,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -54,7 +56,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int LEVEL_6_BENCHMARK = 910;
     
     private SidebarPanel sidebarPanel; //send over side bar panel from 
-    
+        
     //Resource objects
     private BufferedImage gameOverImage, gameWonImage;
     private BufferedImage[] bodyCells;
@@ -62,6 +64,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private BufferedImage[] virusImages = new BufferedImage[6];
     private BufferedImage[] progressImages = new BufferedImage[10];
     private BufferedImage currentProgressImage;
+    private JButton restartButton;
     
     private long gameStartTime;
 	private int gameHeight;
@@ -124,6 +127,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
         currentProgressImage = progressImages[0];
         initCells();
         
+        restartButton = new JButton("Restart Game");
+    	restartButton.setBounds(325, 560, 200, 50);
+    	restartButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.out.println("Game Restarted");
+				restartGame();
+			}
+			
+		});
+        
         repaint();
   	}
 	
@@ -133,13 +148,35 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		sidebarPanel.inGame();
         gameStartTime = System.currentTimeMillis();
         
-    	Thread gamePlayThread = new Thread (this);
+        Thread gamePlayThread = new Thread (this);
     	gamePlayThread.start();
     }
 	
     public void stop() {}
     
     public void destroy() {}
+    
+    public void restartGame() {
+    	gameStatus = "playing";
+
+    	restartButton.setBounds(0, 0, 0, 0);
+    	
+    	virusList.clear();
+    	
+    	for (int j = 0; j < CELL_ROWS; j++) {
+	        for (int i = 0; i < CELL_COLUMNS; i++) {
+	        	cellList[i][j].setInfected(false);
+	        }
+        }
+    	
+    	this.initBoard(sidebarPanel);
+    	
+    	sidebarPanel.inGame();
+        gameStartTime = System.currentTimeMillis();
+    	
+        Thread gamePlayThread = new Thread(this);
+    	gamePlayThread.start();
+    }
 	
     //load all BufferedImage objects and Fonts
 	public void loadResources() {
@@ -254,6 +291,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameOverImage, 50, 150, this);
+
+        	add(restartButton);
+        	
         	
         	/*
         	takeawaysText = new JTextArea(take aways,25,50);
@@ -285,6 +325,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameWonImage, 50, 150, this);
         	sidebarPanel.dimSidebar();
+        	
+        	add(restartButton);
         }
 	}
     
@@ -625,7 +667,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	        beforeTime = System.currentTimeMillis();
 	        
-	        
+	        System.out.println("About to play game...");
 	        
 	        // Run this while loop by the game is being played
 			while(gameStatus == "playing") {
@@ -661,7 +703,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 				
 				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
-					System.out.println("Virus Introduced!");
 					introduceVirus();
 				}
 				

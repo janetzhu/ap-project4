@@ -71,7 +71,7 @@ public class InvasionGame extends JApplet implements Runnable{
     private JPanel gameScreens; 
     
     // Various screens, for different stages of game play.
-    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel;
+    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel, takeawaysPanel;
 	//private WelcomePanel welcomePanel;
 	//private BackgroundPanel backgroundPanel;
 	//private InstructionPanel instructionPanel;
@@ -105,6 +105,13 @@ public class InvasionGame extends JApplet implements Runnable{
 			"\n3. As the game moves along, the viruses become harder to destroy." + 
 			"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
 			"\n5. Good Luck!";
+	
+	private String takeaways = "Remember...prevention is the best way to avoid getting HIV/AIDS " +
+			"You should practice the following preventive methods: " +
+			"Abstain from sex (don't have sex) " + 
+			"Only have one partner at a time " +
+			"Use a condom during sex " +
+			"Avoid blood to blood contact ";
 	
 
 	/*
@@ -143,6 +150,10 @@ public class InvasionGame extends JApplet implements Runnable{
 	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
 	    instructionPanel.setBackground(Color.GREEN);
 	    
+	    //takeawaysPanel = new TakeawaysPanel();
+	    takeawaysPanel = new DisplayPanel("Finish", takeaways, 3);
+	    takeawaysPanel.setBackground(Color.GRAY);
+	    
 	    // New game board Panel to play game
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
@@ -163,6 +174,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameScreens.add(backgroundPanel, "Background");
 	    gameScreens.add(instructionPanel, "Instructions");
 	    gameScreens.add(gameBoard, "Game");
+	    gameScreens.add(takeawaysPanel, "Takeaways");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
 	    
@@ -227,6 +239,7 @@ public class InvasionGame extends JApplet implements Runnable{
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
+            
 
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
@@ -471,7 +484,6 @@ public class InvasionGame extends JApplet implements Runnable{
 		String[] textStyles = {"red", "white"};
 		
 		// Transparent color
-		
 		SimpleAttributeSet background;
 
 		/**
@@ -547,6 +559,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			sidebarText.add(textToAdd);
 			
 			 try {
+
 				 // If the last item in the sidebar is in an even position or 0, 
 				 // add text to JTextPane and style as red
 				 // Else, add text to JTextPane and style as white
