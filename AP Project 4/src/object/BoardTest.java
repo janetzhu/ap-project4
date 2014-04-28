@@ -55,13 +55,18 @@ public class BoardTest {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	@Test
+	public void testCalculateScore() {
+		
+		Board b = new Board(5, 4);
+		
+		b.setGameScore(20);
+		b.setGameStartTime(1000);
+		
+		b.calculateScore();
+		
+		assertEquals(b.getGameScore(), 20);
+	}
 }
 
 

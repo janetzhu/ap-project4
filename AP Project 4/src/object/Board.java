@@ -107,20 +107,37 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	public int getTCellCount() {
 		
-		return tCellCount; 
-		
+		return tCellCount; 	
 	}
 	
 	public void setTCellCount(int number) {
 			
-		tCellCount=number;
-			
+		tCellCount=number;	
 	}
 	
 	public int getDiffcultyLevel() {
 		
-		return difficultyLevel;
+		return difficultyLevel;	
+	}
+	
+	public int getGameScore() {
 		
+		return gameScore;	
+	}
+	
+	public void setGameScore(int score) {
+		
+		gameScore = score;
+	}
+	
+	public long getGameStartTime() {
+		
+		return gameStartTime;
+	}
+	
+	public void setGameStartTime(long time) {
+		
+		gameStartTime = time;
 	}
 	
 	 //method called from InvasionGame class to start the game play
