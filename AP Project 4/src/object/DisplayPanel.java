@@ -38,8 +38,8 @@ public class DisplayPanel extends JPanel {
 	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
 										   "Game Over", "Game Won", "Takeaways"};
 
-	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, 
-						  HIV_attacks, HIV_invasion, preventHIVImage, gameOverImage, gameWonImage, precautionsImage;
+	private BufferedImage background, logo, background_img, background_sidebar, logo_sidebar, instructions_img, 
+						  gameOverImage, gameWonImage, precautionsImage;
 	
 	private JButton progressButton;
 	private JTextArea contentText;
@@ -78,7 +78,7 @@ public class DisplayPanel extends JPanel {
 		//Set up progress button to be used in game
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(350, 600, 150, 50);
+		progressButton.setBounds(350, 580, 150, 50);
 		
 		//Set up content text to be used in game
 		contentText = new JTextArea(textToDisplay, 10, 50);
@@ -147,7 +147,7 @@ public class DisplayPanel extends JPanel {
 		//Set up progressButton with listener
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(350, 600, 150, 50);
+		progressButton.setBounds(350, 580, 150, 50);
 		progressButton.addActionListener(new ActionListener() {
 
 			//Create action performed event that changes screen to one ahead
@@ -155,9 +155,8 @@ public class DisplayPanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				if(panelType == 4)
 					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 2]);
-				else {
+				else
 					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
-				}
 			}
 
 		});
@@ -209,9 +208,7 @@ public class DisplayPanel extends JPanel {
         //If panel is equal to the background screen
         else if (GAME_SCREENS[panelType] == "Background") {
 			//Draw the images to be displayed
-        	g2.drawImage(what_is_hiv,0,6,this);
-			g2.drawImage(HIV_invasion, -40, 375, this);
-			g2.drawImage(HIV_attacks, 325, 320, this);
+        	g2.drawImage(background_img, 0,0,this);
 			
         }
         
@@ -259,26 +256,17 @@ public class DisplayPanel extends JPanel {
 			//add logo image
         	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
         	
+        	//load background screen image
+        	background_img = ImageIO.read(getClass().getResource("/background_screen.png"));
+        	
         	//load sidebar background
         	background_sidebar = ImageIO.read(getClass().getResource("/liver_cells_sidebar.png"));
         	
         	//lode sidebar logo image
             logo_sidebar = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
             
-            //"What is HIV?" title image
-            what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
-            
             //instructions image
             instructions_img = ImageIO.read(getClass().getResource("/instructions_screen.png"));
-            
-            // HIV attacks T-cells
-            HIV_attacks = ImageIO.read(getClass().getResource("/HIV_attack.png"));
-            
-            // HIV attacks T-cells
-            HIV_invasion = ImageIO.read(getClass().getResource("/HIV_invasion.jpg"));
-
-            //Prevent HIV
-            preventHIVImage = ImageIO.read(getClass().getResource("/prevent_HIV.png"));
             
             //Game Over image
             gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));

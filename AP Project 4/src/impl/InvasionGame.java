@@ -165,7 +165,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	    
 	    sidebarPanel = new SidebarPanel();
 	    
-	    backgroundPanel = new DisplayPanel("Next Page", background_information, 1);
+	    backgroundPanel = new DisplayPanel("Next Page", 1);
 	    backgroundPanel.setBackground(Color.GRAY);
 
 	    instructionPanel = new DisplayPanel("Start Game!", 2);
