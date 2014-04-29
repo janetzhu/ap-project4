@@ -78,7 +78,7 @@ public class DisplayPanel extends JPanel {
 		//Set up progress button to be used in game
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(350, 580, 150, 50);
+		progressButton.setBounds(285, 580, 150, 50);
 		
 		//Set up content text to be used in game
 		contentText = new JTextArea(textToDisplay, 10, 50);
@@ -237,8 +237,8 @@ public class DisplayPanel extends JPanel {
         
         //If the panel is equal to the takeaways screen
         else if (GAME_SCREENS[panelType] == "Takeaways") {
-        	//Draw the precautions image
         	g2.drawImage(preventionScreen, 0, 0, this);
+
         }
        
 	}

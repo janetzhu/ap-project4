@@ -371,7 +371,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	 * 
 	 */
 
-	//JPanel that gives the user backgrond information about HIV/AIDS
+	//JPanel that gives the user background information about HIV/AIDS
 
 	/*public class BackgroundPanel extends JPanel {
 	
@@ -674,6 +674,8 @@ public class InvasionGame extends JApplet implements Runnable{
 				
 				//Draw the background sidebar
 				g2.drawImage(instructions_sidebar,0,0,this);
+			else if(currentScreen.equals("Game"))
+				g2.drawImage(fast_facts,0,0,this);
 
 			else {		
 				//Otherwise draw the instructions sidebar
@@ -699,7 +701,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,150));
-	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        	g2.fillRect(0,64,SIDEBAR_WIDTH, GAME_HEIGHT);
 	        }
 	        
 		}
@@ -816,7 +818,7 @@ public class InvasionGame extends JApplet implements Runnable{
 					playingGame = true;
 				}
 
-				//Create try/catch blcok
+				//Create try/catch block
 				try {
 					
 					//Thread sleeps at 300
