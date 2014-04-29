@@ -56,7 +56,7 @@ import object.Virus;
  */
 
 public class InvasionGame extends JApplet implements Runnable{
-	
+
 	/******** GAME CONSTANTS ********/
 	// Heights and widths of the window and the various panels
 	private int WINDOW_WIDTH = 850; //should == GAME_WIDTH + SIDEBAR_WIDTH
@@ -64,7 +64,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	private int SIDEBAR_WIDTH = 200;
-	
+
     public CountDownLatch latch;
 
 	/******** WINDOW COMPONENTS ********/
@@ -90,10 +90,10 @@ public class InvasionGame extends JApplet implements Runnable{
 	public BufferedImage bodyCellImage;
 	private Facts gameFacts;
 
-	
+
 	private boolean playingGame;
 	private Thread mainThread;
-	
+
 	private String background_information= 
 			"HIV is a virus that weakens the body's defense system (immune system)."
 			+ "It destroys good helper T cells that protect the body from harmful "
@@ -103,20 +103,20 @@ public class InvasionGame extends JApplet implements Runnable{
 			+ "After a certain point, the good T cells can no longer fight against  " 
 			+ "the HIV virus or protect the body against other diseases.\n\n" 
 			+ "Now, AIDS has developed, and diseases are free to attack the body.";
-	
+
 	private String instructions = "1. Click on the incoming viruses to destroy them as they emerge from the top of the screen." + 
 			"\n2. Stop them from infecting the good cells at the bottom of the screen." +
 			"\n3. As the game moves along, the viruses become harder to destroy." + 
 			"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
 			"\n5. Good Luck!";
-	
+
 	private String takeaways = "Remember...prevention is the best way to avoid getting HIV/AIDS " +
 			"You should practice the following preventive methods: " +
 			"Abstain from sex (don't have sex) " + 
 			"Only have one partner at a time " +
 			"Use a condom during sex " +
 			"Avoid blood to blood contact ";
-	
+
 
 	/*
 	 * initUI()
@@ -136,41 +136,41 @@ public class InvasionGame extends JApplet implements Runnable{
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		loadImages();
-		
+
 		gameFacts = new Facts();
-		
+
 		playingGame = false;
         
 	    // Initialize panels   
-	    
+
 	    //welcomePanel = new WelcomePanel();
 	    welcomePanel = new DisplayPanel("Play Game!", 0);
-	
+
 	    sidebarPanel = new SidebarPanel();
-	    
+
 	    //backgroundPanel = new BackgroundPanel();
 	    backgroundPanel = new DisplayPanel("Next Page", background_information, 1);
 	    backgroundPanel.setBackground(Color.GRAY);
-	    
+
 	    //instructionPanel = new InstructionPanel();
 	    instructionPanel = new DisplayPanel("Start Game!", 2);
 	    instructionPanel.setBackground(Color.GREEN);
-	    
+
 	    latch = new CountDownLatch(1);
 	    // New game board Panel to play game
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
-	    
+
 	    //Game Over and Game Won Panels
 	    gameOverPanel = new DisplayPanel("Next Page", 4);
 	    gameOverPanel.setBackground(Color.GRAY);
-	    
+
 	    gameWonPanel = new DisplayPanel("Next Page", 5);
 	    gameWonPanel.setBackground(Color.GRAY);
-	    
+
 	    takeawaysPanel = new DisplayPanel("Replay", takeaways, 6);
 	    takeawaysPanel.setBackground(Color.GRAY);
-	    	    
+
 
 	    /*****************************************
 	     * The gameScreens variable holds the various game screens (welcome menu, 
@@ -190,9 +190,9 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameScreens.add(gameOverPanel, "Game Over");
 	    gameScreens.add(gameWonPanel, "Game Won");
 	    gameScreens.add(takeawaysPanel, "Takeaways");
-	    
+
 	    cardLayout = (CardLayout) gameScreens.getLayout();
-	    
+
 	    titleLabel = new JLabel("");
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         titleLabel.setPreferredSize(new Dimension(450,40));
@@ -211,17 +211,17 @@ public class InvasionGame extends JApplet implements Runnable{
 	    add(gameScreens, BorderLayout.CENTER); //adding center screen to layout
 
 	    setVisible(true);
-	    
+
 	    mainThread = new Thread (this);
 	    mainThread.start();
 	}
-	
+
 	public static void changeDisplayPanel (String newDisplayPanel) {
 		//cardLayout.show(gameScreens, newDisplayPanel);
 		//System.out.println("Changing display panel to " + newDisplayPanel);
 		currentScreen = newDisplayPanel;
 	}
-	
+
 
 	/*
 	 *loadImages()  
@@ -285,7 +285,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		return text;
 		
 	}*/
-	
+
 /*
  * This class is the structure of the welcome screen where you hit start and directs you 
  * to the next page. 
@@ -324,7 +324,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		}
 
 	}*/
-	
+
 
 	/*
 	 * This class tells the user the background and reason for playing 
@@ -403,7 +403,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		}
 		
 	}*/
-	
+
 	/*
 	 * This class encompasses the Instruction Panel which 
 	 * tells the user what to do and how to play the game. 
@@ -475,29 +475,29 @@ public class InvasionGame extends JApplet implements Runnable{
 
 	}*/
 
-	
+
 	public class SidebarPanel extends JPanel {
 		private boolean dimmed, inGame;
 		// OLD JTEXT AREA IMPLEMENTATION private JTextArea infectedText;
 		private String displayText;
-		
+
 		/****JTextPane Variables ****/
 		// Variables to hold the text and scroll pane objects
 		private JTextPane sidebarTextPane;
 		private JScrollPane scrollPane;
-		
+
 		// Interface for a generic styled document. 
 		// Handles styling for JTextPane text.
 		StyledDocument doc;
-		
+
 		// ArrayList that holds all of the text that will be added to the sidebar.
 		// New text can be pushed to the ArrayList.
 		ArrayList<String> sidebarText = new ArrayList<String>();
-		
+
 		// Holds the styles for sidebar text. 2 possible styles: red or white text.
 		// Colors alternate for the facts that pop up on the sidebar.
 		String[] textStyles = {"red", "white"};
-		
+
 		// Transparent color
 		SimpleAttributeSet background;
 
@@ -519,7 +519,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			infectedText.setVisible(false);
 			add(infectedText);
 			*/
-			
+
 			/**** JTEXTPANE IMPLEMENTATION ****/
 			// Call the createTextPane method to create text pane and add styles
 			sidebarTextPane = createTextPane();
@@ -527,7 +527,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			sidebarTextPane.setBackground(new Color(0,0,0,0));
 			sidebarTextPane.setEditable(false);
 			sidebarTextPane.setVisible(true);
-			
+
 			// Add the sidebar to a JScrollPane. Enables scrolling functionality
 			// so that user can scroll back to old text.
 			scrollPane = new JScrollPane(sidebarTextPane);
@@ -539,40 +539,40 @@ public class InvasionGame extends JApplet implements Runnable{
 			scrollPane.setBackground(new Color (0,0,0,0));
 			scrollPane.setBorder(null);
 			scrollPane.setVisible(true);
-			
+
 			// Add the JScrollPane to the sidebarPanel
 			add(scrollPane);
 		}
-		
+
 		/**
 		 * Create JTextPane
 		 * @return textPane		
 		 */
-		
+
 		private JTextPane createTextPane() {
-			
+
 			// Allocates memory for new text pane
 			JTextPane textPane = new JTextPane();
 			textPane.setEditable(false);
-			
+
 			// Define a default transparent background color attribute
 			Color transparentBackground = new Color (0,0,0,0);
 	        background = new SimpleAttributeSet();
 	        StyleConstants.setBackground(background, transparentBackground);
-			
+
 			// Set the paragraph attributes of StyledDocument to have transparent background
 			doc = textPane.getStyledDocument();
 			doc.setParagraphAttributes(0, 
 		            textPane.getDocument().getLength(), background, false);
 	        addStylesToDocument(doc);     
-	 
+
 	        return textPane;
-			
+
 		}
-		
+
 		public void addTextToPane(String textToAdd) {
 			sidebarText.add(textToAdd);
-			
+
 			 try {
 
 				 // If the last item in the sidebar is in an even position or 0, 
@@ -588,28 +588,28 @@ public class InvasionGame extends JApplet implements Runnable{
 		        } catch (BadLocationException ble) {
 		            System.err.println("Couldn't insert text into text pane.");
 		        }
-			 
+
 
 		}
-		
+
 		protected void addStylesToDocument(StyledDocument doc) {
 			//Initialize some styles.
 	        Style def = StyleContext.getDefaultStyleContext().
 	                        getStyle(StyleContext.DEFAULT_STYLE);
-	 
+
 	        Style red = doc.addStyle("red", def);
 	        StyleConstants.setAlignment(red, StyleConstants.ALIGN_CENTER);
 	        StyleConstants.setFontFamily(red, "Sans Serif");
 	        StyleConstants.setFontSize(red, 14);
 	        StyleConstants.setForeground(red, Color.RED);
-	 
+
 	        Style white = doc.addStyle("white", red);
 	        StyleConstants.setForeground(white, Color.WHITE);
 		}
 
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
-			
+
 			if(!currentScreen.equals("Instructions"))
 				g2.drawImage(background_sidebar,0,0,this);
 			else {
@@ -650,8 +650,8 @@ public class InvasionGame extends JApplet implements Runnable{
 			dimmed = false;
 			repaint();
 		}
-		
-		
+
+
 		/**** OLD JTEXTAREA 
 		 * @return ****/
 		/*
@@ -675,7 +675,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	public void run() {
 		cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
 	    currentScreen = "Welcome Screen";
-	    
+
 		while (true) {
 			if (playingGame) {
 				try {
@@ -692,14 +692,14 @@ public class InvasionGame extends JApplet implements Runnable{
 					gameBoard.start(latch);
 					playingGame = true;
 				}
-				
+
 				try {
 					mainThread.sleep(300);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				cardLayout.show(gameScreens, currentScreen);
 
 				sidebarPanel.repaint();
