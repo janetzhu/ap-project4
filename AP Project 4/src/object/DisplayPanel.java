@@ -78,7 +78,7 @@ public class DisplayPanel extends JPanel {
 		//Set up progress button to be used in game
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(GAME_WIDTH - 150, 600, 150, 50);
+		progressButton.setBounds(350, 600, 150, 50);
 		
 		//Set up content text to be used in game
 		contentText = new JTextArea(textToDisplay, 10, 50);
@@ -147,7 +147,7 @@ public class DisplayPanel extends JPanel {
 		//Set up progressButton with listener
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(GAME_WIDTH - 150, 600, 150, 50);
+		progressButton.setBounds(350, 600, 150, 50);
 		progressButton.addActionListener(new ActionListener() {
 
 			//Create action performed event that changes screen to one ahead
