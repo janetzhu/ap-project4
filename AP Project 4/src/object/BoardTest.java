@@ -62,12 +62,10 @@ public class BoardTest {
 		
 		b.setGameScore(20);
 		b.setGameStartTime(1000);
-		
 		b.calculateScore();
 		
 		assertEquals(b.getGameScore(), 20);
 	}
-	
 }
 
 

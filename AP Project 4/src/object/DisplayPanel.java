@@ -34,11 +34,11 @@ public class DisplayPanel extends JPanel {
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	
-	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game", "Takeaways",
-										   "Game Over", "Game Won"};
+	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
+										   "Game Over", "Game Won", "Takeaways"};
 
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, 
-						  HIV_attacks, HIV_invasion, preventHIVImage;
+						  HIV_attacks, HIV_invasion, preventHIVImage, gameOverImage, gameWonImage, precautionsImage;
 	
 	private JButton progressButton;
 	private JTextArea contentText;
@@ -47,6 +47,7 @@ public class DisplayPanel extends JPanel {
 	private BufferedImage mainImage;
 	private JLabel pictureLabel;
 	private int panelType;
+	private boolean textAreaIncluded;
 	
 	
 	public DisplayPanel(String buttonText, String textToDisplay, int displayPanelType) {
@@ -56,23 +57,37 @@ public class DisplayPanel extends JPanel {
 		loadImages();
 		
 		panelType = displayPanelType;
+		textAreaIncluded = true;
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(325, 560, 200, 50);
+		progressButton.setBounds(GAME_WIDTH - 200, 600, 200, 50);
+		//progressButton.setBounds(325, 560, 200, 50);
 		
 		contentText = new JTextArea(textToDisplay, 10, 50);
 		contentText = styleText(contentText);
 		contentText.setBounds(25, 75, GAME_WIDTH - 50, 300);
 		
-		progressButton.addActionListener(new ActionListener() {
+		if (panelType == 6) {
+			progressButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					InvasionGame.changeDisplayPanel("Game");
+				}
+				
+			});
+		}
+		else {
+			progressButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
 			
-		});
+			});
+		}
 		
 		initDisplayPanel();
 	}
@@ -84,10 +99,12 @@ public class DisplayPanel extends JPanel {
 		loadImages();
 		
 		panelType = displayPanelType;
+		textAreaIncluded = false;
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(325, 560, 200, 50);
+		
+		progressButton.setBounds(GAME_WIDTH - 200, 600, 200, 50);
 		
 		progressButton.addActionListener(new ActionListener() {
 
@@ -104,7 +121,7 @@ public class DisplayPanel extends JPanel {
 	public void initDisplayPanel() {		
         add(progressButton);
 		
-		if (GAME_SCREENS[panelType] != "Welcome Screen") {
+		if (textAreaIncluded) {
 			add(contentText);
 		}
 		
@@ -123,25 +140,21 @@ public class DisplayPanel extends JPanel {
         }
         else if (GAME_SCREENS[panelType] == "Background") {
 			g2.drawImage(what_is_hiv,0,6,this);
-			g2.drawImage(HIV_attacks, 25, 375, this);
+			g2.drawImage(HIV_attacks, 85, 375, this);
         }
         else if (GAME_SCREENS[panelType] == "Instructions") {
-			g2.drawImage(instructions_img,0,6,this);
-			g2.drawImage(HIV_invasion, 25, 350, this);
-        }  
-        /*
+        	g2.drawImage(instructions_img,0,0,this);
+			//g2.drawImage(instructions_img,0,6,this);
+			//g2.drawImage(HIV_invasion, 0, 200, this);
+        }   
         else if (GAME_SCREENS[panelType] == "Game Over") {
-			g2.drawImage(instructions_img,0,6,this);
-			//g2.drawImage(HIV_invasion, 25, 350, this);
+			g2.drawImage(gameOverImage,0,6,this);
         }
         else if (GAME_SCREENS[panelType] == "Game Won") {
-			g2.drawImage(instructions_img,0,6,this);
-			//g2.drawImage(HIV_invasion, 25, 350, this);
+			g2.drawImage(gameWonImage,0,6,this);
         }  
-        */
         else if (GAME_SCREENS[panelType] == "Takeaways") {
-        	//g2.drawImage(instructions_img, 0, 6, this);
-        	g2.drawImage(preventHIVImage, 25, 350, this);
+        	//g2.drawImage(precautionsImage, 110, 375, this);
         }
        
 	}
@@ -172,8 +185,8 @@ public class DisplayPanel extends JPanel {
             //"What is HIV?" title image
             what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
             
-            //"What is HIV?" title image
-            instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
+            //instructions image
+            instructions_img = ImageIO.read(getClass().getResource("/instructions_screen.png"));
             
             // HIV attacks T-cells
             HIV_attacks = ImageIO.read(getClass().getResource("/HIV_attack.jpg"));
@@ -184,6 +197,14 @@ public class DisplayPanel extends JPanel {
             //Prevent HIV
             preventHIVImage = ImageIO.read(getClass().getResource("/prevent_HIV.png"));
             
+            //Game Over image
+            gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
+            
+            // Game won image
+			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
+            
+			precautionsImage = ImageIO.read(getClass().getResource("/precautions.gif"));
+			
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
 		}

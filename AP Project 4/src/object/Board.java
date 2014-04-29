@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * JPanel class that contains the portion of the window where the main game play occurs
@@ -56,6 +57,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int LEVEL_6_BENCHMARK = 910;
     
     private SidebarPanel sidebarPanel; //send over side bar panel from 
+    public CountDownLatch latch;
         
     //Resource objects
     private BufferedImage gameOverImage, gameWonImage;
@@ -74,6 +76,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private BufferedImage[][] cellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private BufferedImage[][] infectedCellImages = new BufferedImage[CELL_COLUMNS][CELL_ROWS];
 	private ArrayList<Virus> virusList = new ArrayList<Virus>();
+	public Virus thisVirus=new Virus();
+	
+	
 	private Facts hivFacts;
 		
 	private String gameStatus;
@@ -140,6 +145,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		gameStartTime = time;
 	}
 	
+	public void setVirusList(Virus v, int i) {
+		
+		virusList.set(i, v);
+		
+	}
+	
+	
 	 //method called from InvasionGame class to start the game play
 	 //sends SidebarPanel object as a parameter to be able to add facts and information as the game progresses
 	 public void initBoard(SidebarPanel sidebar) {
@@ -186,17 +198,38 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			}
 			
 		});
-        
+    	/*
+    	gameOverPanel = new DisplayPanel("Next Page", 4);
+	    gameOverPanel.setBackground(Color.GRAY);
+	    
+	    gameWonPanel = new DisplayPanel("Next Page", 4);
+	    gameWonPanel.setBackground(Color.GRAY);
+        */
         repaint();
   	}
 	
-	public void start() {
-    	gameStatus = "playing";
-
+	public void start(CountDownLatch countLatch) {
+		gameStatus = "playing";
+	
+    	restartButton.setBounds(0, 0, 0, 0);
+    	
+    	virusList.clear();
+    	
+    	for (int j = 0; j < CELL_ROWS; j++) {
+	        for (int i = 0; i < CELL_COLUMNS; i++) {
+	        	cellList[i][j].setInfected(false);
+	        }
+        }
+    	
+    	this.initBoard(sidebarPanel);
+		this.latch = countLatch;
+		
 		sidebarPanel.inGame();
+    	sidebarPanel.repaint();
+    	
         gameStartTime = System.currentTimeMillis();
-        
-        Thread gamePlayThread = new Thread (this);
+    	
+        Thread gamePlayThread = new Thread(this);
     	gamePlayThread.start();
     }
 	
@@ -219,7 +252,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     	
     	this.initBoard(sidebarPanel);
     	
-    	sidebarPanel.inGame();
         gameStartTime = System.currentTimeMillis();
     	
         Thread gamePlayThread = new Thread(this);
@@ -335,7 +367,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         					"Avoid blood to blood contact ";
         
         
-        if(gameStatus == "gameOver") {
+        /*if(gameStatus == "gameOver") {
         	g2.setColor(new Color(0,0,0,215));
         	g2.fillRect(0, 0, gameWidth, gameHeight);
         	g2.drawImage(gameOverImage, 50, 150, this);
@@ -343,15 +375,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	add(restartButton);
         	
         	
-        	/*
+        	
         	takeawaysText = new JTextArea(take aways,25,50);
         	takeawaysText.setBounds(25, 75, 400, 300);
         	takeawaysText = styleText(takeawaysText);
 			
 			add(takeawaysText);
-			*/
 			
-        	/*
+			
+        	
         	//the takeaway message 
             g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
             g2.setColor(Color.WHITE);
@@ -363,7 +395,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 					"\n Only have one partner at a time " +
 					"\n Use a condom during sex " +
 					"\n Avoid blood to blood contact ", 10 , 35);
-			*/
+			
             
         	sidebarPanel.dimSidebar();
         }
@@ -375,7 +407,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         	sidebarPanel.dimSidebar();
         	
         	add(restartButton);
-        }
+        }*/
 	}
     
 	
@@ -608,7 +640,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Handles the collision of viruses with the four 'walls' of the board.
 	 */
 	public void checkWallCollision(int virusIndex) {
-		Virus thisVirus = virusList.get(virusIndex);
+		 thisVirus = virusList.get(virusIndex);
 		
 		// Check the bounds of the game board for a collision between this virus and one of the walls.
 		// If there is a collision, change the direction vector of the virus so that it will bounce
@@ -679,27 +711,25 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	//obtains String from Fact object and sends it to sidebarPanel 
-	public void getFact() {
-		//sidebarPanel.addTextToPane(FACT);
+	public void displayFact() {
+		sidebarPanel.addTextToPane("Hello\n");
 	}
 	
 	
 	/**
 	 * Edits the gameOverPanel JPanel object
 	 */
-	public boolean displayGameOverMessage() {
+	public void displayGameOverMessage() {
 		if (getGameStatus() == "gameOver") {
 			// Show game lost screen
+			InvasionGame.changeDisplayPanel("Game Over");
 			System.out.println("LOST!");
-			return true;
 		}
 		else if (getGameStatus() == "gameWon") {
 			// Show game won screen
+			InvasionGame.changeDisplayPanel("Game Won");
 			System.out.println("WON!");
-			return true;
-		}
-		return false;
-		
+		}		
 	}
 
     /**
@@ -708,88 +738,94 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	@Override
 	public void run() {
 		//Infinite loop, game runs until user x's out of the window.
-		while (true) {
-			// Code for the timing of the animation is adapted from code in class
-			long beforeTime, timeDiff, sleep;
-			int cellReduceCounter = 0;
-	
-	        beforeTime = System.currentTimeMillis();
-	        
-	        System.out.println("About to play game...");
-	        
-	        // Run this while loop by the game is being played
-			while(gameStatus == "playing") {
-				//if(System.currentTimeMillis)
-				// Animate objects
-				cycle();
-				
-				calculateScore();
-				
-				int oneTenthTime = (int) (GAME_WON_TIME / 10);
-				
-				//Progress bar is incremented as the game time progresses
-				for(int i = 0; i < 10; i++) {
-					if((System.currentTimeMillis() - gameStartTime) > oneTenthTime * i) {
-						currentProgressImage = progressImages[i];
-					}
+		// Code for the timing of the animation is adapted from code in class
+		long beforeTime, timeDiff, sleep;
+		int cellReduceCounter = 0;
+
+        beforeTime = System.currentTimeMillis();
+        
+        System.out.println("About to play game...");
+        
+        // Run this while loop by the game is being played
+		while(gameStatus == "playing") {
+			//if(System.currentTimeMillis)
+			// Animate objects
+			cycle();
+			
+			calculateScore();
+			
+			int oneTenthTime = (int) (GAME_WON_TIME / 10);
+			
+			//Progress bar is incremented as the game time progresses
+			for(int i = 0; i < 10; i++) {
+				if((System.currentTimeMillis() - gameStartTime) > oneTenthTime * i) {
+					currentProgressImage = progressImages[i];
 				}
-				
-				// Calibrate difficulty
-				calibrateDifficulty();
-				
-				if (System.currentTimeMillis() - gameStartTime > HIV_INTRO_TIME) {
-					if (!infected) {
-						infectHIV();
-					}
-					else if (infected) {
-						cellReduceCounter++;
-						if (cellReduceCounter == 7) {
-							tCellCount--;
-							cellReduceCounter = 0;
-						}
-					}
-				}
-				
-				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
-					introduceVirus();
-				}
-				
-				//Check game timer, if > time value, end game (Win)
-				if (cellCounter == 0) {
-					setGameStatus("gameOver");
-				}
-				
-				if (System.currentTimeMillis() - gameStartTime > GAME_WON_TIME) {
-					setGameStatus("gameWon");
-				}
-				
-				// Repaint objects
-				repaint();
-				setDoubleBuffered(true);
-				
-				// See if the method are running at the
-	            // same rate. If not, sleep.
-	            timeDiff = System.currentTimeMillis() - beforeTime;
-	            sleep = DELAY - timeDiff;
-	
-	            if (sleep < 0) {
-	                sleep = 2;
-	            }
-	
-	            try {
-	                Thread.sleep(sleep);
-	            } catch (InterruptedException e) {
-	                System.out.println("Interrupted: " + e.getMessage());
-	            }
-	
-	            beforeTime = System.currentTimeMillis();
 			}
 			
-			if(displayGameOverMessage()){
-				repaint();
-				break;
+			// Calibrate difficulty
+			calibrateDifficulty();
+			
+			if (System.currentTimeMillis() - gameStartTime > HIV_INTRO_TIME) {
+				if (!infected) {
+					infectHIV();
+				}
+				else if (infected) {
+					cellReduceCounter++;
+					if (cellReduceCounter == 7) {
+						tCellCount--;
+						cellReduceCounter = 0;
+					}
+				}
 			}
+			
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+				displayFact();
+			}
+			
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+				introduceVirus();
+			}
+			
+			//Check game timer, if > time value, end game (Win)
+			if (cellCounter == 0) {
+				setGameStatus("gameOver");
+			}
+			
+			if (System.currentTimeMillis() - gameStartTime > GAME_WON_TIME) {
+				setGameStatus("gameWon");
+			}
+			
+			// Repaint objects
+			repaint();
+			setDoubleBuffered(true);
+			
+			// See if the method are running at the
+            // same rate. If not, sleep.
+            timeDiff = System.currentTimeMillis() - beforeTime;
+            sleep = DELAY - timeDiff;
+
+            if (sleep < 0) {
+                sleep = 2;
+            }
+
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                System.out.println("Interrupted: " + e.getMessage());
+            }
+
+            beforeTime = System.currentTimeMillis();
 		}
+		
+		displayGameOverMessage();
+    	
+		repaint();
+		
+		sidebarPanel.lightenSidebar();
+    	sidebarPanel.repaint();
+
+		latch.countDown();	
 		
 	}
 

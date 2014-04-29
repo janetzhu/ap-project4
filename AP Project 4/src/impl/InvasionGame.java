@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.concurrent.CountDownLatch;
 
 import object.Board;
 import object.Cell;
@@ -63,6 +64,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	private int SIDEBAR_WIDTH = 200;
+	
+    public CountDownLatch latch;
 
 	/******** WINDOW COMPONENTS ********/
 	// JPanel that holds all of the screens for the different stages of game play.
@@ -83,8 +86,9 @@ public class InvasionGame extends JApplet implements Runnable{
 	private JLabel titleLabel, blankLabelSmall, blankLabelWide, blankLabelQuit;
 	private JButton pause, quit, restart;
 	private static String currentScreen;
-	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img;
+	private BufferedImage background, logo, background_sidebar, instructions_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	public BufferedImage bodyCellImage;
+	private Facts gameFacts;
 
 	
 	private boolean playingGame;
@@ -106,12 +110,12 @@ public class InvasionGame extends JApplet implements Runnable{
 			"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
 			"\n5. Good Luck!";
 	
-	private String takeaways = "Remember...prevention is the best way to avoid getting HIV/AIDS " +
-			"You should practice the following preventive methods: " +
-			"Abstain from sex (don't have sex) " + 
-			"Only have one partner at a time " +
-			"Use a condom during sex " +
-			"Avoid blood to blood contact ";
+	private String takeaways = "Remember...prevention is the best way to avoid getting HIV/AIDS. " +
+			"\n\nYou should practice the following preventive methods: " +
+			"\n\n-Abstain from sex (don't have sex) " + 
+			"\n\n-Only have one partner at a time " +
+			"\n\n-Use a condom during sex " +
+			"\n\n-Avoid blood to blood contact ";
 	
 
 	/*
@@ -133,6 +137,8 @@ public class InvasionGame extends JApplet implements Runnable{
 
 		loadImages();
 		
+		gameFacts = new Facts();
+		
 		playingGame = false;
         
 	    // Initialize panels   
@@ -147,25 +153,22 @@ public class InvasionGame extends JApplet implements Runnable{
 	    backgroundPanel.setBackground(Color.GRAY);
 	    
 	    //instructionPanel = new InstructionPanel();
-	    instructionPanel = new DisplayPanel("Start Game!", instructions, 2);
+	    instructionPanel = new DisplayPanel("Start Game!", 2);
 	    instructionPanel.setBackground(Color.GREEN);
 	    
+	    latch = new CountDownLatch(1);
 	    // New game board Panel to play game
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
 	    
-	    /*
 	    //Game Over and Game Won Panels
-	    gameOverPanel = new DisplayPanel("Next Page", 3);
+	    gameOverPanel = new DisplayPanel("Next Page", 4);
 	    gameOverPanel.setBackground(Color.GRAY);
 	    
-	    gameWonPanel = new DisplayPanel("Next Page", 3);
+	    gameWonPanel = new DisplayPanel("Next Page", 5);
 	    gameWonPanel.setBackground(Color.GRAY);
 	    
-	    */
-	    
-	    //takeawaysPanel = new TakeawaysPanel();
-	    takeawaysPanel = new DisplayPanel("Finish", takeaways, 4);
+	    takeawaysPanel = new DisplayPanel("Replay", takeaways, 6);
 	    takeawaysPanel.setBackground(Color.GRAY);
 	    	    
 
@@ -184,10 +187,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameScreens.add(backgroundPanel, "Background");
 	    gameScreens.add(instructionPanel, "Instructions");
 	    gameScreens.add(gameBoard, "Game");
-	    /*
 	    gameScreens.add(gameOverPanel, "Game Over");
 	    gameScreens.add(gameWonPanel, "Game Won");
-	    */
 	    gameScreens.add(takeawaysPanel, "Takeaways");
 	    
 	    cardLayout = (CardLayout) gameScreens.getLayout();
@@ -248,8 +249,8 @@ public class InvasionGame extends JApplet implements Runnable{
             //"What is HIV?" title image
             what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
             
-            //"What is HIV?" title image
-            instructions_img = ImageIO.read(getClass().getResource("/instructions.png"));
+            //instructions sidebar
+            instructions_sidebar = ImageIO.read(getClass().getResource("/instructions_sidebar.png"));
             
             //Body Cell Image
             bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
@@ -609,7 +610,12 @@ public class InvasionGame extends JApplet implements Runnable{
 		public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
 			
-	        g2.drawImage(background_sidebar,0,0,this);
+			if(!currentScreen.equals("Instructions"))
+				g2.drawImage(background_sidebar,0,0,this);
+			else {
+				g2.drawImage(instructions_sidebar,0,0,this);
+			}
+
 
 	        if(currentScreen.equals("Welcome Screen"))
 	        	g2.drawImage(logo_sidebar, 0, 50, this);
@@ -646,7 +652,8 @@ public class InvasionGame extends JApplet implements Runnable{
 		}
 		
 		
-		/**** OLD JTEXTAREA ****/
+		/**** OLD JTEXTAREA 
+		 * @return ****/
 		/*
 		public void displayInfected() {
 			infectedText.setText("You have been infected with HIV!");
@@ -669,15 +676,34 @@ public class InvasionGame extends JApplet implements Runnable{
 		cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
 	    currentScreen = "Welcome Screen";
 	    
-		while (!playingGame) {
-			if (currentScreen == "Game"){
-				gameBoard.start();
-				playingGame = true;
+		while (true) {
+			if (playingGame) {
+				try {
+					latch.await();
+					latch = new CountDownLatch(1);
+					playingGame = false;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			else {
+				if (currentScreen == "Game"){
+					gameBoard.start(latch);
+					playingGame = true;
+				}
+				
+				try {
+					mainThread.sleep(300);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				cardLayout.show(gameScreens, currentScreen);
 
-			cardLayout.show(gameScreens, currentScreen);
-		
-			sidebarPanel.repaint();
+				sidebarPanel.repaint();
+			}
 		}
 		//mainThread;
 	}
