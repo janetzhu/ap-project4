@@ -33,6 +33,7 @@ public class DisplayPanel extends JPanel {
 	private int WINDOW_HEIGHT = 650;
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
+
 	
 	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
 										   "Game Over", "Game Won", "Takeaways"};
@@ -55,14 +56,14 @@ public class DisplayPanel extends JPanel {
 		setLayout(null);
 		setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 		loadImages();
-		
+
 		panelType = displayPanelType;
 		textAreaIncluded = true;
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(GAME_WIDTH - 200, 600, 200, 50);
-		//progressButton.setBounds(325, 560, 200, 50);
+		progressButton.setBounds(GAME_WIDTH - 150, 600, 150, 50);
+		//progressButton.setBounds(250, 620, 200, 40);
 		
 		contentText = new JTextArea(textToDisplay, 10, 50);
 		contentText = styleText(contentText);
@@ -91,20 +92,20 @@ public class DisplayPanel extends JPanel {
 		
 		initDisplayPanel();
 	}
-	
+
 	public DisplayPanel(String buttonText, int displayPanelType) {
 		// Constructor for displayPanel with an image as the main content
 		setLayout(null);
 		setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 		loadImages();
-		
+
 		panelType = displayPanelType;
 		textAreaIncluded = false;
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		
-		progressButton.setBounds(GAME_WIDTH - 200, 600, 200, 50);
+		//progressButton.setBounds(250, 610, 150, 40);
+		progressButton.setBounds(GAME_WIDTH - 150, 600, 150, 50);
 		
 		progressButton.addActionListener(new ActionListener() {
 
@@ -112,9 +113,9 @@ public class DisplayPanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
-			
+
 		});
-				
+
 		initDisplayPanel();
 	}
 
@@ -124,11 +125,11 @@ public class DisplayPanel extends JPanel {
 		if (textAreaIncluded) {
 			add(contentText);
 		}
-		
+
 		revalidate();
 		repaint();
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -140,7 +141,9 @@ public class DisplayPanel extends JPanel {
         }
         else if (GAME_SCREENS[panelType] == "Background") {
 			g2.drawImage(what_is_hiv,0,6,this);
-			g2.drawImage(HIV_attacks, 85, 375, this);
+			g2.drawImage(HIV_invasion, -40, 375, this);
+			g2.drawImage(HIV_attacks, 325, 375, this);
+			
         }
         else if (GAME_SCREENS[panelType] == "Instructions") {
         	g2.drawImage(instructions_img,0,0,this);
@@ -154,11 +157,11 @@ public class DisplayPanel extends JPanel {
 			g2.drawImage(gameWonImage,0,6,this);
         }  
         else if (GAME_SCREENS[panelType] == "Takeaways") {
-        	//g2.drawImage(precautionsImage, 110, 375, this);
+        	g2.drawImage(precautionsImage, 75, 375, this);
         }
        
 	}
-	
+
 	/*
 	 *loadImages()  
 	 * 
@@ -172,7 +175,7 @@ public class DisplayPanel extends JPanel {
 	    try {
 			//load background image
 			background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
-			
+
 			//add logo image
         	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
         	
@@ -203,13 +206,13 @@ public class DisplayPanel extends JPanel {
             // Game won image
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
             
-			precautionsImage = ImageIO.read(getClass().getResource("/precautions.gif"));
+			precautionsImage = ImageIO.read(getClass().getResource("/hiv-aids-vaccine.jpg"));
 			
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
 		}
 	}
-	
+
 	//adds color and styles to generic JButton elements
 	public JButton styleButton(JButton button) {
 		button.setMargin(new Insets(10, 0, 0, 0));
@@ -221,7 +224,7 @@ public class DisplayPanel extends JPanel {
     	button.setForeground(Color.WHITE);
 		return button;
 	}
-	
+
 	//adds color and styles to JTextArea elements
 	public JTextArea styleText(JTextArea text) {
 		text.setMargin(new Insets(20, 20, 20, 20));
@@ -233,5 +236,5 @@ public class DisplayPanel extends JPanel {
 		text.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
 		return text;	
 	}
-	
+
 }
