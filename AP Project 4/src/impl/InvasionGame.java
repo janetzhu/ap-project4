@@ -626,7 +626,7 @@ public class InvasionGame extends JApplet implements Runnable{
 				 // If the last item in the side bar is in an even position or 0, 
 				 // add text to JTextPane and style as red
 				 // Else, add text to JTextPane and style as white
-				 if (((sidebarText.size() - 1) % 2 == 0) || sidebarText.size() == 0) {
+				 if (((sidebarText.size() - 1) % 2 == 0) || sidebarText.size() -1 == 0) {
 					 doc.insertString(doc.getLength(), sidebarText.get(sidebarText.size() -1),
 	                         doc.getStyle(textStyles[0]));
 				 } else {
