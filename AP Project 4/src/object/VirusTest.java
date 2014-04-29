@@ -15,6 +15,9 @@ public class VirusTest {
 	/**
 	 * testVirusConstructor()
 	 * Constructor
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testVirusContructor() {
@@ -83,6 +86,9 @@ public class VirusTest {
 	/**
 	 * testgetX()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testgetX() {
@@ -97,6 +103,9 @@ public class VirusTest {
 	/**
 	 * testsetX()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testsetX() {
@@ -113,6 +122,9 @@ public class VirusTest {
 	/**
 	 * testgetY()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testgetY() { 
@@ -126,6 +138,9 @@ public class VirusTest {
 	/**
 	 * testsetY()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testsetY() {
@@ -142,6 +157,9 @@ public class VirusTest {
 	/**
 	 * testgetxSpeed()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testgetxSpeed() {
@@ -154,6 +172,9 @@ public class VirusTest {
 	
 	/**
 	 * testgetySpeed
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testgetySpeed() {
@@ -170,6 +191,9 @@ public class VirusTest {
 	/**
 	 * testgetWidth()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testgetWidth() {
@@ -183,6 +207,9 @@ public class VirusTest {
 	/**
 	 * testsetWidth()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testsetWidth() {
@@ -212,6 +239,9 @@ public class VirusTest {
 	/**
 	 * testsetHeight()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testsetHeight() {
@@ -228,6 +258,9 @@ public class VirusTest {
 	/**
 	 * testgetStrength()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testgetStrength() {
@@ -241,6 +274,9 @@ public class VirusTest {
 	/**
 	 * testsetStrength()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testsetStrength() {
@@ -257,6 +293,9 @@ public class VirusTest {
 	/**
 	 * testisAlive()
 	 * Method checks if virus is alive
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testisAlive() {
@@ -270,6 +309,9 @@ public class VirusTest {
 	/**
 	 * testsetAlive()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testsetAlive() {
@@ -286,6 +328,9 @@ public class VirusTest {
 	/**
 	 * testgetBound()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testgetBound() {
@@ -302,6 +347,9 @@ public class VirusTest {
 	/**
 	 * testanimateVirus()
 	 * Method checks if the virus is animated
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testanimateVirus() {
@@ -321,6 +369,10 @@ public class VirusTest {
 	/**
 	 * testwithinVirus()
 	 * Method tests if inside the virus
+	 * 
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testwithinVirus() {

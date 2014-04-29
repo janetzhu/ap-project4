@@ -49,10 +49,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final long HIV_INTRO_TIME = 10000;
     
     private final int LEVEL_2_BENCHMARK = 950;
-    private final int LEVEL_3_BENCHMARK = 940;
-    private final int LEVEL_4_BENCHMARK = 930;
-    private final int LEVEL_5_BENCHMARK = 920;
-    private final int LEVEL_6_BENCHMARK = 910;
+    private final int LEVEL_3_BENCHMARK = 750;
+    private final int LEVEL_4_BENCHMARK = 600;
+    private final int LEVEL_5_BENCHMARK = 500;
+    private final int LEVEL_6_BENCHMARK = 400;
     
     //Send over side bar panel from
     private SidebarPanel sidebarPanel; 
@@ -397,22 +397,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				virusImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
 
-//			File fontFile = new File("/DS-DIGI.TTF");
-//			displayFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 15f);
-//				
-//			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//			ge.registerFont(displayFont);
-//			InputStream inStream = getClass().getResourceAsStream("/DS-DIGI.TTF");
-//			Font displayFont = Font.createFont(Font.TRUETYPE_FONT, inStream);
-//
-//			displayFont = displayFont.deriveFont(12f);
-			//myLabel.setFont(siFont);
-
 		} catch (IOException e) {
 			System.out.println("Error loading images");
-		} //catch (FontFormatException e) {
-//			System.out.println("Error loading fonts");
-//		}
+		}
     }
 
 	/**
@@ -493,13 +480,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	Cell cell = cellList[i][j];
 	        	if (!cell.isInfected()) {
-		        	//g.setColor(Color.GREEN);
-		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g2.drawImage(cellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 	        	}
 	        	if (cell.isInfected()) {
-		        	//g.setColor(Color.RED);
-		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g2.drawImage(infectedCellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 
 	        	}
@@ -543,11 +526,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * 
 	 */
 	public void infectHIV() {
-		//If infected is true
+		//Set infected to true
 		infected = true;
 		
 		//Add infection text to sidebar panel
 		sidebarPanel.addTextToPane("You have been infected with HIV!");
+		
+		// JOptionPane that notifies user that he/she has been infected with HIV.
+		JOptionPane.showMessageDialog(this, 
+				"You have been infected with HIV.", 
+				"Infected with HIV", JOptionPane.WARNING_MESSAGE);
 	}
 
 	/**
@@ -792,11 +780,22 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Obtains String from Fact object and sends it to sidebarPanel 
 	 */
 	public void displayFact() {
-		//Add facts to the side bar panel	
+		//Add facts to the side bar panel
+		// and display popup
+
 		
 		if (factNo <= hivFacts.getNumOfTips()) {
+			
 			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
+			
+			
+			// JOptionPane that pops up a message dialog displaying the fact.
+			JOptionPane.showMessageDialog(this, 
+					hivFacts.getTip(factNo), 
+					"Fast Fact #" + (factNo + 1), JOptionPane.PLAIN_MESSAGE);
+			
 			factNo++;
+			
 		}
 		
 		
@@ -832,13 +831,66 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	}
 	
 	/**
+	 * Dialog box that propts user if they want to take antiretrovirals.
+	 * If t-cell count hits 650, prompt user if they want to take antiretrovirals.
+	 * Timing of when to initiate treatment has been a source of controversy.
+	 * An NA-ACCORD study observed patients who started antiretroviral 
+	 * therapy either at a CD4 count of less than 500 versus less than 350 
+	 * and showed that patients who started ART at lower CD4 counts had a 
+	 * 69% increase in the risk of death.
+	 */
+	
+	public void displayAntiretroviralsDialog() {
+		
+		// Options for the antiretroviral option dialog box
+		Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
+					
+		// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
+		// Response is stored in userDecision: 0 is yes, 1 is no.
+		int userDecision = JOptionPane.showOptionDialog(this, 
+				"Your t-cell count is at 500, and your doctor has offered to put you"
+				+ "on antiretroviral treatment.\n"
+				+ "Though it has proven successful at controlling HIV,"
+				+ "there are also side effects and complications that\n"
+				+ "make it risky. Take antiretrovirals?", 
+				"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
+				JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
+					
+		//If user decides to use antiretrovirals,
+		if (userDecision == 0) {
+			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
+					+ "A successful round of treatment increased your t-cell "
+					+ "count by 50.");
+			
+			useAntiretrovirals();
+		}
+			
+		//Else
+		else {
+			sidebarPanel.addTextToPane("You have opted out of taking antiretrovirals."
+					+ " Even though antiretroviral treatment comes with risks, it has proven"
+					+ "effective in managing HIV.");
+		} 
+						
+		//Set antiretroviralOffered to true
+		antiretroviralOffered = true;
+		
+	} // end displayAntiretroviralsDialog method
+	
+	/**
 	 * Checks if tCellCount has hit certain fact benchmarks. If benchmarks match, 
 	 * add fact to pane.
 	 */
 	
 	public void checkFactBenchmark() {
 		if (tCellCount == 900 || tCellCount == 500 || tCellCount == 350 || tCellCount == 200) {
+			
 			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
+			
+			// JOptionPane that pops up a message dialog displaying the fact.
+						JOptionPane.showMessageDialog(this, 
+								hivFacts.getFact(tCellCount),
+								"Fast Fact: T-Cell Count " + tCellCount, JOptionPane.PLAIN_MESSAGE);
 		} 
 	}
 
@@ -866,49 +918,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			calculateScore();
 			
 			
-			
-			// If t-cell count hits 650, prompt user if they want to take antiretrovirals.
-			// Timing of when to initiate treatment has been a source of controversy.
-			// An NA-ACCORD study observed patients who started antiretroviral 
-			// therapy either at a CD4 count of less than 500 versus less than 350 
-			// and showed that patients who started ART at lower CD4 counts had a 
-			// 69% increase in the risk of death.
+			// If t-cell count is 800 and antiretrovirals have never been offered before
+			// display the antiretrovirals dialog
 			if (tCellCount == 800 && !antiretroviralOffered) {
-				// TODO
-				// Options for the antiretroviral option dialog box
-				Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
-				
-				// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
-				// Response is stored in userDecision: 0 is yes, 1 is no.
-				int userDecision = JOptionPane.showOptionDialog(null, 
-						"Your t-cell count is at 500, and your doctor has offered to put you"
-						+ "on antiretroviral treatment.\n"
-						+ "Though it has proven successful at controlling HIV,"
-						+ "there are also side effects and complications that\n"
-						+ "make it risky. Take antiretrovirals?", 
-						"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
-						JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
-				
-				//If user decides to use antiretrovirals,
-				if (userDecision == 0) {
-					sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
-							+ "A successful round of treatment increased your t-cell "
-							+ "count by 50.");
-					useAntiretrovirals();
-				}
-				
-				//Else
-				else {
-					sidebarPanel.addTextToPane("You have opted out of taking antiretrovirals."
-							+ " Even though antiretroviral treatment comes with risks, it has proven"
-							+ "effective in managing HIV.");
-				} 
-				
-				//Set antiretroviralOffered to true
-				antiretroviralOffered = true;
+				displayAntiretroviralsDialog();
 			}
-			
-			
 			
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10); 
@@ -931,14 +945,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 					//Call to infectHIV()
 					infectHIV();
 					
-					// Infected option dialog box
-					Object[] infectedOption = {"OK"};
-					
-					// JOptionPane that notifies user that he/she has been infected with HIV.
-					JOptionPane.showOptionDialog(null, 
-							"You have been infected with HIV.", 
-							"Infected with HIV", JOptionPane.OK_OPTION,  
-							JOptionPane.QUESTION_MESSAGE, null, infectedOption, infectedOption[0]);
 					
 				}
 				
@@ -954,6 +960,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 						//Decrement t cell count
 						tCellCount--;
 						
+						// Check to see if reduced T-cell count aligns with a
+						// fact benchmark
 						checkFactBenchmark();
 						
 						//Set cellReduceCounter to 0
@@ -964,7 +972,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 
 			//If certain amount of time has passed,
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 6) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 4) {
 				
 				//Call to displayFact()
 

@@ -609,7 +609,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		
 		/**
 		 * addTextToPane()
-		 * Provides implementation for adding text to the sidebar
+		 * Provides implementation for adding text to the side bar
 		 * @param textToAdd
 		 */
 		public void addTextToPane(String textToAdd) {
@@ -617,7 +617,7 @@ public class InvasionGame extends JApplet implements Runnable{
 
 			 try {
 
-				 // If the last item in the sidebar is in an even position or 0, 
+				 // If the last item in the side bar is in an even position or 0, 
 				 // add text to JTextPane and style as red
 				 // Else, add text to JTextPane and style as white
 				 if (((sidebarText.size() - 1) % 2 == 0) || sidebarText.size() == 0) {
@@ -678,7 +678,7 @@ public class InvasionGame extends JApplet implements Runnable{
 				g2.drawImage(fast_facts,0,0,this);
 
 			else {		
-				//Otherwise draw the instructions sidebar
+				//Otherwise draw the instructions side bar
 				g2.drawImage(background_sidebar,0,0,this);
 			}
 
@@ -749,7 +749,7 @@ public class InvasionGame extends JApplet implements Runnable{
 
 	}//end sidebarPanel
 	
-	//clear the text in the sidebar panel
+	//clear the text in the side bar panel
 	public void clearTextPane() {
 		sidebarPanel.clearText();
 	}
@@ -829,7 +829,7 @@ public class InvasionGame extends JApplet implements Runnable{
 					e.printStackTrace();
 				}
 
-				//Make cardlayout show the current screen
+				//Make card layout show the current screen
 				cardLayout.show(gameScreens, currentScreen);
 
 				//Repaint the sidebarPanel

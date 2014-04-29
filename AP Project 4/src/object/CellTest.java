@@ -13,7 +13,7 @@ import org.junit.Test;
 
 /**
  * CellTest Class
- * @author michaelng
+ * 
  *
  */
 public class CellTest {
@@ -21,6 +21,9 @@ public class CellTest {
 	/**
 	 * testCellConstructor()
 	 * Method that tests the Cell constructor
+	 * 
+	 * @param none
+	 * @return none
 	 */
 	@Test
 	public void testCellConstructor() {
@@ -46,6 +49,9 @@ public class CellTest {
 	/**
 	 * testCellExplicitConstructor()
 	 * Method that tests the default constructor
+	 * 
+	 * @param none
+	 * @return none
 	 */
 	@Test
 	public void testCellExplicitConstructor() {
@@ -71,6 +77,10 @@ public class CellTest {
 	/**
 	 * testgetX()
 	 * Test get method
+	 * 
+	 * 
+	 * @param none
+	 * @return none
 	 */
 	@Test
 	public void testgetX() {
@@ -84,6 +94,10 @@ public class CellTest {
 	/**
 	 * testsetX()
 	 * Test set method
+	 * 
+	 * @param none
+	 * @return none
+	 * 
 	 */
 	@Test 
 	public void testsetX() {
@@ -100,6 +114,9 @@ public class CellTest {
 	/**
 	 * testgetY()
 	 * Test get method
+	 * 
+	 * @param none
+	 * @return none
 	 */
 	@Test
 	public void testgetY() {
@@ -113,6 +130,10 @@ public class CellTest {
 	/**
 	 * testsetY()
 	 * Test set method
+	 * 
+	 * @param none 
+	 * @return none
+	 * 
 	 */
 	@Test 
 	public void testsetY() {
@@ -130,6 +151,9 @@ public class CellTest {
 	/**
 	 * testgetWidth()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testgetWidth() {
@@ -144,6 +168,9 @@ public class CellTest {
 	/**
 	 * testsetWidth()
 	 * Set method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testsetWidth() {
@@ -160,6 +187,8 @@ public class CellTest {
 	/**
 	 * testgetHeight()
 	 * Test get method
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testgetHeight() {
@@ -174,6 +203,8 @@ public class CellTest {
 	/**
 	 * testsetHeight()
 	 * Test set method
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testsetHeight() {
@@ -191,6 +222,8 @@ public class CellTest {
 	/**
 	 * testisInfected
 	 * Method that checks if cell is infected
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testisInfected() {
@@ -204,6 +237,8 @@ public class CellTest {
 	/**
 	 * testsetInfected()
 	 * Test set method
+	 * @param none 
+	 * @return none
 	 */
 	@Test 
 	public void testsetInfected() {
@@ -220,6 +255,9 @@ public class CellTest {
 	/**
 	 * testgetBound()
 	 * Test get method
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testgetBound() {
@@ -239,6 +277,9 @@ public class CellTest {
 	/**
 	 * testdecrementBodyCell()
 	 * Method that confirms that body cell count decrements
+	 * 
+	 * @param none 
+	 * @return none
 	 */
 	@Test
 	public void testdecrementBodyCell() {
