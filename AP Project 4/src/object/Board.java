@@ -981,11 +981,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 
+
 			//If certain amount of time has passed,
 			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 30) {
 				
 				//Call to displayFact()
+
 				displayFact();
+				
 			}
 
 			//If certain amount of time has passed,
@@ -1039,8 +1042,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
     	//Call to countDown()
 		latch.countDown();	
-
-	}
+		
+		}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
