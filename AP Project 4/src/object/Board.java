@@ -10,8 +10,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -67,7 +65,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private BufferedImage[] virusImages = new BufferedImage[6];
     private BufferedImage[] progressImages = new BufferedImage[10];
     private BufferedImage currentProgressImage;
-    private JButton restartButton;
     
     //Game variables
     private long gameStartTime;
@@ -100,6 +97,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	//Declare boolean antiretroviralOffered
 	private boolean antiretroviralOffered = false;
+	
+	// Fact to display
+	private int factNo = 0; 
 
 	/**
 	 * Board()
@@ -212,9 +212,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param v
 	 * @param i
 	 */
-	public void setVirusList(Virus v, int i) {
+	public void setVirusList(Virus currentVirus, int index) {
 
-		virusList.set(i, v);
+		virusList.set(index, currentVirus);
 
 	}
 
@@ -277,20 +277,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         //Call to initCells()
         initCells();
-        
-        //Set up restart button
-        restartButton = new JButton("Restart Game");
-    	restartButton.setBounds(325, 560, 200, 50);
-    	restartButton.addActionListener(new ActionListener() {
-
-    		//Create action performed event
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				System.out.println("Game Restarted");
-				restartGame();
-			}
-
-		});
     	
     	//Call to repaint()
         repaint();
@@ -304,9 +290,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void start(CountDownLatch countLatch) {
 		//Set game status to playing
 		gameStatus = "playing";
-
-		//Set up restart button
-    	restartButton.setBounds(0, 0, 0, 0);
     	
     	//Clear the virus list
     	virusList.clear();
@@ -349,9 +332,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     public void restartGame() {
     	//Set game status to playing
     	gameStatus = "playing";
-
-    	//Set up the restart button
-    	restartButton.setBounds(0, 0, 0, 0);
     	
     	//Clear the virus list
     	virusList.clear();
@@ -552,13 +532,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void mousePressed(MouseEvent e) {
 		// Check if the user click on top of an actual virus
-		System.out.println("click");
+
+	    System.out.println("click");
 		for (int i = 0; i < virusList.size(); i++) {
 
 			// Iterate through all viruses
 			Virus virus = virusList.get(i);
 			int strength = virus.getStrength();
-
+			
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
 
@@ -574,9 +555,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				else if (strength > 1) {
 					// If so, but strength is greater than 1, decrement strength
 					virus.setStrength(strength - 1);
-
+					
 				}
-
+				
+			
 				// Replace virus with killed one or one with weaker strength
 				virusList.set(i, virus);
 				//Break from loop
@@ -584,6 +566,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			  }
 			}		
 		}	
+
 	}
 
 	/**
@@ -845,7 +828,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void displayFact() {
 		//Add facts to the side bar panel
-		sidebarPanel.addTextToPane(hivFacts.getRandomTip());
+		
+		
+		if (factNo <= hivFacts.getNumOfTips()) {
+			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
+			factNo++;
+		}
+		
+		
 	}
 	
 	/**
@@ -876,6 +866,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			System.out.println("WON!");
 		}		
 	}
+	
+	/**
+	 * Checks if tCellCount has hit certain fact benchmarks. If benchmarks match, 
+	 * add fact to pane.
+	 */
+	
+	public void checkFactBenchmark() {
+		if (tCellCount == 900 || tCellCount == 500 || tCellCount == 350 || tCellCount == 200) {
+			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
+		} 
+	}
 
     /**
      * run()
@@ -890,9 +891,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		//Create beforeTime variable
         beforeTime = System.currentTimeMillis();
-        
-        System.out.println("About to play game...");
-        
+                
         // Run this while loop by the game is being played
 		while(gameStatus == "playing") {
 			//if(System.currentTimeMillis)
@@ -902,13 +901,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			//Call to calculateScore()
 			calculateScore();
 			
+			
+			
 			// If t-cell count hits 650, prompt user if they want to take antiretrovirals.
 			// Timing of when to initiate treatment has been a source of controversy.
 			// An NA-ACCORD study observed patients who started antiretroviral 
 			// therapy either at a CD4 count of less than 500 versus less than 350 
 			// and showed that patients who started ART at lower CD4 counts had a 
 			// 69% increase in the risk of death.
-			if (tCellCount == 650 && !antiretroviralOffered) {
+			if (tCellCount == 800 && !antiretroviralOffered) {
 				// TODO
 				// Options for the antiretroviral option dialog box
 				Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
@@ -942,6 +943,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				//Set antiretroviralOffered to true
 				antiretroviralOffered = true;
 			}
+			
+			
+			
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10); 
 
@@ -962,6 +966,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				if (!infected) {
 					//Call to infectHIV()
 					infectHIV();
+					
+					// Infected option dialog box
+					Object[] infectedOption = {"OK"};
+					
+					// JOptionPane that notifies user that he/she has been infected with HIV.
+					JOptionPane.showOptionDialog(null, 
+							"You have been infected with HIV.", 
+							"Infected with HIV", JOptionPane.OK_OPTION,  
+							JOptionPane.QUESTION_MESSAGE, null, infectedOption, infectedOption[0]);
+					
 				}
 				
 				//Else,
@@ -975,6 +989,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 						
 						//Decrement t cell count
 						tCellCount--;
+						
+						checkFactBenchmark();
 						
 						//Set cellReduceCounter to 0
 						cellReduceCounter = 0;
@@ -1048,7 +1064,45 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Check if the user click on top of an actual virus
+				System.out.println("Mouse Clicked! at time " + System.currentTimeMillis());
+
+				for (int i = 0; i < virusList.size(); i++) {
+
+					// Iterate through all viruses
+					Virus virus = virusList.get(i);
+					int strength = virus.getStrength();
+					
+					System.out.println("Checking click for virus " + i + " with strength " + strength);
+
+					//Check if click location is within bounds of any virus 
+					if (virus.withinVirus(e.getX(), e.getY())) {
+
+					  if(virus.isAlive()) {	
+							//System.out.println("Virus clicked");
+
+						if (strength == 1) {
+							// If so, and strength is only 1, kill virus
+							System.out.println("Virus destroyed");
+							virus.setAlive(false);
+							gameScore = gameScore + 15;
+							repaint();
+						}
+						else if (strength > 1) {
+							// If so, but strength is greater than 1, decrement strength
+							int newStrength = strength - 1;
+							System.out.println("Virus weakened from " + strength + " to " + newStrength);
+							virus.setStrength(newStrength);
+							repaint();
+						}
+
+						// Replace virus with killed one or one with weaker strength
+						virusList.set(i, virus);
+						//Break from loop
+						break;
+					  }
+					}		
+				}	
 
 	}
 
