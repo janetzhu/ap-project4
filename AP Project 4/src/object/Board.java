@@ -100,6 +100,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	
 	//Declare boolean antiretroviralOffered
 	private boolean antiretroviralOffered = false;
+	
+	// Fact to display
+	private int factNo = 0; 
 
 	/**
 	 * Board()
@@ -844,7 +847,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void displayFact() {
 		//Add facts to the side bar panel
-		sidebarPanel.addTextToPane(hivFacts.getRandomTip());
+		
+		
+		if (factNo <= hivFacts.getNumOfTips()) {
+			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
+			factNo++;
+		}
+		
+		
 	}
 	
 	/**
@@ -875,6 +885,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			System.out.println("WON!");
 		}		
 	}
+	
+	/**
+	 * Checks if tCellCount has hit certain fact benchmarks. If benchmarks match, 
+	 * add fact to pane.
+	 */
+	
+	public void checkFactBenchmark() {
+		if (tCellCount == 900 || tCellCount == 500 || tCellCount == 350 || tCellCount == 200) {
+			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
+		} 
+	}
 
     /**
      * run()
@@ -898,6 +919,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Call to calculateScore()
 			calculateScore();
+			
+			
 			
 			// If t-cell count hits 650, prompt user if they want to take antiretrovirals.
 			// Timing of when to initiate treatment has been a source of controversy.
@@ -939,6 +962,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				//Set antiretroviralOffered to true
 				antiretroviralOffered = true;
 			}
+			
+			
+			
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10); 
 
@@ -959,6 +985,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				if (!infected) {
 					//Call to infectHIV()
 					infectHIV();
+					
+					// Infected option dialog box
+					Object[] infectedOption = {"OK"};
+					
+					// JOptionPane that notifies user that he/she has been infected with HIV.
+					JOptionPane.showOptionDialog(null, 
+							"You have been infected with HIV.", 
+							"Infected with HIV", JOptionPane.OK_OPTION,  
+							JOptionPane.QUESTION_MESSAGE, null, infectedOption, infectedOption[0]);
+					
 				}
 				
 				//Else,
@@ -972,6 +1008,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 						
 						//Decrement t cell count
 						tCellCount--;
+						
+						checkFactBenchmark();
 						
 						//Set cellReduceCounter to 0
 						cellReduceCounter = 0;
