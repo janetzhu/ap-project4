@@ -341,6 +341,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	        }
         }
     	
+    	// Reset facts
+    	factNo = 0;
+    	
     	//Initialize sidebar panel on board
     	this.initBoard(sidebarPanel);
     	
