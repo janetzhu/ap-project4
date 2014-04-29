@@ -42,10 +42,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int CELL_WIDTH = 66;
     private final int CELL_HEIGHT = 50;
     
-    private final int START_VIRUS_COUNT = 1; //number of viruses at start of game
+    private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
-    private final long GAME_WON_TIME = 60000;
+    private final long GAME_WON_TIME = 120000;
     private final long HIV_INTRO_TIME = 10000;
     
     private final int LEVEL_2_BENCHMARK = 950;
@@ -236,7 +236,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		setBackground(Color.GRAY);
 
 		//Add listener
-		this.addMouseListener(this);
+		addMouseListener(this);
 
 		//Set infected to false
 		infected = false;
@@ -300,9 +300,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	        	cellList[i][j].setInfected(false);
 	        }
         }
-    	
-    	//Initialize board
-    	this.initBoard(sidebarPanel);
     	
     	//Latch is equal to count latch
 		this.latch = countLatch;
@@ -981,7 +978,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			}
 
 			//If certain amount of time has passed,
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 1000) < 30) {
 				
 				//Call to introduceVirus()
 				introduceVirus();
@@ -1036,45 +1033,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// Check if the user click on top of an actual virus
-				System.out.println("Mouse Clicked! at time " + System.currentTimeMillis());
-
-				for (int i = 0; i < virusList.size(); i++) {
-
-					// Iterate through all viruses
-					Virus virus = virusList.get(i);
-					int strength = virus.getStrength();
-					
-					System.out.println("Checking click for virus " + i + " with strength " + strength);
-
-					//Check if click location is within bounds of any virus 
-					if (virus.withinVirus(e.getX(), e.getY())) {
-
-					  if(virus.isAlive()) {	
-							//System.out.println("Virus clicked");
-
-						if (strength == 1) {
-							// If so, and strength is only 1, kill virus
-							System.out.println("Virus destroyed");
-							virus.setAlive(false);
-							gameScore = gameScore + 15;
-							repaint();
-						}
-						else if (strength > 1) {
-							// If so, but strength is greater than 1, decrement strength
-							int newStrength = strength - 1;
-							System.out.println("Virus weakened from " + strength + " to " + newStrength);
-							virus.setStrength(newStrength);
-							repaint();
-						}
-
-						// Replace virus with killed one or one with weaker strength
-						virusList.set(i, virus);
-						//Break from loop
-						break;
-					  }
-					}		
-				}	
 
 	}
 
@@ -1092,6 +1050,39 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Check if the user click on top of an actual virus
+		for (int i = 0; i < virusList.size(); i++) {
+
+			// Iterate through all viruses
+			Virus virus = virusList.get(i);
+			int strength = virus.getStrength();
+			
+			//Check if click location is within bounds of any virus 
+			if (virus.withinVirus(e.getX(), e.getY())) {
+
+			  if(virus.isAlive()) {	
+					//System.out.println("Virus clicked");
+
+				if (strength == 1) {
+					// If so, and strength is only 1, kill virus
+					virus.setAlive(false);
+					gameScore = gameScore + 15;
+					repaint();
+				}
+				else if (strength > 1) {
+					// If so, but strength is greater than 1, decrement strength
+					int newStrength = strength - 1;
+					virus.setStrength(newStrength);
+					repaint();
+				}
+
+				// Replace virus with killed one or one with weaker strength
+				virusList.set(i, virus);
+				//Break from loop
+				break;
+			  }
+			}		
+		}	
+
 	}
 }
