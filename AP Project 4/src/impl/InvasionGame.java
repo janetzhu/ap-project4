@@ -371,7 +371,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	 * 
 	 */
 
-	//JPanel that gives the user backgrond information about HIV/AIDS
+	//JPanel that gives the user background information about HIV/AIDS
 
 	/*public class BackgroundPanel extends JPanel {
 	
@@ -818,7 +818,7 @@ public class InvasionGame extends JApplet implements Runnable{
 					playingGame = true;
 				}
 
-				//Create try/catch blcok
+				//Create try/catch block
 				try {
 					
 					//Thread sleeps at 300
