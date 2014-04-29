@@ -513,15 +513,12 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void mousePressed(MouseEvent e) {
 		// Check if the user click on top of an actual virus
-		System.out.println("Mouse Clicked! at time " + System.currentTimeMillis());
 
 		for (int i = 0; i < virusList.size(); i++) {
 
 			// Iterate through all viruses
 			Virus virus = virusList.get(i);
 			int strength = virus.getStrength();
-
-			System.out.println("Checking click for virus " + i + " with strength " + strength);
 
 			//Check if click location is within bounds of any virus 
 			if (virus.withinVirus(e.getX(), e.getY())) {
@@ -531,7 +528,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 				if (strength == 1) {
 					// If so, and strength is only 1, kill virus
-					System.out.println("Virus destroyed");
 					virus.setAlive(false);
 					gameScore = gameScore + 15;
 					repaint();
@@ -539,7 +535,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				else if (strength > 1) {
 					// If so, but strength is greater than 1, decrement strength
 					int newStrength = strength - 1;
-					System.out.println("Virus weakened from " + strength + " to " + newStrength);
 					virus.setStrength(newStrength);
 					repaint();
 				}
@@ -568,10 +563,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		//Add infection text to sidebar panel
 		sidebarPanel.addTextToPane("You have been infected with HIV!");
 
+		long timeBeforePrompt = System.currentTimeMillis();
+
 		// JOptionPane that notifies user that he/she has been infected with HIV.
 		JOptionPane.showMessageDialog(this, 
 				"You have been infected with HIV.", 
 				"Infected with HIV", JOptionPane.WARNING_MESSAGE);
+		
+		long timeafterPrompt = System.currentTimeMillis();
+		long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+		gameStartTime = gameStartTime + timeSpentPaused;
 	}
 
 	/**
@@ -665,9 +666,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	        	//Call check wall collision
 	    		checkWallCollision(i);
-
-	    		//Call check membrane collision
-	    		checkMembraneCollision(i);
         	}
         }
 	}
@@ -759,18 +757,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     	//Set the current virus in the virus list
     	virusList.set(virusIndex, thisVirus);
 	}
-    
-	/**
-	 * checkMembraneCollision()
-	 * Handles collision of viruses with the membrane.
-	 */
-	public void checkMembraneCollision(int virusIndex) {
-		Virus thisVirus = virusList.get(virusIndex);
-
-		// TODO Check if virus bounds are at the membrane and change x or y speed accordingly to make it bounce off
-    	//Set the current virus in the virus list
-    	virusList.set(virusIndex, thisVirus);
-	}
 
 	/**
 	 * calibrateDifficulty()
@@ -824,11 +810,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
 
+			long timeBeforePrompt = System.currentTimeMillis();
 
 			// JOptionPane that pops up a message dialog displaying the fact.
 			JOptionPane.showMessageDialog(this, 
 					hivFacts.getTip(factNo), 
 					"Fast Fact #" + (factNo + 1), JOptionPane.PLAIN_MESSAGE);
+			
+			long timeafterPrompt = System.currentTimeMillis();
+			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+			gameStartTime = gameStartTime + timeSpentPaused;
 
 			factNo++;
 
@@ -881,6 +872,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		// Options for the antiretroviral option dialog box
 		Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
 
+		long timeBeforePrompt = System.currentTimeMillis();
+
 		// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
 		// Response is stored in userDecision: 0 is yes, 1 is no.
 		int userDecision = JOptionPane.showOptionDialog(this, 
@@ -891,6 +884,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				+ "make it risky. Take antiretrovirals?", 
 				"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
 				JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
+		
+		long timeafterPrompt = System.currentTimeMillis();
+		long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+		gameStartTime = gameStartTime + timeSpentPaused;
 
 		//If user decides to use antiretrovirals,
 		if (userDecision == 0) {
@@ -923,10 +920,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
 
+			long timeBeforePrompt = System.currentTimeMillis();
+
 			// JOptionPane that pops up a message dialog displaying the fact.
-						JOptionPane.showMessageDialog(this, 
-								hivFacts.getFact(tCellCount),
-								"Fast Fact: T-Cell Count " + tCellCount, JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(this, 
+					hivFacts.getFact(tCellCount),
+					"Fast Fact: T-Cell Count " + tCellCount, JOptionPane.PLAIN_MESSAGE);
+			
+			long timeafterPrompt = System.currentTimeMillis();
+			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+			gameStartTime = gameStartTime + timeSpentPaused;
 		} 
 	}
 
@@ -1076,13 +1079,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
