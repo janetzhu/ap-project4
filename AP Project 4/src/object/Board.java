@@ -10,8 +10,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -51,10 +49,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final long HIV_INTRO_TIME = 10000;
     
     private final int LEVEL_2_BENCHMARK = 950;
-    private final int LEVEL_3_BENCHMARK = 940;
-    private final int LEVEL_4_BENCHMARK = 930;
-    private final int LEVEL_5_BENCHMARK = 920;
-    private final int LEVEL_6_BENCHMARK = 910;
+    private final int LEVEL_3_BENCHMARK = 750;
+    private final int LEVEL_4_BENCHMARK = 600;
+    private final int LEVEL_5_BENCHMARK = 500;
+    private final int LEVEL_6_BENCHMARK = 400;
     
     //Send over side bar panel from
     private SidebarPanel sidebarPanel; 
@@ -67,7 +65,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private BufferedImage[] virusImages = new BufferedImage[6];
     private BufferedImage[] progressImages = new BufferedImage[10];
     private BufferedImage currentProgressImage;
-    private JButton restartButton;
     
     //Game variables
     private long gameStartTime;
@@ -215,9 +212,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param v
 	 * @param i
 	 */
-	public void setVirusList(Virus v, int i) {
+	public void setVirusList(Virus currentVirus, int index) {
 
-		virusList.set(i, v);
+		virusList.set(index, currentVirus);
 
 	}
 
@@ -280,20 +277,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         //Call to initCells()
         initCells();
-        
-        //Set up restart button
-        restartButton = new JButton("Restart Game");
-    	restartButton.setBounds(325, 560, 200, 50);
-    	restartButton.addActionListener(new ActionListener() {
-
-    		//Create action performed event
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				System.out.println("Game Restarted");
-				restartGame();
-			}
-
-		});
     	
     	//Call to repaint()
         repaint();
@@ -307,9 +290,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void start(CountDownLatch countLatch) {
 		//Set game status to playing
 		gameStatus = "playing";
-
-		//Set up restart button
-    	restartButton.setBounds(0, 0, 0, 0);
     	
     	//Clear the virus list
     	virusList.clear();
@@ -352,9 +332,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     public void restartGame() {
     	//Set game status to playing
     	gameStatus = "playing";
-
-    	//Set up the restart button
-    	restartButton.setBounds(0, 0, 0, 0);
     	
     	//Clear the virus list
     	virusList.clear();
@@ -420,22 +397,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				virusImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
 
-//			File fontFile = new File("/DS-DIGI.TTF");
-//			displayFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 15f);
-//				
-//			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//			ge.registerFont(displayFont);
-//			InputStream inStream = getClass().getResourceAsStream("/DS-DIGI.TTF");
-//			Font displayFont = Font.createFont(Font.TRUETYPE_FONT, inStream);
-//
-//			displayFont = displayFont.deriveFont(12f);
-			//myLabel.setFont(siFont);
-
 		} catch (IOException e) {
 			System.out.println("Error loading images");
-		} //catch (FontFormatException e) {
-//			System.out.println("Error loading fonts");
-//		}
+		}
     }
 
 	/**
@@ -516,13 +480,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	Cell cell = cellList[i][j];
 	        	if (!cell.isInfected()) {
-		        	//g.setColor(Color.GREEN);
-		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g2.drawImage(cellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 	        	}
 	        	if (cell.isInfected()) {
-		        	//g.setColor(Color.RED);
-		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g2.drawImage(infectedCellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 
 	        	}
@@ -554,38 +514,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Detects user mouse clicks.
 	 */
 	public void mousePressed(MouseEvent e) {
-		// Check if the user click on top of an actual virus
-		for (int i = 0; i < virusList.size(); i++) {
-
-			// Iterate through all viruses
-			Virus virus = virusList.get(i);
-			int strength = virus.getStrength();
-
-			//Check if click location is within bounds of any virus 
-			if (virus.withinVirus(e.getX(), e.getY())) {
-
-			  if(virus.isAlive()) {	
-					//System.out.println("Virus clicked");
-
-				if (strength == 1) {
-					// If so, and strength is only 1, kill virus
-					virus.setAlive(false);
-					gameScore = gameScore + 15;
-					repaint();
-				}
-				else if (strength > 1) {
-					// If so, but strength is greater than 1, decrement strength
-					virus.setStrength(strength - 1);
-
-				}
-
-				// Replace virus with killed one or one with weaker strength
-				virusList.set(i, virus);
-				//Break from loop
-				break;
-			  }
-			}		
-		}	
+		
 	}
 
 	/**
@@ -1107,7 +1036,45 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Check if the user click on top of an actual virus
+				System.out.println("Mouse Clicked! at time " + System.currentTimeMillis());
+
+				for (int i = 0; i < virusList.size(); i++) {
+
+					// Iterate through all viruses
+					Virus virus = virusList.get(i);
+					int strength = virus.getStrength();
+					
+					System.out.println("Checking click for virus " + i + " with strength " + strength);
+
+					//Check if click location is within bounds of any virus 
+					if (virus.withinVirus(e.getX(), e.getY())) {
+
+					  if(virus.isAlive()) {	
+							//System.out.println("Virus clicked");
+
+						if (strength == 1) {
+							// If so, and strength is only 1, kill virus
+							System.out.println("Virus destroyed");
+							virus.setAlive(false);
+							gameScore = gameScore + 15;
+							repaint();
+						}
+						else if (strength > 1) {
+							// If so, but strength is greater than 1, decrement strength
+							int newStrength = strength - 1;
+							System.out.println("Virus weakened from " + strength + " to " + newStrength);
+							virus.setStrength(newStrength);
+							repaint();
+						}
+
+						// Replace virus with killed one or one with weaker strength
+						virusList.set(i, virus);
+						//Break from loop
+						break;
+					  }
+					}		
+				}	
 
 	}
 

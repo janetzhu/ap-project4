@@ -57,7 +57,7 @@ public class DisplayPanel extends JPanel {
 	 * @param textToDisplay
 	 * @param displayPanelType
 	 */
-	public DisplayPanel(String buttonText, String textToDisplay, int displayPanelType) {
+	/*public DisplayPanel(String buttonText, String textToDisplay, int displayPanelType) {
 		// Constructor for DisplayPanel with text in main content section
 		
 		//Set layout equal to null
@@ -118,7 +118,7 @@ public class DisplayPanel extends JPanel {
 		//Call initDisplayPanel()
 		initDisplayPanel();
 		
-	}
+	}*/
 
 	/**
 	 * DisplayPanel()
