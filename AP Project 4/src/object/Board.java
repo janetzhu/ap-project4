@@ -959,6 +959,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				if (!infected) {
 					//Call to infectHIV()
 					infectHIV();
+					// Options for the antiretroviral option dialog box
+					Object[] infectedOption = {"OK"};
+					
+					// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
+					// Response is stored in userDecision: 0 is yes, 1 is no.
+					int userDecision = JOptionPane.showOptionDialog(null, 
+							"You have been infected with HIV!", 
+							"Infected with HIV", JOptionPane.OK_OPTION,  
+							JOptionPane.QUESTION_MESSAGE, null, infectedOption, infectedOption[0]);
+					
 				}
 				
 				//Else,
