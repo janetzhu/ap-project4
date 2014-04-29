@@ -37,13 +37,13 @@ public class Facts {
 	private String buster5 = "HIV is not the same thing as AIDS.";
 	private String buster6 = "HIV is present in the blood and sexual fluids.";
 	private String buster7 = "In the US, HIV is a problem for people of all races, genders, and sexual orientations.";
-	
+
 	//Preventive Facts
 	private String prevention1 = "Abstain from sex";
 	private String prevention2 = "Be faithful to your current partner";
 	private String prevention3 = "Use a condom when having sex";
 	private String prevention4 = "Avoid blood to blood contact";
-	
+
 	//Science Facts
 	private String science1 = "The immune system protects the body from harmful germs and diseases.";
 	private String science2 = "HIV weakens the immune system, allowing germs and diseases to attack the body.";
@@ -55,7 +55,7 @@ public class Facts {
 	private String cell1 = "Normal t-cell level is about 700 to 1000 cells in a pea sized drop of blood.";
 	private String cell2 = "HIV positive people are considered to have a normal t-cell count if the number is above 500 cells per drop.";
 	private String cell3 = "You should begin treatment when your t-cell count falls below 350 cells per drop";
-	
+
 	// Staged Facts
 	private String stage1 = "When initially infected, a person may experience flu-like sickness.";
 	private String stage2 = "After the early symptoms, there is typically a long period without symptoms.";
@@ -83,19 +83,19 @@ public class Facts {
 			System.out.println("Error loading files");
 		}
 	}
-	
+
 	public void connectToDB(String name, String user, String pass) {
 		dbName = name;
 		String url = "jdbc:postgresql://localhost/" + dbName;
 		dbUsername = user;
 		dbPassword = pass;
-		
+
 		try {
 
 			  Class.forName("org.postgresql.Driver");
-		
+
 			  myConnection = DriverManager.getConnection(url + "?user=" + dbUsername + "&password=" + dbPassword);	
-			  
+
 				statement = myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 		 }
 		 catch(ClassNotFoundException e) {
@@ -107,14 +107,15 @@ public class Facts {
 			  System.out.print("VendorError1: " + ex.getErrorCode());
 		  }//end catch
 	}
-	
+
 	public void getTipFromDB() {
-		
+
 	}
-	
+
 	public void getFactFromDB() {
-		
+
 	}
+
 	
 	//grabs a random tip from the tips arraylist
 	public String getRandomTip() {

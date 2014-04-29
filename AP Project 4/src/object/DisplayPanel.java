@@ -33,6 +33,7 @@ public class DisplayPanel extends JPanel {
 	private int WINDOW_HEIGHT = 650;
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
+
 	
 	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
 										   "Game Over", "Game Won", "Takeaways"};
@@ -55,14 +56,14 @@ public class DisplayPanel extends JPanel {
 		setLayout(null);
 		setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 		loadImages();
-		
+
 		panelType = displayPanelType;
 		textAreaIncluded = true;
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
 		progressButton.setBounds(325, 560, 200, 50);
-		
+
 		contentText = new JTextArea(textToDisplay, 10, 50);
 		contentText = styleText(contentText);
 		contentText.setBounds(25, 75, GAME_WIDTH - 50, 300);
@@ -90,29 +91,29 @@ public class DisplayPanel extends JPanel {
 		
 		initDisplayPanel();
 	}
-	
+
 	public DisplayPanel(String buttonText, int displayPanelType) {
 		// Constructor for displayPanel with an image as the main content
 		setLayout(null);
 		setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
 		loadImages();
-		
+
 		panelType = displayPanelType;
 		textAreaIncluded = false;
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
 		progressButton.setBounds(325, 560, 200, 50);
-		
+
 		progressButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
-			
+
 		});
-				
+
 		initDisplayPanel();
 	}
 
@@ -122,11 +123,11 @@ public class DisplayPanel extends JPanel {
 		if (textAreaIncluded) {
 			add(contentText);
 		}
-		
+
 		revalidate();
 		repaint();
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -156,7 +157,7 @@ public class DisplayPanel extends JPanel {
         }
        
 	}
-	
+
 	/*
 	 *loadImages()  
 	 * 
@@ -170,7 +171,7 @@ public class DisplayPanel extends JPanel {
 	    try {
 			//load background image
 			background = ImageIO.read(getClass().getResource("/liver_cells_bg.png"));
-			
+
 			//add logo image
         	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
         	
@@ -205,7 +206,7 @@ public class DisplayPanel extends JPanel {
 			System.out.println("Error loading image");
 		}
 	}
-	
+
 	//adds color and styles to generic JButton elements
 	public JButton styleButton(JButton button) {
 		button.setMargin(new Insets(10, 0, 0, 0));
@@ -217,7 +218,7 @@ public class DisplayPanel extends JPanel {
     	button.setForeground(Color.WHITE);
 		return button;
 	}
-	
+
 	//adds color and styles to JTextArea elements
 	public JTextArea styleText(JTextArea text) {
 		text.setMargin(new Insets(20, 20, 20, 20));
@@ -229,5 +230,5 @@ public class DisplayPanel extends JPanel {
 		text.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
 		return text;	
 	}
-	
+
 }
