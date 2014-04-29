@@ -889,9 +889,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		//Create beforeTime variable
         beforeTime = System.currentTimeMillis();
-        
-        System.out.println("About to play game...");
-        
+                
         // Run this while loop by the game is being played
 		while(gameStatus == "playing") {
 			//if(System.currentTimeMillis)

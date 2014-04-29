@@ -38,8 +38,8 @@ public class DisplayPanel extends JPanel {
 	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
 										   "Game Over", "Game Won", "Takeaways"};
 
-	private BufferedImage background, logo, background_img, background_sidebar, logo_sidebar, instructions_img, 
-						  gameOverImage, gameWonImage, precautionsImage;
+	private BufferedImage background, logo, backgroundScreen, background_sidebar, logo_sidebar, instructionsScreen, 
+						  gameOverImage, gameWonImage, preventionScreen;
 	
 	private JButton progressButton;
 	private JTextArea contentText;
@@ -155,6 +155,10 @@ public class DisplayPanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				if(panelType == 4)
 					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 2]);
+				else if(panelType == 6) {
+					InvasionGame.changeDisplayPanel("Game");
+					InvasionGame.resetClearedFacts();
+				}
 				else
 					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
@@ -208,14 +212,14 @@ public class DisplayPanel extends JPanel {
         //If panel is equal to the background screen
         else if (GAME_SCREENS[panelType] == "Background") {
 			//Draw the images to be displayed
-        	g2.drawImage(background_img, 0,0,this);
+        	g2.drawImage(backgroundScreen, 0,0,this);
 			
         }
         
         //If panel is equal to the instructions screen
         else if (GAME_SCREENS[panelType] == "Instructions") {
         	//Draw the instructions image on the panel
-        	g2.drawImage(instructions_img,0,0,this);
+        	g2.drawImage(instructionsScreen,0,0,this);
 			
         }  
         
@@ -233,8 +237,8 @@ public class DisplayPanel extends JPanel {
         
         //If the panel is equal to the takeaways screen
         else if (GAME_SCREENS[panelType] == "Takeaways") {
-        	//Draw the precautions image
-        	//g2.drawImage(precautionsImage, 75, 375, this);
+        	g2.drawImage(preventionScreen, 0, 0, this);
+
         }
        
 	}
@@ -257,7 +261,7 @@ public class DisplayPanel extends JPanel {
         	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
         	
         	//load background screen image
-        	background_img = ImageIO.read(getClass().getResource("/background_screen.png"));
+        	backgroundScreen = ImageIO.read(getClass().getResource("/background_screen.png"));
         	
         	//load sidebar background
         	background_sidebar = ImageIO.read(getClass().getResource("/liver_cells_sidebar.png"));
@@ -266,7 +270,7 @@ public class DisplayPanel extends JPanel {
             logo_sidebar = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
             
             //instructions image
-            instructions_img = ImageIO.read(getClass().getResource("/instructions_screen.png"));
+            instructionsScreen = ImageIO.read(getClass().getResource("/instructions_screen.png"));
             
             //Game Over image
             gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));
@@ -275,7 +279,7 @@ public class DisplayPanel extends JPanel {
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
             
 			//Precautions image
-			precautionsImage = ImageIO.read(getClass().getResource("/hiv-aids-vaccine.jpg"));
+			preventionScreen = ImageIO.read(getClass().getResource("/prevention_screen.png"));
 			
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
