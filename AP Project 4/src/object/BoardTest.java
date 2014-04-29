@@ -67,6 +67,7 @@ public class BoardTest {
 		
 		assertEquals(b.getGameScore(), 20);
 	}
+	
 }
 
 
