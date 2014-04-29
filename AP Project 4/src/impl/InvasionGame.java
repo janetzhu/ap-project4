@@ -731,6 +731,17 @@ public class InvasionGame extends JApplet implements Runnable{
 			dimmed = false;
 			repaint();
 		}
+		
+		public void reset() {
+			sidebarText.clear();
+			try {
+				doc.remove(0, doc.getLength());
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			repaint();
+		}
 
 
 
@@ -752,6 +763,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	 */
 	@Override
 	public void run() {
+		boolean firstPlay = true;
+		
 		//Show the initial welcome screen
 		cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
 	    currentScreen = "Welcome Screen";
@@ -778,6 +791,8 @@ public class InvasionGame extends JApplet implements Runnable{
 					//Set playingGame to false
 					playingGame = false;
 					
+					firstPlay = false;
+										
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -789,6 +804,10 @@ public class InvasionGame extends JApplet implements Runnable{
 				
 				//If current screen is game
 				if (currentScreen == "Game"){
+					
+					if (!firstPlay) {
+						sidebarPanel.reset();
+					}
 					
 					//Start the gameboard
 					gameBoard.start(latch);
