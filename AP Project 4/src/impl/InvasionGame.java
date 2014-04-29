@@ -9,11 +9,11 @@ package impl;
  * the exceptions of the lecture notes and those items noted below, we have neither given nor received, 
  * any assistance on this project.  
  *
- * Resources: <we should note down where we got the images or any outside sources> 
+ * Help Items: <we should note down where we got the images or any outside sources> 
  * 
- * Description: This program helps young people learn about HIV/AIDS through a fun, interactive 
- * game. The user is presented with the time constraints of this disease while viewing 
- * fast facts with more information about HIV/AIDS. 
+ * Description: This program helps young individuals learn about HIV/AIDS through a fun interactive 
+ * game. The user learns the time constraints of such a fatal disease and also pauses through certain 
+ * sections of the game to learn more information about HIV/AIDS. 
  * 
  */
 
@@ -94,11 +94,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	//Current Screen variable
 	private static String currentScreen;
 	
-	//check whether facts sidebar has been cleared
-	private static boolean clearedFacts;
-	
 	//Buffered Image objects
-	private BufferedImage background, logo, background_sidebar, instructions_sidebar, logo_sidebar, what_is_hiv, instructions_img, fast_facts;
+	private BufferedImage background, logo, background_sidebar, instructions_sidebar, logo_sidebar, what_is_hiv, instructions_img;
 	public BufferedImage bodyCellImage;
 	
 	//Facts object
@@ -159,8 +156,6 @@ public class InvasionGame extends JApplet implements Runnable{
 		
 		//Declare new instance of Facts()
 		gameFacts = new Facts();
-		
-		clearedFacts = false;
 
 		//Set playingGame equal to false
 		playingGame = false;
@@ -170,7 +165,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	    
 	    sidebarPanel = new SidebarPanel();
 	    
-	    backgroundPanel = new DisplayPanel("Next Page", 1);
+	    backgroundPanel = new DisplayPanel("Next Page", background_information, 1);
 	    backgroundPanel.setBackground(Color.GRAY);
 
 	    instructionPanel = new DisplayPanel("Start Game!", 2);
@@ -185,7 +180,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	    gameWonPanel = new DisplayPanel("Next Page", 5);
 	    gameWonPanel.setBackground(Color.GRAY);
 
-	    takeawaysPanel = new DisplayPanel("Replay", 6);
+	    takeawaysPanel = new DisplayPanel("Replay", takeaways, 6);
 	    takeawaysPanel.setBackground(Color.GRAY);
 	    
 	    //Create new instance of CountDownLatch()
@@ -270,9 +265,6 @@ public class InvasionGame extends JApplet implements Runnable{
 
 			//add logo image
         	logo = ImageIO.read(getClass().getResource("/aidsinvasion_logo_main.png"));
-        	
-        	//add "fast facts" title
-        	fast_facts = ImageIO.read(getClass().getResource("/fast_facts.png"));
         	
         	//load sidebar background
         	background_sidebar = ImageIO.read(getClass().getResource("/liver_cells_sidebar.png"));
@@ -371,7 +363,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	 * 
 	 */
 
-	//JPanel that gives the user background information about HIV/AIDS
+	//JPanel that gives the user backgrond information about HIV/AIDS
 
 	/*public class BackgroundPanel extends JPanel {
 	
@@ -551,8 +543,6 @@ public class InvasionGame extends JApplet implements Runnable{
 		public SidebarPanel() {
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 			dimmed = false;
-			
-			setLayout(null);
 
 
 			/**** JTEXTPANE IMPLEMENTATION ****/
@@ -569,9 +559,8 @@ public class InvasionGame extends JApplet implements Runnable{
 			// Set the scrollbar to only show up as needed, i.e. once sidebar is filled
 			scrollPane.setVerticalScrollBarPolicy(
 	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			//scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
-			scrollPane.setBounds(2, 64, SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4);
-			//scrollPane.setMinimumSize(new Dimension(10, 10));
+			scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
+			scrollPane.setMinimumSize(new Dimension(10, 10));
 			scrollPane.setBackground(new Color (0,0,0,0));
 			scrollPane.setBorder(null);
 			scrollPane.setVisible(true);
@@ -632,12 +621,6 @@ public class InvasionGame extends JApplet implements Runnable{
 		        }
 			 
 		}
-		
-		//clear the text in the panel
-		public void clearText() {
-			sidebarText.clear();
-			repaint();
-		}
 
 		/**
 		 * addStylesToDocument()
@@ -652,10 +635,8 @@ public class InvasionGame extends JApplet implements Runnable{
 	        Style red = doc.addStyle("red", def);
 	        StyleConstants.setAlignment(red, StyleConstants.ALIGN_CENTER);
 	        StyleConstants.setFontFamily(red, "Sans Serif");
-	        StyleConstants.setFontSize(red, 12);
+	        StyleConstants.setFontSize(red, 14);
 	        StyleConstants.setForeground(red, Color.RED);
-	        StyleConstants.setSpaceBelow(red, 5);
-	        StyleConstants.setBold(red, true);
 
 	        Style white = doc.addStyle("white", red);
 	        StyleConstants.setForeground(white, Color.WHITE);
@@ -670,16 +651,14 @@ public class InvasionGame extends JApplet implements Runnable{
 			Graphics2D g2 = (Graphics2D) g;
 
 			//If current screen doesn't equal instructions
-			if(currentScreen.equals("Instructions"))
+			if(!currentScreen.equals("Instructions"))
 				
 				//Draw the background sidebar
-				g2.drawImage(instructions_sidebar,0,0,this);
-			else if(currentScreen.equals("Game"))
-				g2.drawImage(fast_facts,0,0,this);
-
-			else {		
-				//Otherwise draw the instructions sidebar
 				g2.drawImage(background_sidebar,0,0,this);
+			else {
+				
+				//Otherwise draw the instructions sidebar
+				g2.drawImage(instructions_sidebar,0,0,this);
 			}
 
 			//If the current screen is the welcome screen
@@ -701,7 +680,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,150));
-	        	g2.fillRect(0,64,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
 	        }
 	        
 		}
@@ -733,30 +712,9 @@ public class InvasionGame extends JApplet implements Runnable{
 			dimmed = false;
 			repaint();
 		}
-		
-		public void reset() {
-			sidebarText.clear();
-			try {
-				doc.remove(0, doc.getLength());
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			repaint();
-		}
 
 
 
-	}//end sidebarPanel
-	
-	//clear the text in the sidebar panel
-	public void clearTextPane() {
-		sidebarPanel.clearText();
-	}
-	
-	public static void resetClearedFacts() {
-		clearedFacts = false;
-		System.out.println("cleared is false");
 	}
 
 	/**
@@ -765,8 +723,6 @@ public class InvasionGame extends JApplet implements Runnable{
 	 */
 	@Override
 	public void run() {
-		boolean firstPlay = true;
-		
 		//Show the initial welcome screen
 		cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
 	    currentScreen = "Welcome Screen";
@@ -779,10 +735,6 @@ public class InvasionGame extends JApplet implements Runnable{
 				
 				//Create try/catch block
 				try {
-					if(!clearedFacts) {
-						clearTextPane();
-						clearedFacts = true;
-					}
 					
 					//Call await()
 					latch.await();
@@ -793,8 +745,6 @@ public class InvasionGame extends JApplet implements Runnable{
 					//Set playingGame to false
 					playingGame = false;
 					
-					firstPlay = false;
-										
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -807,10 +757,6 @@ public class InvasionGame extends JApplet implements Runnable{
 				//If current screen is game
 				if (currentScreen == "Game"){
 					
-					if (!firstPlay) {
-						sidebarPanel.reset();
-					}
-					
 					//Start the gameboard
 					gameBoard.start(latch);
 					
@@ -818,7 +764,7 @@ public class InvasionGame extends JApplet implements Runnable{
 					playingGame = true;
 				}
 
-				//Create try/catch block
+				//Create try/catch blcok
 				try {
 					
 					//Thread sleeps at 300
