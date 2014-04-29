@@ -31,7 +31,6 @@ public class Cell {
 	/******** METHODS ********/
 	
 	/**
-	 * Cell()
 	 * Constructor. Initializes variables to 0 and false
 	 */
 	
@@ -43,15 +42,6 @@ public class Cell {
 		infected = false;
 	}
 	
-	/**
-	 * Cell()
-	 * Default constructor initializes variables with new variables
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param infected
-	 */
 	public Cell(int x, int y, int width, int height, boolean infected) {
 		this.xCoord = x;
 		this.yCoord = y;
@@ -61,8 +51,6 @@ public class Cell {
 	}
 	
 	/**
-	 * getX()
-	 * Get method
 	 * @return xCoord
 	 */
 	public int getX() {
@@ -70,8 +58,6 @@ public class Cell {
 	}
 
 	/**
-	 * setX()
-	 * Set method
 	 * @param xCoord the xCoord to set
 	 */
 	public void setX(int xCoord) {
@@ -79,8 +65,6 @@ public class Cell {
 	}
 
 	/**
-	 * getY()
-	 * Get method
 	 * @return yCoord
 	 */
 	public int getY() {
@@ -88,8 +72,6 @@ public class Cell {
 	}
 
 	/**
-	 * setY()
-	 * Set method
 	 * @param yCoord the yCoord to set
 	 */
 	public void setY(int yCoord) {
@@ -97,8 +79,6 @@ public class Cell {
 	}
 
 	/**
-	 * getWidth()
-	 * Get method
 	 * @return width
 	 */
 	public int getWidth() {
@@ -106,8 +86,6 @@ public class Cell {
 	}
 
 	/**
-	 * setWidth()
-	 * Set method
 	 * @param width the width to set
 	 */
 	public void setWidth(int width) {
@@ -115,8 +93,6 @@ public class Cell {
 	}
 
 	/**
-	 * getHeight()
-	 * Get method
 	 * @return height
 	 */
 	public int getHeight() {
@@ -124,8 +100,6 @@ public class Cell {
 	}
 
 	/**
-	 * setHeight()
-	 * Set method
 	 * @param height the height to set
 	 */
 	public void setHeight(int height) {
@@ -133,7 +107,6 @@ public class Cell {
 	}
 
 	/**
-	 * isInfected()
 	 * @return infected
 	 */
 	public boolean isInfected() {
@@ -141,8 +114,6 @@ public class Cell {
 	}
 
 	/**
-	 * setInfected()
-	 * Set method
 	 * @param infected the infected to set
 	 */
 	public void setInfected(boolean infected) {
@@ -150,8 +121,6 @@ public class Cell {
 	}
 	
 	/**
-	 * getBound()
-	 * Get method
 	 * This method takes in an integer that refers to one of the 4 "sides" of the cell object, and returns the x or y
 	 * coordinate of that side as an integer value.  This is used to accommodate for the cell size.
 	 * 
@@ -162,9 +131,7 @@ public class Cell {
 	 * @return the coordinate value of the side that was requested by the application
 	 */
 	public int getBound(int sideRequested) {
-		//Create switch statement
 		switch (sideRequested) {
-		
 		case 1: 
 			// Top
 			return getY();
@@ -182,14 +149,13 @@ public class Cell {
 		}
 	}
 	
-	/**
-	 * decrementBodyCellCount()
-	 * Decrements body cell count when called
-	 */
 	public void decrementBodyCellCount() { 
 			
 		bodyCellCount--; 
 			
 	}
 	
-} //END Cell 
+	
+	
+	
+}

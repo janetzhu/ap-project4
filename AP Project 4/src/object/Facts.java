@@ -23,7 +23,10 @@ public class Facts {
 	private String dbPassword;
 	Statement statement;
 	Connection myConnection;
-
+	Scanner tipsScanner;
+	Scanner factsScanner;
+	InputStream tipsStream;
+	InputStream factsStream;
 	
 	//HIV Basics Facts
 	private String basic1 = "You cannot tell if someone has HIV by looking at him or her.";
@@ -68,7 +71,6 @@ public class Facts {
 	private HashMap<Integer, String> tCellFacts;
 	
 	public Facts() {
-		// TODO Auto-generated constructor stub
 			
 			// Locate resource for tips.txt
 			tips = new ArrayList<String>();
@@ -107,6 +109,8 @@ public class Facts {
 		        while ((fact = reader2.readLine()) != null) {
 		        	int tCellCount = Integer.parseInt(fact);
 		        	fact = reader2.readLine();
+		            tips.add(fact);
+		            
 		            
 		            tCellFacts.put(tCellCount, fact);
 		        }
@@ -150,20 +154,20 @@ public class Facts {
 	}
 
 	public void getFactFromDB() {
+
 	}
+
 	
 	//grabs a random tip from the tips arraylist
-	public String getTip(int tipNo) {
-		return tips.get(tipNo);
-	}
-	
-	public int getNumOfTips() {
-		return tips.size();
+	public String getRandomTip() {
+		int randInt = (int)(Math.random() * tips.size());
+		
+		return tips.get(randInt);
 	}
 	
 	//returns a fact from the hashmap with the corresponding tcellcount
-	public String getFact(int tCellBenchmark) {
-		return tCellFacts.get(tCellBenchmark);
+	public String getFact(int tcellCount) {
+		return tCellFacts.get(tcellCount);
 	}
 
 }
