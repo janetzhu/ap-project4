@@ -793,11 +793,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 							JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
 					
 					if (userDecision == 0) {
-						// TODO add text to sidebar telling user some facts about antiretrovirals
+						sidebarPanel.addTextToPane("You have opted to take antiretrovirals. "
+								+ "A successful round of treatment increased your t-cell "
+								+ "count by 50.");
 						useAntiretrovirals();
 					} else {
 						// TODO add text to sidebar telling user some facts about antiretrovirals
-					}
+					} 
 					
 
 				}
