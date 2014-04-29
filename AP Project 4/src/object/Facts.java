@@ -20,7 +20,7 @@ public class Facts {
 	Connection myConnection;
 	Scanner tipsScanner;
 	Scanner factsScanner;
-
+	
 	//HIV Basics Facts
 	private String basic1 = "You cannot tell if someone has HIV by looking at him or her.";
 	private String basic2 = "The only way for someone to know his or her HIV status is to go for HIV testing.";
@@ -62,21 +62,21 @@ public class Facts {
 
 	private ArrayList<String> tips;
 	private HashMap<Integer, String> tcellFacts;
-
+	
 	public Facts() {
 		tips = new ArrayList<String>();
 		try {
 			tipsScanner = new Scanner (new File("tips.txt"));
-
+			
 			while(tipsScanner.hasNextLine())
 				tips.add(tipsScanner.nextLine());
-
+			
 			factsScanner = new Scanner (new File("facts.txt"));
-
+			
 			while(factsScanner.hasNextLine()) {
 				int tcellCount = Integer.parseInt(factsScanner.nextLine());
 				String fact = factsScanner.nextLine();
-
+				
 				tcellFacts.put(tcellCount, fact);
 			}
 		} catch (FileNotFoundException e) {
@@ -116,13 +116,14 @@ public class Facts {
 
 	}
 
+	
 	//grabs a random tip from the tips arraylist
 	public String getRandomTip() {
 		int randInt = (int)(Math.random() * tips.size());
-
+		
 		return tips.get(randInt);
 	}
-
+	
 	//returns a fact from the hashmap with the corresponding tcellcount
 	public String getFact(int tcellCount) {
 		return tcellFacts.get(tcellCount);

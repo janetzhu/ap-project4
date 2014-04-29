@@ -34,12 +34,13 @@ public class DisplayPanel extends JPanel {
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 
+	
 	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
 										   "Game Over", "Game Won", "Takeaways"};
 
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, 
 						  HIV_attacks, HIV_invasion, preventHIVImage, gameOverImage, gameWonImage;
-
+	
 	private JButton progressButton;
 	private JTextArea contentText;
 	private BufferedImage backgroundImage;
@@ -48,8 +49,8 @@ public class DisplayPanel extends JPanel {
 	private JLabel pictureLabel;
 	private int panelType;
 	private boolean textAreaIncluded;
-
-
+	
+	
 	public DisplayPanel(String buttonText, String textToDisplay, int displayPanelType) {
 		// Constructor for DisplayPanel with text in main content section
 		setLayout(null);
@@ -58,7 +59,7 @@ public class DisplayPanel extends JPanel {
 
 		panelType = displayPanelType;
 		textAreaIncluded = true;
-
+		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
 		progressButton.setBounds(325, 560, 200, 50);
@@ -66,7 +67,7 @@ public class DisplayPanel extends JPanel {
 		contentText = new JTextArea(textToDisplay, 10, 50);
 		contentText = styleText(contentText);
 		contentText.setBounds(25, 75, GAME_WIDTH - 50, 300);
-
+		
 		if (panelType == 6) {
 			progressButton.addActionListener(new ActionListener() {
 
@@ -74,7 +75,7 @@ public class DisplayPanel extends JPanel {
 				public void actionPerformed(ActionEvent event) {
 					InvasionGame.changeDisplayPanel("Game");
 				}
-
+				
 			});
 		}
 		else {
@@ -84,10 +85,10 @@ public class DisplayPanel extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
 			}
-
+			
 			});
 		}
-
+		
 		initDisplayPanel();
 	}
 
@@ -99,7 +100,7 @@ public class DisplayPanel extends JPanel {
 
 		panelType = displayPanelType;
 		textAreaIncluded = false;
-
+		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
 		progressButton.setBounds(325, 560, 200, 50);
@@ -118,7 +119,7 @@ public class DisplayPanel extends JPanel {
 
 	public void initDisplayPanel() {		
         add(progressButton);
-
+		
 		if (textAreaIncluded) {
 			add(contentText);
 		}
