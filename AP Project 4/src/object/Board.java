@@ -788,11 +788,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
 			
 			
-			
 			// JOptionPane that pops up a message dialog displaying the fact.
 			JOptionPane.showMessageDialog(this, 
 					hivFacts.getTip(factNo), 
-					"Fast Fact #" + factNo + 1, JOptionPane.PLAIN_MESSAGE);
+					"Fast Fact #" + (factNo + 1), JOptionPane.PLAIN_MESSAGE);
 			
 			factNo++;
 			
