@@ -825,7 +825,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 30) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 10) {
 				displayFact();
 			}
 
