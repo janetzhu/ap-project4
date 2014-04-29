@@ -3,14 +3,11 @@ package object;
 
 /**
  * Contains data and methods associated with an individual Cell object.
- * Includes data about the location (coordinates) and size of the cell, and
- * whether it has been infected with HIV.
  *
  */
 
 public class Cell {
 
-	/******** CLASS VARIABLES ********/
 	// The x coordinate of the top-left corner of the cell
 	private int xCoord;
 	// The x coordinate of the top-left corner of the cell
@@ -24,16 +21,8 @@ public class Cell {
 	// Infected is true if the cell has been infected by a virus or disease, false if healthy
 	private boolean infected;
 	
-	//Body cell count 
-	public int bodyCellCount = 18; 
-	
-	
-	/******** METHODS ********/
-	
-	/**
-	 * Cell()
-	 * Constructor. Initializes variables to 0 and false
-	 */
+	//Body Cell Count 
+	public int body_cell_count=18; 
 	
 	public Cell() {
 		xCoord = 0;
@@ -43,15 +32,6 @@ public class Cell {
 		infected = false;
 	}
 	
-	/**
-	 * Cell()
-	 * Default constructor initializes variables with new variables
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param infected
-	 */
 	public Cell(int x, int y, int width, int height, boolean infected) {
 		this.xCoord = x;
 		this.yCoord = y;
@@ -61,17 +41,13 @@ public class Cell {
 	}
 	
 	/**
-	 * getX()
-	 * Get method
-	 * @return xCoord
+	 * @return the xCoord
 	 */
 	public int getX() {
 		return xCoord;
 	}
 
 	/**
-	 * setX()
-	 * Set method
 	 * @param xCoord the xCoord to set
 	 */
 	public void setX(int xCoord) {
@@ -79,17 +55,13 @@ public class Cell {
 	}
 
 	/**
-	 * getY()
-	 * Get method
-	 * @return yCoord
+	 * @return the yCoord
 	 */
 	public int getY() {
 		return yCoord;
 	}
 
 	/**
-	 * setY()
-	 * Set method
 	 * @param yCoord the yCoord to set
 	 */
 	public void setY(int yCoord) {
@@ -97,17 +69,13 @@ public class Cell {
 	}
 
 	/**
-	 * getWidth()
-	 * Get method
-	 * @return width
+	 * @return the width
 	 */
 	public int getWidth() {
 		return width;
 	}
 
 	/**
-	 * setWidth()
-	 * Set method
 	 * @param width the width to set
 	 */
 	public void setWidth(int width) {
@@ -115,17 +83,13 @@ public class Cell {
 	}
 
 	/**
-	 * getHeight()
-	 * Get method
-	 * @return height
+	 * @return the height
 	 */
 	public int getHeight() {
 		return height;
 	}
 
 	/**
-	 * setHeight()
-	 * Set method
 	 * @param height the height to set
 	 */
 	public void setHeight(int height) {
@@ -133,16 +97,13 @@ public class Cell {
 	}
 
 	/**
-	 * isInfected()
-	 * @return infected
+	 * @return the infected
 	 */
 	public boolean isInfected() {
 		return infected;
 	}
 
 	/**
-	 * setInfected()
-	 * Set method
 	 * @param infected the infected to set
 	 */
 	public void setInfected(boolean infected) {
@@ -150,8 +111,6 @@ public class Cell {
 	}
 	
 	/**
-	 * getBound()
-	 * Get method
 	 * This method takes in an integer that refers to one of the 4 "sides" of the cell object, and returns the x or y
 	 * coordinate of that side as an integer value.  This is used to accommodate for the cell size.
 	 * 
@@ -162,9 +121,7 @@ public class Cell {
 	 * @return the coordinate value of the side that was requested by the application
 	 */
 	public int getBound(int sideRequested) {
-		//Create switch statement
 		switch (sideRequested) {
-		
 		case 1: 
 			// Top
 			return getY();
@@ -182,14 +139,13 @@ public class Cell {
 		}
 	}
 	
-	/**
-	 * decrementBodyCellCount()
-	 * Decrements body cell count when called
-	 */
-	public void decrementBodyCellCount() { 
+	public void Decrement_Body_Cell_Count() { 
 			
-		bodyCellCount--; 
+		body_cell_count=body_cell_count-1; 
 			
 	}
 	
-} //END Cell 
+	
+	
+	
+}
