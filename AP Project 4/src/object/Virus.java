@@ -33,9 +33,6 @@ public class Virus {
 	// Alive is true if the virus is still alive, and false if it has been destroyed by the user
 	private boolean alive;
 	
-	//Set virus count equal to 5
-	public int virusCount=5; 
-	
 	/**
 	 * Virus()
 	 * Constructor

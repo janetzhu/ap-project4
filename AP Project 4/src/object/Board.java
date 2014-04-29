@@ -49,10 +49,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final long HIV_INTRO_TIME = 10000;
     
     private final int LEVEL_2_BENCHMARK = 950;
-    private final int LEVEL_3_BENCHMARK = 940;
-    private final int LEVEL_4_BENCHMARK = 930;
-    private final int LEVEL_5_BENCHMARK = 920;
-    private final int LEVEL_6_BENCHMARK = 910;
+    private final int LEVEL_3_BENCHMARK = 750;
+    private final int LEVEL_4_BENCHMARK = 600;
+    private final int LEVEL_5_BENCHMARK = 500;
+    private final int LEVEL_6_BENCHMARK = 400;
     
     //Send over side bar panel from
     private SidebarPanel sidebarPanel; 
@@ -397,22 +397,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				virusImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
 
-//			File fontFile = new File("/DS-DIGI.TTF");
-//			displayFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(Font.PLAIN, 15f);
-//				
-//			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//			ge.registerFont(displayFont);
-//			InputStream inStream = getClass().getResourceAsStream("/DS-DIGI.TTF");
-//			Font displayFont = Font.createFont(Font.TRUETYPE_FONT, inStream);
-//
-//			displayFont = displayFont.deriveFont(12f);
-			//myLabel.setFont(siFont);
-
 		} catch (IOException e) {
 			System.out.println("Error loading images");
-		} //catch (FontFormatException e) {
-//			System.out.println("Error loading fonts");
-//		}
+		}
     }
 
 	/**
@@ -493,13 +480,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	Cell cell = cellList[i][j];
 	        	if (!cell.isInfected()) {
-		        	//g.setColor(Color.GREEN);
-		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g2.drawImage(cellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 	        	}
 	        	if (cell.isInfected()) {
-		        	//g.setColor(Color.RED);
-		        	//g.fillRect((int) cell.getX(), (int) cell.getY(), (int) cell.getWidth(), (int) cell.getHeight());
 		        	g2.drawImage(infectedCellImages[i][j], (int) cell.getX(), (int) cell.getY(), this);
 
 	        	}
