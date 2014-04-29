@@ -1,7 +1,12 @@
 package object;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,6 +25,8 @@ public class Facts {
 	Connection myConnection;
 	Scanner tipsScanner;
 	Scanner factsScanner;
+	InputStream tipsStream;
+	InputStream factsStream;
 	
 	//HIV Basics Facts
 	private String basic1 = "You cannot tell if someone has HIV by looking at him or her.";
@@ -61,27 +68,61 @@ public class Facts {
 	private String stage2 = "After the early symptoms, there is typically a long period without symptoms.";
 
 	private ArrayList<String> tips;
-	private HashMap<Integer, String> tcellFacts;
+	private HashMap<Integer, String> tCellFacts;
 	
 	public Facts() {
-		tips = new ArrayList<String>();
-		try {
-			tipsScanner = new Scanner (new File("tips.txt"));
 			
-			while(tipsScanner.hasNextLine())
-				tips.add(tipsScanner.nextLine());
-			
-			factsScanner = new Scanner (new File("facts.txt"));
-			
-			while(factsScanner.hasNextLine()) {
-				int tcellCount = Integer.parseInt(factsScanner.nextLine());
-				String fact = factsScanner.nextLine();
-				
-				tcellFacts.put(tcellCount, fact);
+			// Locate resource for tips.txt
+			tips = new ArrayList<String>();
+			URL tipsViaClass = Facts.class.getResource("tips.txt");
+			if (tipsViaClass == null) {
+				System.out.println("tipsViaClass is null");
 			}
-		} catch (FileNotFoundException e) {
-			System.out.println("Error loading files");
-		}
+			
+			// Locate resource
+			// TODO make this a try-catch block
+			tCellFacts = new HashMap<Integer,String>();
+			URL factsViaClass = Facts.class.getResource("facts.txt");
+			if (factsViaClass == null) {
+				System.out.println("factsViaClass is null");
+			}
+			
+			try {
+				
+				// Open and read tips.txt
+				BufferedReader reader1 = new BufferedReader(new InputStreamReader(tipsViaClass.openStream()));
+				
+				StringBuilder tipsOut = new StringBuilder();
+		        String tip;
+		        while ((tip = reader1.readLine()) != null) {
+		            tips.add(tip);
+		        }
+		        
+		        System.out.println(tipsOut.toString());   //Prints the string content read from input stream
+		        reader1.close();
+		        
+		        // Open and read facts.txt
+		        BufferedReader reader2 = new BufferedReader(new InputStreamReader(factsViaClass.openStream()));
+		        
+		        StringBuilder factsOut = new StringBuilder();
+		        String fact;
+		        while ((fact = reader2.readLine()) != null) {
+		        	int tCellCount = Integer.parseInt(fact);
+		        	fact = reader2.readLine();
+		            tips.add(fact);
+		            
+		            
+		            tCellFacts.put(tCellCount, fact);
+		        }
+		        
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error loading files"); e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		//} 
 	}
 
 	public void connectToDB(String name, String user, String pass) {
@@ -126,7 +167,7 @@ public class Facts {
 	
 	//returns a fact from the hashmap with the corresponding tcellcount
 	public String getFact(int tcellCount) {
-		return tcellFacts.get(tcellCount);
+		return tCellFacts.get(tcellCount);
 	}
 
 }

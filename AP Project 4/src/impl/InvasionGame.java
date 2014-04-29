@@ -571,7 +571,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		}
 
 		public void addTextToPane(String textToAdd) {
-			sidebarText.add(textToAdd);
+			sidebarText.add(textToAdd + "\n");
 
 			 try {
 

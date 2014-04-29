@@ -79,7 +79,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public Virus thisVirus=new Virus();
 
 
-	private Facts hivFacts;
+	private Facts hivFacts = new Facts();
 
 	private String gameStatus;
 
@@ -90,6 +90,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private boolean infected;
 
 	private int cellCounter;
+	
+	private boolean antiretroviralOffered = false;
 
 	public Board(int height, int width) {
 		gameHeight = height;
@@ -509,7 +511,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void infectHIV() {
 		infected = true;
-		sidebarPanel.addTextToPane("You have been infected with HIV!\n");
+		sidebarPanel.addTextToPane("You have been infected with HIV!");
 	}
 
 	/**
@@ -712,7 +714,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	//obtains String from Fact object and sends it to sidebarPanel 
 	public void displayFact() {
-		sidebarPanel.addTextToPane("Hello\n");
+		sidebarPanel.addTextToPane(hivFacts.getRandomTip());
 	}
 	
 	public void useAntiretrovirals() {
@@ -765,7 +767,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			// and showed that patients who started ART at lower CD4 counts had a 
 			// 69% increase in the risk of death.
 			
-			if (tCellCount == 500) {
+			if (tCellCount == 500 && !antiretroviralOffered) {
 				// TODO
 				// Options for the antiretroviral option dialog box
 				Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
@@ -782,13 +784,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
 						JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
 				
 				if (userDecision == 0) {
-					sidebarPanel.addTextToPane("You have opted to take antiretrovirals. "
+					sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
 							+ "A successful round of treatment increased your t-cell "
 							+ "count by 50.");
 					useAntiretrovirals();
 				} else {
-					// TODO add text to sidebar telling user some facts about antiretrovirals
+					sidebarPanel.addTextToPane("You have opted out of taking antiretrovirals."
+							+ " Even though antiretroviral treatment comes with risks, it has proven"
+							+ "effective in managing HIV.");
 				} 
+				
+				antiretroviralOffered = true;
 			}
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10); 
@@ -819,7 +825,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				}
 			}
 
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 30) {
 				displayFact();
 			}
 
