@@ -147,7 +147,7 @@ public class DisplayPanel extends JPanel {
 		//Set up progressButton with listener
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(285, 580, 150, 50);
+		progressButton.setBounds(350, 580, 150, 50);
 		progressButton.addActionListener(new ActionListener() {
 
 			//Create action performed event that changes screen to one ahead
