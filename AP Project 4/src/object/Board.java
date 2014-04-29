@@ -901,13 +901,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			//Call to calculateScore()
 			calculateScore();
 			
-			// If t-cell count hits 500, prompt user if they want to take antiretrovirals.
+			// If t-cell count hits 650, prompt user if they want to take antiretrovirals.
 			// Timing of when to initiate treatment has been a source of controversy.
 			// An NA-ACCORD study observed patients who started antiretroviral 
 			// therapy either at a CD4 count of less than 500 versus less than 350 
 			// and showed that patients who started ART at lower CD4 counts had a 
 			// 69% increase in the risk of death.
-			if (tCellCount == 500 && !antiretroviralOffered) {
+			if (tCellCount == 650 && !antiretroviralOffered) {
 				// TODO
 				// Options for the antiretroviral option dialog box
 				Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
@@ -983,7 +983,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 
 			//If certain amount of time has passed,
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 30) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 6) {
 				
 				//Call to displayFact()
 

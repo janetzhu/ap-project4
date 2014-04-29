@@ -211,7 +211,7 @@ public class DisplayPanel extends JPanel {
 			//Draw the images to be displayed
         	g2.drawImage(what_is_hiv,0,6,this);
 			g2.drawImage(HIV_invasion, -40, 375, this);
-			g2.drawImage(HIV_attacks, 325, 320, this);
+			g2.drawImage(HIV_attacks, 325, 330, this);
 			
         }
         
