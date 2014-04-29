@@ -9,11 +9,11 @@ package impl;
  * the exceptions of the lecture notes and those items noted below, we have neither given nor received, 
  * any assistance on this project.  
  *
- * Help Items: <we should note down where we got the images or any outside sources> 
+ * Resources: <we should note down where we got the images or any outside sources> 
  * 
- * Description: This program helps young individuals learn about HIV/AIDS through a fun interactive 
- * game. The user learns the time constraints of such a fatal disease and also pauses through certain 
- * sections of the game to learn more information about HIV/AIDS. 
+ * Description: This program helps young people learn about HIV/AIDS through a fun, interactive 
+ * game. The user is presented with the time constraints of this disease while viewing 
+ * fast facts with more information about HIV/AIDS. 
  * 
  */
 
