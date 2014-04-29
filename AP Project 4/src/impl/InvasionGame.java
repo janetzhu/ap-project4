@@ -241,8 +241,14 @@ public class InvasionGame extends JApplet {
 	 * 
 	 */
 
+<<<<<<< HEAD
 	//JPanel that gives the user backgrond information about HIV/AIDS
 	public class BackgroundPanel extends JPanel {
+=======
+	//JPanel that gives the user background information about HIV/AIDS
+
+	/*public class BackgroundPanel extends JPanel {
+>>>>>>> master
 	
 		private String background_information= "HIV is a virus that makes your body very vulnerable to being attacked " 
 				+ "by bad diseases that will harm you. The virus tries to attack all the good cells "
@@ -448,7 +454,94 @@ public class InvasionGame extends JApplet {
 		}
 	}
 	
+<<<<<<< HEAD
 	
+=======
+	public static void resetClearedFacts() {
+		clearedFacts = false;
+		System.out.println("cleared is false");
+	}
+
+	/**
+	 * run()
+	 * run method for the invasion game
+	 */
+	@Override
+	public void run() {
+		boolean firstPlay = true;
+		
+		//Show the initial welcome screen
+		cardLayout.show(gameScreens, "Welcome Screen"); //this command changes what's on the screen
+	    currentScreen = "Welcome Screen";
+
+	    //Create while loop
+		while (true) {
+			
+			//If currently playing game
+			if (playingGame) {
+				
+				//Create try/catch block
+				try {
+					if(!clearedFacts) {
+						clearTextPane();
+						clearedFacts = true;
+					}
+					
+					//Call await()
+					latch.await();
+					
+					//Reset latch
+					latch = new CountDownLatch(1);
+					
+					//Set playingGame to false
+					playingGame = false;
+					
+					firstPlay = false;
+										
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			//Else
+			else {
+				
+				//If current screen is game
+				if (currentScreen == "Game"){
+					
+					if (!firstPlay) {
+						sidebarPanel.reset();
+					}
+					
+					//Start the gameboard
+					gameBoard.start(latch);
+					
+					//Set playingGame equal to true
+					playingGame = true;
+				}
+
+				//Create try/catch block
+				try {
+					
+					//Thread sleeps at 300
+					mainThread.sleep(300);
+					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				//Make cardlayout show the current screen
+				cardLayout.show(gameScreens, currentScreen);
+
+				//Repaint the sidebarPanel
+				sidebarPanel.repaint();
+			}
+		}
+		//mainThread;
+	}
+>>>>>>> master
 
 		  
 }
