@@ -635,8 +635,10 @@ public class InvasionGame extends JApplet implements Runnable{
 	        Style red = doc.addStyle("red", def);
 	        StyleConstants.setAlignment(red, StyleConstants.ALIGN_CENTER);
 	        StyleConstants.setFontFamily(red, "Sans Serif");
-	        StyleConstants.setFontSize(red, 15);
+	        StyleConstants.setFontSize(red, 12);
 	        StyleConstants.setForeground(red, Color.RED);
+	        StyleConstants.setSpaceBelow(red, 5);
+	        StyleConstants.setBold(red, true);
 
 	        Style white = doc.addStyle("white", red);
 	        StyleConstants.setForeground(white, Color.WHITE);
