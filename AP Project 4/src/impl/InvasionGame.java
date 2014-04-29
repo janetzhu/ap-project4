@@ -515,8 +515,6 @@ public class InvasionGame extends JApplet implements Runnable{
 	 */
 	public class SidebarPanel extends JPanel {
 		private boolean dimmed, inGame;
-		// OLD JTEXT AREA IMPLEMENTATION private JTextArea infectedText;
-		private String displayText;
 
 		/****JTextPane Variables ****/
 		// Variables to hold the text and scroll pane objects
@@ -546,17 +544,6 @@ public class InvasionGame extends JApplet implements Runnable{
 			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
 			dimmed = false;
 
-			/**** OLD JTEXTAREA IMPLEMENTATION ****/
-			/*
-			infectedText = new JTextArea();
-			infectedText.setForeground(Color.WHITE);
-			infectedText.setBackground(new Color(0,0,0,0));
-			infectedText.setEditable(false);
-			infectedText.setLineWrap(true);
-			infectedText.setWrapStyleWord(true);
-			infectedText.setVisible(false);
-			add(infectedText);
-			*/
 
 			/**** JTEXTPANE IMPLEMENTATION ****/
 			// Call the createTextPane method to create text pane and add styles
@@ -727,21 +714,6 @@ public class InvasionGame extends JApplet implements Runnable{
 		}
 
 
-		/**** OLD JTEXTAREA 
-		 * @return ****/
-		/*
-		public void displayInfected() {
-			infectedText.setText("You have been infected with HIV!");
-			infectedText.setVisible(true);
-			revalidate();
-		}
-
-		public void changeText(String newText) {
-			infectedText.setText(newText);
-
-			revalidate();
-		}
-		*/
 
 	}
 
