@@ -10,8 +10,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -67,7 +65,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private BufferedImage[] virusImages = new BufferedImage[6];
     private BufferedImage[] progressImages = new BufferedImage[10];
     private BufferedImage currentProgressImage;
-    private JButton restartButton;
     
     //Game variables
     private long gameStartTime;
@@ -212,9 +209,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param v
 	 * @param i
 	 */
-	public void setVirusList(Virus v, int i) {
+	public void setVirusList(Virus currentVirus, int index) {
 
-		virusList.set(i, v);
+		virusList.set(index, currentVirus);
 
 	}
 
@@ -277,20 +274,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
         
         //Call to initCells()
         initCells();
-        
-        //Set up restart button
-        restartButton = new JButton("Restart Game");
-    	restartButton.setBounds(325, 560, 200, 50);
-    	restartButton.addActionListener(new ActionListener() {
-
-    		//Create action performed event
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				System.out.println("Game Restarted");
-				restartGame();
-			}
-
-		});
     	
     	//Call to repaint()
         repaint();
@@ -304,9 +287,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void start(CountDownLatch countLatch) {
 		//Set game status to playing
 		gameStatus = "playing";
-
-		//Set up restart button
-    	restartButton.setBounds(0, 0, 0, 0);
     	
     	//Clear the virus list
     	virusList.clear();
@@ -349,9 +329,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
     public void restartGame() {
     	//Set game status to playing
     	gameStatus = "playing";
-
-    	//Set up the restart button
-    	restartButton.setBounds(0, 0, 0, 0);
     	
     	//Clear the virus list
     	virusList.clear();
@@ -551,38 +528,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Detects user mouse clicks.
 	 */
 	public void mousePressed(MouseEvent e) {
-		// Check if the user click on top of an actual virus
-		for (int i = 0; i < virusList.size(); i++) {
-
-			// Iterate through all viruses
-			Virus virus = virusList.get(i);
-			int strength = virus.getStrength();
-
-			//Check if click location is within bounds of any virus 
-			if (virus.withinVirus(e.getX(), e.getY())) {
-
-			  if(virus.isAlive()) {	
-					//System.out.println("Virus clicked");
-
-				if (strength == 1) {
-					// If so, and strength is only 1, kill virus
-					virus.setAlive(false);
-					gameScore = gameScore + 15;
-					repaint();
-				}
-				else if (strength > 1) {
-					// If so, but strength is greater than 1, decrement strength
-					virus.setStrength(strength - 1);
-
-				}
-
-				// Replace virus with killed one or one with weaker strength
-				virusList.set(i, virus);
-				//Break from loop
-				break;
-			  }
-			}		
-		}	
+		
 	}
 
 	/**
@@ -1055,7 +1001,45 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Check if the user click on top of an actual virus
+				System.out.println("Mouse Clicked! at time " + System.currentTimeMillis());
+
+				for (int i = 0; i < virusList.size(); i++) {
+
+					// Iterate through all viruses
+					Virus virus = virusList.get(i);
+					int strength = virus.getStrength();
+					
+					System.out.println("Checking click for virus " + i + " with strength " + strength);
+
+					//Check if click location is within bounds of any virus 
+					if (virus.withinVirus(e.getX(), e.getY())) {
+
+					  if(virus.isAlive()) {	
+							//System.out.println("Virus clicked");
+
+						if (strength == 1) {
+							// If so, and strength is only 1, kill virus
+							System.out.println("Virus destroyed");
+							virus.setAlive(false);
+							gameScore = gameScore + 15;
+							repaint();
+						}
+						else if (strength > 1) {
+							// If so, but strength is greater than 1, decrement strength
+							int newStrength = strength - 1;
+							System.out.println("Virus weakened from " + strength + " to " + newStrength);
+							virus.setStrength(newStrength);
+							repaint();
+						}
+
+						// Replace virus with killed one or one with weaker strength
+						virusList.set(i, virus);
+						//Break from loop
+						break;
+					  }
+					}		
+				}	
 
 	}
 
