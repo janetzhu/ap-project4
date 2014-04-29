@@ -714,6 +714,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void displayFact() {
 		sidebarPanel.addTextToPane("Hello\n");
 	}
+	
+	public void useAntiretrovirals() {
+		tCellCount += 50;
+	}
 
 
 	/**
@@ -753,6 +757,39 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			cycle();
 
 			calculateScore();
+			
+			// If t-cell count hits 500, prompt user if they want to take antiretrovirals.
+			// Timing of when to initiate treatment has been a source of controversy.
+			// An NA-ACCORD study observed patients who started antiretroviral 
+			// therapy either at a CD4 count of less than 500 versus less than 350 
+			// and showed that patients who started ART at lower CD4 counts had a 
+			// 69% increase in the risk of death.
+			
+			if (tCellCount == 500) {
+				// TODO
+				// Options for the antiretroviral option dialog box
+				Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
+				
+				// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
+				// Response is stored in userDecision: 0 is yes, 1 is no.
+				int userDecision = JOptionPane.showOptionDialog(null, 
+						"Your t-cell count is at 500, and your doctor has offered to put you"
+						+ "on antiretroviral treatment.\n"
+						+ "Though it has proven successful at controlling HIV,"
+						+ "there are also side effects and complications that\n"
+						+ "make it risky. Take antiretrovirals?", 
+						"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
+						JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
+				
+				if (userDecision == 0) {
+					sidebarPanel.addTextToPane("You have opted to take antiretrovirals. "
+							+ "A successful round of treatment increased your t-cell "
+							+ "count by 50.");
+					useAntiretrovirals();
+				} else {
+					// TODO add text to sidebar telling user some facts about antiretrovirals
+				} 
+			}
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10);
 
@@ -765,6 +802,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			// Calibrate difficulty
 			calibrateDifficulty();
+			
+			
 
 			if (System.currentTimeMillis() - gameStartTime > HIV_INTRO_TIME) {
 				if (!infected) {
