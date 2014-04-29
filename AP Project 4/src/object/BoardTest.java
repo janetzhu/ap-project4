@@ -13,6 +13,16 @@ import org.junit.Test;
 
 public class BoardTest {
 
+/*
+ * @Test 
+ * testBoardConstructor() which makes sure  
+ * that the members of the Board class are initialized properly. 
+ * 
+ * @param none
+ * @return none
+ * 	
+ */
+	
 	@Test
 	public void testBoardConstructor() {
 
@@ -23,7 +33,18 @@ public class BoardTest {
 		assertEquals(3,b.getgameWidth());
 
 	}
-
+	
+/*
+ * @Test
+ * testcaliberateDifficulty() 
+ * 
+ * This method is important to make sure the game difficulty is computed 
+ * appropriately. 
+ * 
+ * 
+ *@param none
+ *@return none 
+ */
 
 	@Test
 	public void testcaliberateDifficulty() {
@@ -62,6 +83,17 @@ public class BoardTest {
 
 	}
 
+	/*
+	 * @test
+	 * 
+	 * testCalculateScore() is a method that verifies the score is calculated 
+	 * correctly.
+	 *
+	 *@param none
+	 *@return none 
+	 * 
+	 */
+	
 	@Test
 	public void testCalculateScore() {
 
@@ -73,8 +105,5 @@ public class BoardTest {
 
 		assertEquals(b.getGameScore(), 20);
 	}
-
-
-
-
 }
+
