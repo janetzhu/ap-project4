@@ -700,7 +700,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		else if (tCellCount == LEVEL_6_BENCHMARK) {
 			difficultyLevel = 6;
 		}
-
+	}
+	
+	public void useAntiretrovirals() {
+		tCellCount += 50;
 	}
 
 
@@ -738,23 +741,88 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	@Override
 	public void run() {
 		//Infinite loop, game runs until user x's out of the window.
-		// Code for the timing of the animation is adapted from code in class
-		long beforeTime, timeDiff, sleep;
-		int cellReduceCounter = 0;
-
-        beforeTime = System.currentTimeMillis();
-        
-        System.out.println("About to play game...");
-        
-        // Run this while loop by the game is being played
-		while(gameStatus == "playing") {
-			//if(System.currentTimeMillis)
-			// Animate objects
-			cycle();
+		while (true) {
+			// Code for the timing of the animation is adapted from code in class
+			long beforeTime, timeDiff, sleep;
+			int cellReduceCounter = 0;
+	
+	        beforeTime = System.currentTimeMillis();
+	        
+	        System.out.println("About to play game...");
+	        
+	        // Run this while loop by the game is being played
+			while(gameStatus == "playing") {
+				//if(System.currentTimeMillis)
+				// Animate objects
+				cycle();
+				
+				calculateScore();
+				
+				int oneTenthTime = (int) (GAME_WON_TIME / 10);
+				
+				//Progress bar is incremented as the game time progresses
+				for(int i = 0; i < 10; i++) {
+					if((System.currentTimeMillis() - gameStartTime) > oneTenthTime * i) {
+						currentProgressImage = progressImages[i];
+					}
+				}
+				
+				// Calibrate difficulty
+				calibrateDifficulty();
+				
+				if (System.currentTimeMillis() - gameStartTime > HIV_INTRO_TIME) {
+					if (!infected) {
+						infectHIV();
+					}
+					else if (infected) {
+						cellReduceCounter++;
+						if (cellReduceCounter == 7) {
+							tCellCount--;
+							cellReduceCounter = 0;
+						}
+					}
+				}
+				
+				if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+					introduceVirus();
+				}
+				
+				
+				// If t-cell count hits 500, prompt user if they want to take antiretrovirals.
+				// Timing of when to initiate treatment has been a source of controversy.
+				// An NA-ACCORD study observed patients who started antiretroviral 
+				// therapy either at a CD4 count of less than 500 versus less than 350 
+				// and showed that patients who started ART at lower CD4 counts had a 
+				// 69% increase in the risk of death.
+				
+				if (tCellCount == 500) {
+					// TODO
+					// Options for the antiretroviral option dialog box
+					Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
+					
+					// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
+					// Response is stored in userDecision: 0 is yes, 1 is no.
+					int userDecision = JOptionPane.showOptionDialog(null, 
+							"Your t-cell count is at 500, and your doctor has offered to put you"
+							+ "on antiretroviral treatment.\n"
+							+ "Though it has proven successful at controlling HIV,"
+							+ "there are also side effects and complications that\n"
+							+ "make it risky. Take antiretrovirals?", 
+							"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
+							JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
+					
+					if (userDecision == 0) {
+						sidebarPanel.addTextToPane("You have opted to take antiretrovirals. "
+								+ "A successful round of treatment increased your t-cell "
+								+ "count by 50.");
+						useAntiretrovirals();
+					} else {
+						// TODO add text to sidebar telling user some facts about antiretrovirals
+					} 
+					
 
 			calculateScore();
 
-			int oneTenthTime = (int) (GAME_WON_TIME / 10);
 
 			//Progress bar is incremented as the game time progresses
 			for(int i = 0; i < 10; i++) {
@@ -825,7 +893,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		sidebarPanel.lightenSidebar();
     	sidebarPanel.repaint();
 
-		latch.countDown();	
+		latch.countDown();
+		
+			} 
+		}
+		
 
 	}
 
