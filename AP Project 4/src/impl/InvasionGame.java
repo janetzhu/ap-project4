@@ -73,7 +73,8 @@ public class InvasionGame extends JApplet implements Runnable{
     private JPanel gameScreens; 
     
     // Various screens, for different stages of game play.
-    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel, takeawaysPanel,
+    private DisplayPanel welcomePanel, backgroundPanel, instructionPanel1,
+    					 instructionPanel2, instructionPanel3, instructionPanel4, takeawaysPanel,
     					 gameOverPanel, gameWonPanel;
     
     //CardLayout object
@@ -173,19 +174,21 @@ public class InvasionGame extends JApplet implements Runnable{
 	    backgroundPanel = new DisplayPanel("Next Page", 1);
 	    backgroundPanel.setBackground(Color.GRAY);
 
-	    instructionPanel = new DisplayPanel("Start Game!", 2);
-	    instructionPanel.setBackground(Color.GREEN);
+	    instructionPanel1 = new DisplayPanel("Next Page", 2);
+	    instructionPanel2 = new DisplayPanel("Next Page", 3);
+	    instructionPanel3 = new DisplayPanel("Next Page", 4);
+	    instructionPanel4 = new DisplayPanel("Start Game!", 5);
 	    
 	    gameBoard = new Board(GAME_WIDTH, GAME_HEIGHT);
 	    gameBoard.initBoard(sidebarPanel);
 	    
-	    gameOverPanel = new DisplayPanel("Next Page", 4);
+	    gameOverPanel = new DisplayPanel("Next Page", 7);
 	    gameOverPanel.setBackground(Color.GRAY);
 
-	    gameWonPanel = new DisplayPanel("Next Page", 5);
+	    gameWonPanel = new DisplayPanel("Next Page", 8);
 	    gameWonPanel.setBackground(Color.GRAY);
 
-	    takeawaysPanel = new DisplayPanel("Replay", 6);
+	    takeawaysPanel = new DisplayPanel("Replay", 9);
 	    takeawaysPanel.setBackground(Color.GRAY);
 	    
 	    //Create new instance of CountDownLatch()
@@ -205,7 +208,10 @@ public class InvasionGame extends JApplet implements Runnable{
 	    // Add the 'cards' to gameScreens
 	    gameScreens.add(welcomePanel, "Welcome Screen");
 	    gameScreens.add(backgroundPanel, "Background");
-	    gameScreens.add(instructionPanel, "Instructions");
+	    gameScreens.add(instructionPanel1, "Instructions1");
+	    gameScreens.add(instructionPanel2, "Instructions2");
+	    gameScreens.add(instructionPanel3, "Instructions3");
+	    gameScreens.add(instructionPanel4, "Instructions4");
 	    gameScreens.add(gameBoard, "Game");
 	    gameScreens.add(gameOverPanel, "Game Over");
 	    gameScreens.add(gameWonPanel, "Game Won");
@@ -670,13 +676,15 @@ public class InvasionGame extends JApplet implements Runnable{
 			Graphics2D g2 = (Graphics2D) g;
 
 			//If current screen doesn't equal instructions
-			if(currentScreen.equals("Instructions"))
+			if(currentScreen.equals("Instructions4"))
 				
 				//Draw the background sidebar
 				g2.drawImage(instructions_sidebar,0,0,this);
-			else if(currentScreen.equals("Game"))
+			else if(currentScreen.equals("Game") || currentScreen.equals("Game Won") || 
+					currentScreen.equals("Game Over") || currentScreen.equals("Takeaways")) {
+				g2.drawImage(background_sidebar,0,0,this);
 				g2.drawImage(fast_facts,0,0,this);
-
+			}
 			else {		
 				//Otherwise draw the instructions sidebar
 				g2.drawImage(background_sidebar,0,0,this);

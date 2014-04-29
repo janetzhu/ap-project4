@@ -35,18 +35,16 @@ public class DisplayPanel extends JPanel {
 	private int GAME_WIDTH = 650;
 
 	
-	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions", "Game",
+	final private String[] GAME_SCREENS = {"Welcome Screen", "Background", "Instructions1", "Instructions2",
+											"Instructions3","Instructions4", "Game",
 										   "Game Over", "Game Won", "Takeaways"};
 
-	private BufferedImage background, logo, backgroundScreen, background_sidebar, logo_sidebar, instructionsScreen, 
+	private BufferedImage background, logo, backgroundScreen, background_sidebar, logo_sidebar, 
+						  instructionsScreen1, instructionsScreen2, instructionsScreen3, instructionsScreen4,
 						  gameOverImage, gameWonImage, preventionScreen;
 	
 	private JButton progressButton;
 	private JTextArea contentText;
-	private BufferedImage backgroundImage;
-	private BufferedImage headerImage;
-	private BufferedImage mainImage;
-	private JLabel pictureLabel;
 	private int panelType;
 	private boolean textAreaIncluded;
 	
@@ -57,68 +55,6 @@ public class DisplayPanel extends JPanel {
 	 * @param textToDisplay
 	 * @param displayPanelType
 	 */
-	/*public DisplayPanel(String buttonText, String textToDisplay, int displayPanelType) {
-		// Constructor for DisplayPanel with text in main content section
-		
-		//Set layout equal to null
-		setLayout(null);
-		
-		//Set the size dimensions
-		setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
-		
-		//Call loadImages()
-		loadImages();
-
-		//Set panelType equal to new variable
-		panelType = displayPanelType;
-		
-		//Set textAreaIncluded equal to true
-		textAreaIncluded = true;
-		
-		//Set up progress button to be used in game
-		progressButton = new JButton(buttonText);
-		progressButton = styleButton(progressButton);
-		progressButton.setBounds(285, 580, 150, 50);
-		
-		//Set up content text to be used in game
-		contentText = new JTextArea(textToDisplay, 10, 50);
-		contentText = styleText(contentText);
-		contentText.setBounds(25, 75, GAME_WIDTH - 50, 300);
-		
-		//If panelType is 6
-		if (panelType == 6) {
-			
-			//Add listener to progressButton
-			progressButton.addActionListener(new ActionListener() {
-
-				//Create action performed event that changes display panel to game
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					InvasionGame.changeDisplayPanel("Game");
-				}
-				
-			});
-		}
-		
-		//Else
-		else {
-			
-			//Add listener to progressButton anyway
-			progressButton.addActionListener(new ActionListener() {
-
-			//Create action event that changes display panel to one ahead
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
-			}
-			
-			});
-		}
-		
-		//Call initDisplayPanel()
-		initDisplayPanel();
-		
-	}*/
 
 	/**
 	 * DisplayPanel()
@@ -153,9 +89,11 @@ public class DisplayPanel extends JPanel {
 			//Create action performed event that changes screen to one ahead
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if(panelType == 4)
+				System.out.println(GAME_SCREENS[panelType] + " " + panelType);
+				if(panelType == 7)
 					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 2]);
-				else if(panelType == 6) {
+				//if you have reached the end of the game and need to restart
+				else if(panelType == 9) {
 					InvasionGame.changeDisplayPanel("Game");
 					InvasionGame.resetClearedFacts();
 				}
@@ -202,44 +140,52 @@ public class DisplayPanel extends JPanel {
 		//Draw the background image
         g2.drawImage(background, 0, 0, this);
         
-        //If the panel is equal to welcome screen
-        if (GAME_SCREENS[panelType] == "Welcome Screen") {
+        switch(panelType) {
+        //Welcome Screen
+        case 0:
+        	g2.drawImage(logo, 0, 50, this);
+        	break;
         	
-        	//Draw the logo image on the panel
-            g2.drawImage(logo, 0, 50, this);
-        }
-        
-        //If panel is equal to the background screen
-        else if (GAME_SCREENS[panelType] == "Background") {
-			//Draw the images to be displayed
+        //Background
+        case 1:
         	g2.drawImage(backgroundScreen, 0,0,this);
-			
-        }
+        	break;
         
-        //If panel is equal to the instructions screen
-        else if (GAME_SCREENS[panelType] == "Instructions") {
-        	//Draw the instructions image on the panel
-        	g2.drawImage(instructionsScreen,0,0,this);
-			
-        }  
+        //Instructions 1
+        case 2:
+        	g2.drawImage(instructionsScreen1,0,0,this);
+        	break;
         
-        //If the panel is equal to the game over screen
-        else if (GAME_SCREENS[panelType] == "Game Over") {
-			//Draw the game over image
+        //Instructions 2
+        case 3:
+        	g2.drawImage(instructionsScreen2,0,0,this);
+        	break;
+        
+        //Instructions 3
+        case 4:
+        	g2.drawImage(instructionsScreen3,0,0,this);
+        	break;
+        
+        //Instructions 4
+        case 5:
+        	g2.drawImage(instructionsScreen4,0,0,this);
+        	break;
+        	
+        //Game Over
+        case 7:
         	g2.drawImage(gameOverImage,0,100,this);
-        }
+        	break;
         
-        //If the panel is equal to the game won screen
-        else if (GAME_SCREENS[panelType] == "Game Won") {
-			//Draw the game won image 
+        //Game Won
+        case 8:
         	g2.drawImage(gameWonImage,0,100,this);
-        }  
+        	break;
         
-        //If the panel is equal to the takeaways screen
-        else if (GAME_SCREENS[panelType] == "Takeaways") {
+        //Takeaways
+        case 9:
         	g2.drawImage(preventionScreen, 0, 0, this);
-
-        }
+        	break;
+        }//end switch
        
 	}
 
@@ -269,8 +215,11 @@ public class DisplayPanel extends JPanel {
         	//lode sidebar logo image
             logo_sidebar = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
             
-            //instructions image
-            instructionsScreen = ImageIO.read(getClass().getResource("/instructions_screen.png"));
+            //instructions images
+            instructionsScreen1 = ImageIO.read(getClass().getResource("/instructions_screen1.png"));
+            instructionsScreen2 = ImageIO.read(getClass().getResource("/instructions_screen2.png"));
+            instructionsScreen3 = ImageIO.read(getClass().getResource("/instructions_screen3.png"));
+            instructionsScreen4 = ImageIO.read(getClass().getResource("/instructions_screen4.png"));
             
             //Game Over image
             gameOverImage = ImageIO.read(getClass().getResource("/game_over.png"));

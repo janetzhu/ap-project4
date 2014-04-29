@@ -69,6 +69,7 @@ public class Facts {
 		            
 		            tCellFacts.put(tCellCount, fact);
 		        }
+		        reader2.close();
 		        
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
