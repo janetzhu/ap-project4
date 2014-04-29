@@ -826,6 +826,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10); 
 
+
 			//Progress bar is incremented as the game time progresses
 			for(int i = 0; i < 10; i++) {
 				if((System.currentTimeMillis() - gameStartTime) > oneTenthTime * i) {
