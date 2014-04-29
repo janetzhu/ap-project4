@@ -39,7 +39,7 @@ public class DisplayPanel extends JPanel {
 										   "Game Over", "Game Won", "Takeaways"};
 
 	private BufferedImage background, logo, background_sidebar, logo_sidebar, what_is_hiv, instructions_img, 
-						  HIV_attacks, HIV_invasion, preventHIVImage, gameOverImage, gameWonImage;
+						  HIV_attacks, HIV_invasion, preventHIVImage, gameOverImage, gameWonImage, precautionsImage;
 	
 	private JButton progressButton;
 	private JTextArea contentText;
@@ -62,8 +62,9 @@ public class DisplayPanel extends JPanel {
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(325, 560, 200, 50);
-
+		progressButton.setBounds(GAME_WIDTH - 150, 600, 150, 50);
+		//progressButton.setBounds(250, 620, 200, 40);
+		
 		contentText = new JTextArea(textToDisplay, 10, 50);
 		contentText = styleText(contentText);
 		contentText.setBounds(25, 75, GAME_WIDTH - 50, 300);
@@ -103,8 +104,9 @@ public class DisplayPanel extends JPanel {
 		
 		progressButton = new JButton(buttonText);
 		progressButton = styleButton(progressButton);
-		progressButton.setBounds(325, 560, 200, 50);
-
+		//progressButton.setBounds(250, 610, 150, 40);
+		progressButton.setBounds(GAME_WIDTH - 150, 600, 150, 50);
+		
 		progressButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -139,7 +141,9 @@ public class DisplayPanel extends JPanel {
         }
         else if (GAME_SCREENS[panelType] == "Background") {
 			g2.drawImage(what_is_hiv,0,6,this);
-			g2.drawImage(HIV_attacks, 25, 375, this);
+			g2.drawImage(HIV_invasion, -40, 375, this);
+			g2.drawImage(HIV_attacks, 325, 375, this);
+			
         }
         else if (GAME_SCREENS[panelType] == "Instructions") {
         	g2.drawImage(instructions_img,0,0,this);
@@ -153,7 +157,7 @@ public class DisplayPanel extends JPanel {
 			g2.drawImage(gameWonImage,0,6,this);
         }  
         else if (GAME_SCREENS[panelType] == "Takeaways") {
-        	g2.drawImage(preventHIVImage, 25, 350, this);
+        	g2.drawImage(precautionsImage, 75, 375, this);
         }
        
 	}
@@ -202,6 +206,8 @@ public class DisplayPanel extends JPanel {
             // Game won image
 			gameWonImage = ImageIO.read(getClass().getResource("/game_won.png"));
             
+			precautionsImage = ImageIO.read(getClass().getResource("/hiv-aids-vaccine.jpg"));
+			
 		} catch (IOException ex) {
 			System.out.println("Error loading image");
 		}
