@@ -670,6 +670,8 @@ public class InvasionGame extends JApplet implements Runnable{
 		*/
 
 	}
+	
+
 
 
 	@Override
