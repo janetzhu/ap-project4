@@ -702,6 +702,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		}
 
 	}
+	
+	public void useAntiretrovirals() {
+		tCellCount += 50;
+	}
 
 
 	public void calculateScore() {
@@ -812,7 +816,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 						sidebarPanel.addTextToPane("You have opted to take antiretrovirals. "
 								+ "A successful round of treatment increased your t-cell "
 								+ "count by 50.");
-						//useAntiretrovirals();
+						useAntiretrovirals();
 					} else {
 						// TODO add text to sidebar telling user some facts about antiretrovirals
 					} 
