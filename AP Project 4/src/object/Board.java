@@ -792,8 +792,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Obtains String from Fact object and sends it to sidebarPanel 
 	 */
 	public void displayFact() {
-		//Add facts to the side bar panel
-		
+		//Add facts to the side bar panel	
 		
 		if (factNo <= hivFacts.getNumOfTips()) {
 			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
