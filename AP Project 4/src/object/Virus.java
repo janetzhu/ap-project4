@@ -9,9 +9,6 @@ import java.awt.event.MouseListener;
  */
 
 public class Virus {
-	//Declare private width and height variables
-	private final int VIRUS_WIDTH = 60;
-	private final int VIRUS_HEIGHT = 60;
 
 	// The x coordinate of the top-left of the virus
 	private int xCoord;
@@ -33,13 +30,8 @@ public class Virus {
 	// Alive is true if the virus is still alive, and false if it has been destroyed by the user
 	private boolean alive;
 	
-	//Set virus count equal to 5
-	public int virusCount=5; 
+	public int virus_count=5; 
 	
-	/**
-	 * Virus()
-	 * Constructor
-	 */
 	public Virus() {
 		this.setX(0);
 		this.setY(0);
@@ -51,52 +43,29 @@ public class Virus {
 		this.setAlive(true);
 	}
 	
-	/**
-	 * Virus()
-	 * Default Constructor
-	 * @param xCoord
-	 * @param yCoord
-	 * @param xSpeed
-	 * @param ySpeed
-	 * @param virusStrength
-	 */
-	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int virusStrength) {
+	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed) {
 		this.setX(xCoord);
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
 		this.setySpeed(ySpeed);
-		this.setWidth(VIRUS_WIDTH);
-		this.setHeight(VIRUS_HEIGHT);
-		this.setStrength(virusStrength);
+		this.setWidth(40);
+		this.setHeight(40);
+		this.setStrength(1);
 		this.setAlive(true);
 	}
 	
-	/**
-	 * Virus()
-	 * Default Constructor
-	 * @param xCoord
-	 * @param yCoord
-	 * @param xSpeed
-	 * @param ySpeed
-	 * @param width
-	 * @param height
-	 * @param virusStrength
-	 * @param isAlive
-	 */
-	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int width, int height, int virusStrength, boolean isAlive) {
+	public Virus(int xCoord, int yCoord, int xSpeed, int ySpeed, int width, int height, boolean isAlive) {
 		this.setX(xCoord);
 		this.setY(yCoord);
 		this.setxSpeed(xSpeed);
 		this.setySpeed(ySpeed);
 		this.setWidth(width);
 		this.setHeight(height);
-		this.setStrength(virusStrength);
+		this.setStrength(1);
 		this.setAlive(isAlive);
 	}
 
 	/**
-	 * getX()
-	 * Get method
 	 * @return the xCoord
 	 */
 	public int getX() {
@@ -104,8 +73,6 @@ public class Virus {
 	}
 
 	/**
-	 * setX()
-	 * Set method
 	 * @param xCoord the xCoord to set
 	 */
 	public void setX(int xCoord) {
@@ -113,8 +80,6 @@ public class Virus {
 	}
 
 	/**
-	 * getY()
-	 * Get method
 	 * @return the yCoord
 	 */
 	public int getY() {
@@ -122,8 +87,6 @@ public class Virus {
 	}
 
 	/**
-	 * setY()
-	 * Set Method
 	 * @param yCoord the yCoord to set
 	 */
 	public void setY(int yCoord) {
@@ -131,8 +94,6 @@ public class Virus {
 	}
 
 	/**
-	 * getxSpeed()
-	 * Get method
 	 * @return the xSpeed
 	 */
 	public int getxSpeed() {
@@ -140,8 +101,6 @@ public class Virus {
 	}
 
 	/**
-	 * setxSpeed()
-	 * Set method
 	 * @param xSpeed the xSpeed to set
 	 */
 	public void setxSpeed(int xSpeed) {
@@ -149,8 +108,6 @@ public class Virus {
 	}
 
 	/**
-	 * getySpeed()
-	 * Get method
 	 * @return the ySpeed
 	 */
 	public int getySpeed() {
@@ -158,8 +115,6 @@ public class Virus {
 	}
 
 	/**
-	 * setySpeed()
-	 * Set method
 	 * @param ySpeed the ySpeed to set
 	 */
 	public void setySpeed(int ySpeed) {
@@ -167,8 +122,6 @@ public class Virus {
 	}
 
 	/**
-	 * getWidth()
-	 * Get method
 	 * @return the width
 	 */
 	public int getWidth() {
@@ -176,8 +129,6 @@ public class Virus {
 	}
 
 	/**
-	 * setWidth()
-	 * Set method
 	 * @param width the width to set
 	 */
 	public void setWidth(int width) {
@@ -185,8 +136,6 @@ public class Virus {
 	}
 
 	/**
-	 * getHeight()
-	 * Get method
 	 * @return the height
 	 */
 	public int getHeight() {
@@ -194,8 +143,6 @@ public class Virus {
 	}
 
 	/**
-	 * setHeight()
-	 * Set method
 	 * @param height the height to set
 	 */
 	public void setHeight(int height) {
@@ -203,8 +150,6 @@ public class Virus {
 	}
 
 	/**
-	 * getStrength()
-	 * Get method
 	 * @return the strength
 	 */
 	public int getStrength() {
@@ -212,8 +157,6 @@ public class Virus {
 	}
 
 	/**
-	 * setStrength()
-	 * Set method
 	 * @param strength the strength to set
 	 */
 	public void setStrength(int strength) {
@@ -221,8 +164,6 @@ public class Virus {
 	}
 
 	/**
-	 * isAlive()
-	 * Boolean that checks if the body cell is alive
 	 * @return the alive
 	 */
 	public boolean isAlive() {
@@ -230,8 +171,6 @@ public class Virus {
 	}
 
 	/**
-	 * setAlive()
-	 * Set method
 	 * @param alive the alive to set
 	 */
 	public void setAlive(boolean isAlive) {
@@ -239,7 +178,6 @@ public class Virus {
 	}
 	
 	/**
-	 * getBound()
 	 * This method takes in an integer that refers to one of the 4 "sides" of the virus object, and returns the x or y
 	 * coordinate of that side as an integer value.  This is used to accommodate for the virus size.
 	 * 
@@ -265,7 +203,6 @@ public class Virus {
 	}
 
 	/**
-	 * animateVirus()
 	 * This method animates the virus given its current location and the current values of the speed variables by
 	 * adding the value of the x and y speed parameters to the current x and y coordinates. Then, when the virus is
 	 * reprinted from Board it will appear as if the virus has moved to this new location.
@@ -276,7 +213,6 @@ public class Virus {
 	}
 	
 	/**
-	 * withinVirus()
 	 * Checks if a coordinate is within the bounds of the virus
 	 */
 	public boolean withinVirus (int x, int y) {
@@ -288,4 +224,4 @@ public class Virus {
 		}
 	}
 	
-} //END Virus
+}
