@@ -4,6 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/*
+ *This class tests the essential methods of the Board class  
+ *and the graphical methods are left out since one can already 
+ *see that on the screen. 
+ * 
+ */
+
 public class BoardTest {
 
 	@Test
