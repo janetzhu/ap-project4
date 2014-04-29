@@ -153,7 +153,11 @@ public class DisplayPanel extends JPanel {
 			//Create action performed event that changes screen to one ahead
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
+				if(panelType == 4)
+					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 2]);
+				else {
+					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 1]);
+				}
 			}
 
 		});
@@ -221,13 +225,13 @@ public class DisplayPanel extends JPanel {
         //If the panel is equal to the game over screen
         else if (GAME_SCREENS[panelType] == "Game Over") {
 			//Draw the game over image
-        	g2.drawImage(gameOverImage,0,6,this);
+        	g2.drawImage(gameOverImage,0,100,this);
         }
         
         //If the panel is equal to the game won screen
         else if (GAME_SCREENS[panelType] == "Game Won") {
 			//Draw the game won image 
-        	g2.drawImage(gameWonImage,0,6,this);
+        	g2.drawImage(gameWonImage,0,100,this);
         }  
         
         //If the panel is equal to the takeaways screen
