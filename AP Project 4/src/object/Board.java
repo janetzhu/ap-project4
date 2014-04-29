@@ -905,7 +905,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			// therapy either at a CD4 count of less than 500 versus less than 350 
 			// and showed that patients who started ART at lower CD4 counts had a 
 			// 69% increase in the risk of death.
-			if (tCellCount == 650 && !antiretroviralOffered) {
+			if (tCellCount == 800 && !antiretroviralOffered) {
 				// TODO
 				// Options for the antiretroviral option dialog box
 				Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
