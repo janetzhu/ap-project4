@@ -1,0 +1,8 @@
+900
+Normal t-cell level is about 700 to 1000 cells in a pea sized drop of blood.
+500
+HIV positive people are considered to have a normal t-cell count if the number is above 500 cells per drop.
+350
+Treatment typically begins when your t-cell count falls below 350 cells per drop.
+200
+Public health guidelines recommend starting on preventive anti-retroviral therapy if t-cell counts are under 200.
