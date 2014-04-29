@@ -385,7 +385,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 	public void mousePressed(MouseEvent e) {
 		// Check if the user click on top of an actual virus
-				
+	    System.out.println("click");
 		for (int i = 0; i < virusList.size(); i++) {
 
 			// Iterate through all viruses
