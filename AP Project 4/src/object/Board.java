@@ -166,7 +166,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Get method
 	 * @return
 	 */
-	public int getDiffcultyLevel() {
+	public int getDifficultyLevel() {
 		return difficultyLevel;	
 	}
 
