@@ -3,6 +3,7 @@ package object;
 import impl.InvasionGame;
 import impl.InvasionGame.SidebarPanel;
 
+import java.applet.Applet;
 import java.awt.*;
 
 import javax.imageio.ImageIO;
@@ -12,7 +13,9 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
@@ -26,7 +29,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 
 	/******** CLASS  VARIABLES ********/
-	private int DELAY = 25;
+	private final int DELAY = 20;
 	private final int VIRUS_POS_XMIN = 15;
     private final int VIRUS_POS_XMAX = 635;
     private final int VIRUS_POS_YMIN = 10;
@@ -39,21 +42,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int CELL_WIDTH = 66;
     private final int CELL_HEIGHT = 50;
     
-    private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
+    private final int START_VIRUS_COUNT = 1; //number of viruses at start of game
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
-    private final long GAME_WON_TIME = 160000;
-    private final long HIV_INTRO_TIME = 15000;
+    private final long GAME_WON_TIME = 60000;
+    private final long HIV_INTRO_TIME = 10000;
     
-    // Benchmarks of T-cell counts at which the game becomes harder
     private final int LEVEL_2_BENCHMARK = 950;
     private final int LEVEL_3_BENCHMARK = 750;
     private final int LEVEL_4_BENCHMARK = 600;
     private final int LEVEL_5_BENCHMARK = 500;
     private final int LEVEL_6_BENCHMARK = 400;
     
-	private final String[] HIVinfectionReason = {"unprotected sexual intercourse", "sharing needles", "blood-to-blood contact"};
-  
     //Send over side bar panel from
     private SidebarPanel sidebarPanel; 
     public CountDownLatch latch;
@@ -88,31 +88,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private int tCellCount;
 	private int gameScore;
 	private int difficultyLevel;
-
+	
 	//Declare boolean infected variable
 	private boolean infected;
 
 	//Declare cell counter
 	private int cellCounter;
-
+	
 	//Declare boolean antiretroviralOffered
-	private boolean antiretroviralOffered;
+	private boolean antiretroviralOffered = false;
 	
-	private String[] antiretroviralOutcomes = {
-		"You have chosen to take antiretrovirals. "
-		 	+ "A successful round of treatment increased your t-cell "
-			+ "count by 50.", 
-		"You have chosen to take antiretrovirals. "
-				+ "However, sadly the treatment was unsuccessful, and the adverse side-effects have "
-				+ "actually decreased your t-cell count by 50.",
-		"You have opted out of taking antiretrovirals."
-				+ " Even though antiretroviral treatment comes with risks, it has proven"
-				+ "effective in managing HIV."};
-	
-
-
 	// Fact to display
-	private int factNumber; 
+	private int factNo = 0; 
 
 	/**
 	 * Board()
@@ -123,6 +110,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public Board(int height, int width) {
 		gameHeight = height;
 		gameWidth = width;
+
 	}
 
 	/**
@@ -131,7 +119,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getgameHeight() {
+
 		return gameHeight;
+
+
 	}
 
 	/**
@@ -140,7 +131,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getgameWidth() {
+
 		return gameWidth;
+
 	}
 
 	/**
@@ -149,6 +142,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getTCellCount() {
+
 		return tCellCount; 	
 	}
 
@@ -158,6 +152,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param number
 	 */
 	public void setTCellCount(int number) {
+
 		tCellCount=number;	
 	}
 
@@ -167,6 +162,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getDiffcultyLevel() {
+
 		return difficultyLevel;	
 	}
 
@@ -176,6 +172,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getGameScore() {
+
 		return gameScore;	
 	}
 
@@ -185,6 +182,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param score
 	 */
 	public void setGameScore(int score) {
+
 		gameScore = score;
 	}
 
@@ -194,6 +192,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public long getGameStartTime() {
+
 		return gameStartTime;
 	}
 
@@ -203,6 +202,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param time
 	 */
 	public void setGameStartTime(long time) {
+
 		gameStartTime = time;
 	}
 
@@ -213,8 +213,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param i
 	 */
 	public void setVirusList(Virus currentVirus, int index) {
+
 		virusList.set(index, currentVirus);
+
 	}
+
 
 	 /**
 	  * initBoard()
@@ -225,17 +228,30 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 public void initBoard(SidebarPanel sidebar) {
 		//Set visible to true
 		setVisible(true);
-		
-		setDoubleBuffered(true);
 
 		//Set size to game dimensions
 		setPreferredSize(new Dimension(gameWidth, gameHeight));
-
+		
 		//Set background color
 		setBackground(Color.GRAY);
 
 		//Add listener
-		addMouseListener(this);
+		this.addMouseListener(this);
+
+		//Set infected to false
+		infected = false;
+		
+		//Set up cell counter
+		cellCounter = CELL_ROWS * CELL_COLUMNS;
+		
+		//Initialize game score
+		gameScore = 0;
+		
+		//Initialize t cell count
+		tCellCount = START_TCELL_COUNT;
+		
+		//Initialize difficulty level
+		difficultyLevel = START_DIFFICULTY_LEVEL;
 
 		//Initialize side bar panel
 		sidebarPanel = sidebar;
@@ -278,36 +294,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
     	//Clear the virus list
     	virusList.clear();
     	
-    	//Set up cell counter
-		cellCounter = CELL_ROWS * CELL_COLUMNS;
-
-		//Initialize game score
-		gameScore = 0;
-
-		//Set infected to false
-		infected = false;
-		
-		//Initialize t cell count
-		tCellCount = START_TCELL_COUNT;
-
-		//Initialize difficulty level
-		difficultyLevel = START_DIFFICULTY_LEVEL;
-    			
-    	//Reset tCellCount
-    	tCellCount = START_TCELL_COUNT;
-
-		// Reset antiretroviral offered to false
-		antiretroviralOffered = false;
-		
-		// Reset fact Number to 0
-		factNumber = 0;
-    	
     	//Create for loop which iterates through body of cells
     	for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
 	        	cellList[i][j].setInfected(false);
 	        }
         }
+    	
+    	//Initialize board
+    	this.initBoard(sidebarPanel);
     	
     	//Latch is equal to count latch
 		this.latch = countLatch;
@@ -329,6 +324,37 @@ public class Board extends JPanel implements Runnable, MouseListener {
     public void stop() {}
     
     public void destroy() {}
+    
+    /**
+     * restartGame()
+     * Restarts the game
+     */
+    public void restartGame() {
+    	//Set game status to playing
+    	gameStatus = "playing";
+    	
+    	//Clear the virus list
+    	virusList.clear();
+    	
+    	//Create for loop that iterates through body cells
+    	for (int j = 0; j < CELL_ROWS; j++) {
+	        for (int i = 0; i < CELL_COLUMNS; i++) {
+	        	cellList[i][j].setInfected(false);
+	        }
+        }
+    	
+    	//Initialize sidebar panel on board
+    	this.initBoard(sidebarPanel);
+    	
+    	//Start game time
+        gameStartTime = System.currentTimeMillis();
+    	
+        //Create new instance of Thread()
+        Thread gamePlayThread = new Thread(this);
+        
+        //Start the game thread
+    	gamePlayThread.start();
+    }
 
     /**
      * loadResources()
@@ -346,10 +372,10 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				String imagePath = "/progress_images/progress_bar_" + i + ".png";
 				progressImages[i-1] = ImageIO.read(getClass().getResource(imagePath));
 			}
-
+			
 			//Create body cells
 			bodyCells = new BufferedImage[4];
-
+			
 			//Create for loop of body cells
 			for(int i = 1; i <= 4; i++) {
 				String imagePath = "/cell_images/body_cell" + i + ".png";
@@ -358,7 +384,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			//Create infected cells
 			infectedCells = new BufferedImage[4];
-
+			
 			//Create for loop of infected cells
 			for(int i = 1; i <= 4; i++) {
 				String imagePath = "/cell_images/infected_cell" + i + ".png";
@@ -386,7 +412,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		//Create for loop of cell images
 		for (int j = 0; j < CELL_ROWS; j++) {
 	        for (int i = 0; i < CELL_COLUMNS; i++) {
-
+	        	
 	        	//Create randInt variable
 	        	randInt = (int)(Math.random() * 4);
 	        	cellImages[i][j] = bodyCells[randInt];
@@ -488,38 +514,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Detects user mouse clicks.
 	 */
 	public void mousePressed(MouseEvent e) {
-		// Check if the user click on top of an actual virus
-		for (int i = 0; i < virusList.size(); i++) {
-
-			// Iterate through all viruses
-			Virus virus = virusList.get(i);
-			int strength = virus.getStrength();
-
-			//Check if click location is within bounds of any virus 
-			if (virus.withinVirus(e.getX(), e.getY())) {
-
-			  if(virus.isAlive()) {	
-
-				if (strength == 1) {
-					// If so, and strength is only 1, kill virus
-					virus.setAlive(false);
-					gameScore = gameScore + 15;
-					repaint();
-				}
-				else if (strength > 1) {
-					// If so, but strength is greater than 1, decrement strength
-					int newStrength = strength - 1;
-					virus.setStrength(newStrength);
-					repaint();
-				}
-
-				// Replace virus with killed one or one with weaker strength
-				virusList.set(i, virus);
-				//Break from loop
-				break;
-			  }
-			}		
-		}
+		
 	}
 
 	/**
@@ -533,25 +528,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public void infectHIV() {
 		//Set infected to true
 		infected = true;
-
+		
 		//Add infection text to sidebar panel
-		sidebarPanel.addTextToPane("You have been infected with HIV!");
-
-		long timeBeforePrompt = System.currentTimeMillis();
-		int randomReasonIndex = (int) (Math.random() * 2);
-
+		sidebarPanel.addTextToPane("You have now contracted HIV!");
+		
 		// JOptionPane that notifies user that he/she has been infected with HIV.
 		JOptionPane.showMessageDialog(this, 
-				"As a result of " + HIVinfectionReason[randomReasonIndex] 
-						+" , you have unfortunately been infected "
-						+ "with HIV.\n HIV is now going to begin to diminish "
-						+ "your t-cell troopers, \nmaking it harder for you to defend "
-						+ "your body cells from the invading diseases!", 
-				"Infected with HIV", JOptionPane.WARNING_MESSAGE);
-		
-		long timeafterPrompt = System.currentTimeMillis();
-		long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-		gameStartTime = gameStartTime + timeSpentPaused;
+				"You have contracted HIV.", 
+				"Contracted HIV", JOptionPane.WARNING_MESSAGE);
 	}
 
 	/**
@@ -584,28 +568,30 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	     * Inspired by a similar post on stack overflow:
 	     * http://stackoverflow.com/questions/363681/generating-random-numbers-in-a-range-with-java
 	     */
-    	
-    	// Random x and y coordinates are integers between the x and y min and max constants
 	    int randomNumberX = VIRUS_POS_XMIN + (int)(Math.random() * ((VIRUS_POS_XMAX - VIRUS_POS_XMIN) + 1));
 	    int randomNumberY = VIRUS_POS_YMIN + (int)(Math.random() * ((VIRUS_POS_YMAX - VIRUS_POS_YMIN) + 1));
 	    int randomNumberDifficulty;
-	    
-	    //If difficulty level is greater than 1 set strength to random int between current difficulty and 3 less than
-	    // current difficulty
+
+	    //If difficulty level is greater than 1
 	    if (difficultyLevel > 1) {
+	    	
 	    	//Set minDifficulty
 	    	int minDifficulty = difficultyLevel - 3;
-
+	    	
 	    	//If minDiffuclty is less than 1
 	    	if (minDifficulty < 1) {
+	    		
 	    		//Set minDiffulty equal to 1
 	    		minDifficulty = 1;
 	    	}
-
+	    	
 	    	//Create a random difficulty
 		    randomNumberDifficulty = minDifficulty + (int)(Math.random() * ((difficultyLevel - minDifficulty) + 1));
 	    }
+	    
+	    //Else
 	    else {
+	    	
 	    	//Set random difficulty to difficulty level
 	    	randomNumberDifficulty = difficultyLevel;
 	    }
@@ -643,6 +629,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 	        	//Call check wall collision
 	    		checkWallCollision(i);
+
+	    		//Call check membrane collision
+	    		checkMembraneCollision(i);
         	}
         }
 	}
@@ -734,6 +723,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
     	//Set the current virus in the virus list
     	virusList.set(virusIndex, thisVirus);
 	}
+    
+	/**
+	 * checkMembraneCollision()
+	 * Handles collision of viruses with the membrane.
+	 */
+	public void checkMembraneCollision(int virusIndex) {
+		Virus thisVirus = virusList.get(virusIndex);
+
+		// TODO Check if virus bounds are at the membrane and change x or y speed accordingly to make it bounce off
+    	//Set the current virus in the virus list
+    	virusList.set(virusIndex, thisVirus);
+	}
 
 	/**
 	 * calibrateDifficulty()
@@ -752,16 +753,14 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		}
 		else if (tCellCount == LEVEL_4_BENCHMARK) {
 			difficultyLevel = 4;
-			DELAY = 20;
 		}
 		else if (tCellCount == LEVEL_5_BENCHMARK) {
 			difficultyLevel = 5;
-			DELAY = 20;
 		}
 		else if (tCellCount == LEVEL_6_BENCHMARK) {
 			difficultyLevel = 6;
-			DELAY = 20;
 		}
+
 	}
 
 	/**
@@ -785,110 +784,30 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		// and display popup
 
 		
-		if (factNumber < hivFacts.getNumOfTips()) {
-
-			sidebarPanel.addTextToPane(hivFacts.getTip(factNumber));
-
-			long timeBeforePrompt = System.currentTimeMillis();
-
+		if (factNo <= hivFacts.getNumOfTips()) {
+			
+			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
+			
+			
 			// JOptionPane that pops up a message dialog displaying the fact.
 			JOptionPane.showMessageDialog(this, 
-					hivFacts.getTip(factNumber), 
-					"Fast Fact #" + (factNumber + 1), JOptionPane.PLAIN_MESSAGE);
+					hivFacts.getTip(factNo), 
+					"Fast Fact #" + (factNo + 1), JOptionPane.PLAIN_MESSAGE);
 			
-			long timeafterPrompt = System.currentTimeMillis();
-			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-			gameStartTime = gameStartTime + timeSpentPaused;
-
-			factNumber++;
+			factNo++;
+			
 		}
-
-
+		
+		
 	}
-
+	
 	/**
 	 * useAntiretrovirals()
 	 * Method that increases t cell count
 	 */
 	public void useAntiretrovirals() {
-	    int effectIndex = (int)(Math.random() * 4);
-
-		if (effectIndex == 0) {
-			long timeBeforePrompt = System.currentTimeMillis();
-
-			// JOptionPane that pops up a message dialog displaying the fact.
-			JOptionPane.showMessageDialog(this, 
-					antiretroviralOutcomes[0], 
-					"Treatment Successful!", JOptionPane.PLAIN_MESSAGE);
-			
-			long timeafterPrompt = System.currentTimeMillis();
-			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-			gameStartTime = gameStartTime + timeSpentPaused;
-			
-			sidebarPanel.addTextToPane(antiretroviralOutcomes[0]);
-			
-			//Increment t cell count
-			tCellCount += 50;
-		}
-		else if (effectIndex == 1) {
-			long timeBeforePrompt = System.currentTimeMillis();
-
-			// JOptionPane that pops up a message dialog displaying the fact.
-			JOptionPane.showMessageDialog(this, antiretroviralOutcomes[1], 
-					"Treatment Unsuccessful!", JOptionPane.PLAIN_MESSAGE);
-			
-			long timeafterPrompt = System.currentTimeMillis();
-			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-			gameStartTime = gameStartTime + timeSpentPaused;
-			
-			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
-					+ "However, sadly the treatment was unsuccessful, and the adverse side-effects have "
-					+ "actually decreased your t-cell count by 50.");
-			
-			//Decrement t cell count
-			tCellCount -= 50;
-			difficultyLevel = difficultyLevel + 1;
-		}
-		else if (effectIndex == 2) {
-			long timeBeforePrompt = System.currentTimeMillis();
-
-			// JOptionPane that pops up a message dialog displaying the fact.
-			JOptionPane.showMessageDialog(this, 
-					"You have chosen to take antiretrovirals. "
-							+ "However, sadly the treatment was unsuccessful, and has not managed to increase "
-							+ "your t-cell count.",
-					"Treatment Unsuccessful!", JOptionPane.PLAIN_MESSAGE);
-			
-			long timeafterPrompt = System.currentTimeMillis();
-			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-			gameStartTime = gameStartTime + timeSpentPaused;
-			
-			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
-					+ "However, sadly the treatment was unsuccessful, and has not managed to increase "
-					+ "your t-cell count.");
-		}
-		else if (effectIndex == 3 || effectIndex == 4) {
-			long timeBeforePrompt = System.currentTimeMillis();
-
-			// JOptionPane that pops up a message dialog displaying the fact.
-			JOptionPane.showMessageDialog(this, 
-					"You have chosen to take antiretrovirals. "
-							+ "A successful round of treatment increased your t-cell "
-							+ "count by 100.", 
-					"Treatment Successful!", JOptionPane.PLAIN_MESSAGE);
-			
-			long timeafterPrompt = System.currentTimeMillis();
-			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-			gameStartTime = gameStartTime + timeSpentPaused;
-			
-			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
-					+ "A successful round of treatment increased your t-cell "
-					+ "count by 100.");
-			
-			//Increment t cell count
-			tCellCount += 100;
-		}
-				
+		//Increment t cell count
+		tCellCount += 50;
 	}
 
 
@@ -910,7 +829,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			System.out.println("WON!");
 		}		
 	}
-
+	
 	/**
 	 * Dialog box that propts user if they want to take antiretrovirals.
 	 * If t-cell count hits 650, prompt user if they want to take antiretrovirals.
@@ -920,62 +839,58 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * and showed that patients who started ART at lower CD4 counts had a 
 	 * 69% increase in the risk of death.
 	 */
-
+	
 	public void displayAntiretroviralsDialog() {
-
+		
 		// Options for the antiretroviral option dialog box
 		Object[] antiretroviralOptions = {"Take antiretrovirals", "Decline treatment"};
-
-		long timeBeforePrompt = System.currentTimeMillis();
-
+					
 		// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
 		// Response is stored in userDecision: 0 is yes, 1 is no.
 		int userDecision = JOptionPane.showOptionDialog(this, 
-				"Your t-cell count is at 500, and your doctor has offered to put you "
-				+ "on antiretroviral treatment. \n"
-				+ "Though it has proven successful at controlling HIV, "
+				"Your t-cell count is at 500, and your doctor has offered to put you"
+				+ "on antiretroviral treatment.\n"
+				+ "Though it has proven successful at controlling HIV,"
 				+ "there are also side effects and complications that\n"
 				+ "make it risky. Take antiretrovirals?", 
 				"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
 				JOptionPane.QUESTION_MESSAGE, null, antiretroviralOptions, antiretroviralOptions[0]);
-		
-		long timeafterPrompt = System.currentTimeMillis();
-		long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-		gameStartTime = gameStartTime + timeSpentPaused;
-
+					
 		//If user decides to use antiretrovirals,
 		if (userDecision == 0) {
-	    	useAntiretrovirals();
+			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
+					+ "A successful round of treatment increased your t-cell "
+					+ "count by 50.");
+			
+			useAntiretrovirals();
 		}
+			
+		//Else
 		else {
-			sidebarPanel.addTextToPane(antiretroviralOutcomes[2]);
+			sidebarPanel.addTextToPane("You have opted out of taking antiretrovirals."
+					+ " Even though antiretroviral treatment comes with risks, it has proven"
+					+ "effective in managing HIV.");
 		} 
-
+						
 		//Set antiretroviralOffered to true
 		antiretroviralOffered = true;
-
+		
 	} // end displayAntiretroviralsDialog method
-
+	
 	/**
 	 * Checks if tCellCount has hit certain fact benchmarks. If benchmarks match, 
 	 * add fact to pane.
 	 */
-
+	
 	public void checkFactBenchmark() {
-		if (tCellCount == 900 || tCellCount == 550 || tCellCount == 350 || tCellCount == 200) {
-
-			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
-
-			long timeBeforePrompt = System.currentTimeMillis();
-
-			// JOptionPane that pops up a message dialog displaying the fact.
-			JOptionPane.showMessageDialog(this, 
-					hivFacts.getFact(tCellCount),
-					"Fast Fact: T-Cell Count " + tCellCount, JOptionPane.PLAIN_MESSAGE);
+		if (tCellCount == 900 || tCellCount == 500 || tCellCount == 350 || tCellCount == 200) {
 			
-			long timeafterPrompt = System.currentTimeMillis();
-			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
-			gameStartTime = gameStartTime + timeSpentPaused;
+			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
+			
+			// JOptionPane that pops up a message dialog displaying the fact.
+						JOptionPane.showMessageDialog(this, 
+								hivFacts.getFact(tCellCount),
+								"Fast Fact: T-Cell Count " + tCellCount, JOptionPane.PLAIN_MESSAGE);
 		} 
 	}
 
@@ -998,17 +913,17 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			//if(System.currentTimeMillis)
 			// Animate objects
 			cycle();
-
+			
 			//Call to calculateScore()
 			calculateScore();
-
-
+			
+			
 			// If t-cell count is 800 and antiretrovirals have never been offered before
 			// display the antiretrovirals dialog
-			if ((tCellCount == 500 && !antiretroviralOffered) || tCellCount == 200) {
+			if (tCellCount == 800 && !antiretroviralOffered) {
 				displayAntiretroviralsDialog();
 			}
-
+			
 
 			int oneTenthTime = (int) (GAME_WON_TIME / 10); 
 
@@ -1022,28 +937,33 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			// Calibrate difficulty
 			calibrateDifficulty();
-
+			
 			//If chosen time is greater than HIV introduction time
 			if (System.currentTimeMillis() - gameStartTime > HIV_INTRO_TIME) {
 				//If not infected
 				if (!infected) {
 					//Call to infectHIV()
 					infectHIV();
+					
+					
 				}
+				
+				//Else,
 				else if (infected) {
+					
 					//Increment reduce cell counter
 					cellReduceCounter++;
-
+					
 					//If it is equal to 7
-					if (cellReduceCounter == 5) {
-
+					if (cellReduceCounter == 7) {
+						
 						//Decrement t cell count
 						tCellCount--;
-
+						
 						// Check to see if reduced T-cell count aligns with a
 						// fact benchmark
 						checkFactBenchmark();
-
+						
 						//Set cellReduceCounter to 0
 						cellReduceCounter = 0;
 					}
@@ -1051,13 +971,18 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			}
 
 
-			//If certain amount of time has passed, display the necessary fact
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 14000) < 7) {
+			//If certain amount of time has passed,
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 4) {
+				
+				//Call to displayFact()
+
 				displayFact();
+				
 			}
 
 			//If certain amount of time has passed,
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 1000) < 30) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 20) {
+				
 				//Call to introduceVirus()
 				introduceVirus();
 			}
@@ -1074,7 +999,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			// Repaint objects
 			repaint();
-			sidebarPanel.repaint();
+			setDoubleBuffered(true);
 
 			// See if the method are running at the
             // same rate. If not, sleep.
@@ -1106,27 +1031,67 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
     	//Call to countDown()
 		latch.countDown();	
-
-	}
+		
+		}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//unused method
+		// Check if the user click on top of an actual virus
+				System.out.println("Mouse Clicked! at time " + System.currentTimeMillis());
+
+				for (int i = 0; i < virusList.size(); i++) {
+
+					// Iterate through all viruses
+					Virus virus = virusList.get(i);
+					int strength = virus.getStrength();
+					
+					System.out.println("Checking click for virus " + i + " with strength " + strength);
+
+					//Check if click location is within bounds of any virus 
+					if (virus.withinVirus(e.getX(), e.getY())) {
+
+					  if(virus.isAlive()) {	
+							//System.out.println("Virus clicked");
+
+						if (strength == 1) {
+							// If so, and strength is only 1, kill virus
+							System.out.println("Virus destroyed");
+							virus.setAlive(false);
+							gameScore = gameScore + 15;
+							repaint();
+						}
+						else if (strength > 1) {
+							// If so, but strength is greater than 1, decrement strength
+							int newStrength = strength - 1;
+							System.out.println("Virus weakened from " + strength + " to " + newStrength);
+							virus.setStrength(newStrength);
+							repaint();
+						}
+
+						// Replace virus with killed one or one with weaker strength
+						virusList.set(i, virus);
+						//Break from loop
+						break;
+					  }
+					}		
+				}	
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		//unused method
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		//unused method
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {	
-		//unused method
-
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
 	}
 }
