@@ -9,20 +9,7 @@ package impl;
  * the exceptions of the lecture notes and those items noted below, we have neither given nor received, 
  * any assistance on this project.  
  *
- * Resources Used (Facts and Statistics HIV/AIDS Were From the Following Web Sites):
- * 
- * www.AIDS.gov
- * 
- * “U.S. Statistics.” AIDS.gov. Accessed April 15, 2014. http://aids.gov/hiv-aids-basics/hiv-aids-101/statistics/.
- * http://www.pbs.org/newshour/spc/multimedia/africa-dc/#.U0s3MdzF9g0
- *
- * http://aids.about.com/od/technicalquestions/f/cd4.htm
- * http://aids.gov/hiv-aids-basics/just-diagnosed-with-hiv-aids/understand-your-test-results/viral-load/
- * http://www.ucmp.berkeley.edu/alllife/virus.html
- *
- *Facts which appear from the side bar appear in the Grassroots Hoya Booklet  
- * 
- *Images from www.google.com/images 
+ * Resources: <we should note down where we got the images or any outside sources> 
  * 
  * Description: This program helps young people learn about HIV/AIDS through a fun, interactive 
  * game. The user is presented with the time constraints of this disease while viewing 
@@ -77,6 +64,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	private int SIDEBAR_WIDTH = 200;
+	private int SIDEBAR_HEIGHT = GAME_HEIGHT - 64;
 
     public CountDownLatch latch;
 
@@ -298,8 +286,14 @@ public class InvasionGame extends JApplet implements Runnable{
         	//lode sidebar logo image
             logo_sidebar = ImageIO.read(getClass().getResource("/aidsinvasion_logo_sidebar.png"));
             
+            //"What is HIV?" title image
+            what_is_hiv = ImageIO.read(getClass().getResource("/whatishiv.png"));
+            
             //instructions sidebar
             instructions_sidebar = ImageIO.read(getClass().getResource("/instructions_sidebar.png"));
+            
+            //Body Cell Image
+            bodyCellImage = ImageIO.read(getClass().getResource("/body_cell.png"));
             
 
 		} catch (IOException ex) {
@@ -358,7 +352,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		 * Constructor
 		 */
 		public SidebarPanel() {
-			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
+			setPreferredSize(new Dimension(SIDEBAR_WIDTH, SIDEBAR_HEIGHT));
 			dimmed = false;
 			
 			setLayout(null);
@@ -379,7 +373,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			scrollPane.setVerticalScrollBarPolicy(
 	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			//scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
-			scrollPane.setBounds(10, 75, SIDEBAR_WIDTH - 20, WINDOW_HEIGHT - 80);
+			scrollPane.setBounds(2, 64, SIDEBAR_WIDTH - 4, SIDEBAR_HEIGHT - 4);
 			//scrollPane.setMinimumSize(new Dimension(10, 10));
 			scrollPane.setBackground(new Color (0,0,0,0));
 			scrollPane.setBorder(null);
@@ -504,7 +498,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,215));
-	        	g2.fillRect(0,0,SIDEBAR_WIDTH, WINDOW_HEIGHT);
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, SIDEBAR_HEIGHT);
 	        }
 	        
 	        //If game in progress
@@ -512,7 +506,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,150));
-	        	g2.fillRect(0,64,SIDEBAR_WIDTH, WINDOW_HEIGHT);
+	        	g2.fillRect(0,64,SIDEBAR_WIDTH, SIDEBAR_HEIGHT);
 	        }
 	        
 		}

@@ -37,7 +37,7 @@ public class BoardTest {
 	
 /*
  * @Test
- * testcalibrateDifficulty() 
+ * testcaliberateDifficulty() 
  * 
  * This method is important to make sure the game difficulty is computed 
  * appropriately. 
@@ -48,7 +48,7 @@ public class BoardTest {
  */
 
 	@Test
-	public void testcalibrateDifficulty() {
+	public void testcaliberateDifficulty() {
 
 		Board b=new Board(5,4);
 
