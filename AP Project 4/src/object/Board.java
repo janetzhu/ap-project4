@@ -249,9 +249,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		//Add listener
 		addMouseListener(this);
 
-		//Set infected to false
-		infected = false;
-
 		//Initialize side bar panel
 		sidebarPanel = sidebar;
 
@@ -299,6 +296,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		//Initialize game score
 		gameScore = 0;
 
+		//Set infected to false
+		infected = false;
+		
 		//Initialize t cell count
 		tCellCount = START_TCELL_COUNT;
 
@@ -554,8 +554,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		// JOptionPane that notifies user that he/she has been infected with HIV.
 		JOptionPane.showMessageDialog(this, 
-				"As a result of " + HIVinfectionReason[randomReasonIndex] + " , you have unfortunetly been infected "
-						+ "with HIV. HIV is now going to begin to diminish your t-cell troopers, making it harder "
+				"As a result of " + HIVinfectionReason[randomReasonIndex] + ", you have unfortunetly been infected "
+						+ "with HIV.\n HIV is now going to begin to diminish your t-cell troopers,\n making it harder "
 						+ "for you to defend your body cells from the invading diseases!", 
 				"Infected with HIV", JOptionPane.WARNING_MESSAGE);
 		
