@@ -9,7 +9,20 @@ package impl;
  * the exceptions of the lecture notes and those items noted below, we have neither given nor received, 
  * any assistance on this project.  
  *
- * Resources: <we should note down where we got the images or any outside sources> 
+ * Resources Used (Facts and Statistics HIV/AIDS Were From the Following Web Sites):
+ * 
+ * www.AIDS.gov
+ * 
+ * “U.S. Statistics.” AIDS.gov. Accessed April 15, 2014. http://aids.gov/hiv-aids-basics/hiv-aids-101/statistics/.
+ * http://www.pbs.org/newshour/spc/multimedia/africa-dc/#.U0s3MdzF9g0
+ *
+ * http://aids.about.com/od/technicalquestions/f/cd4.htm
+ * http://aids.gov/hiv-aids-basics/just-diagnosed-with-hiv-aids/understand-your-test-results/viral-load/
+ * http://www.ucmp.berkeley.edu/alllife/virus.html
+ *
+ *Facts which appear from the side bar appear in the Grassroots Hoya Booklet  
+ * 
+ *Images from www.google.com/images 
  * 
  * Description: This program helps young people learn about HIV/AIDS through a fun, interactive 
  * game. The user is presented with the time constraints of this disease while viewing 
