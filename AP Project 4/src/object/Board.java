@@ -43,7 +43,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
     private final long GAME_WON_TIME = 160000;
-    private final long HIV_INTRO_TIME = 10000;
+    private final long HIV_INTRO_TIME = 15000;
     
     // Benchmarks of T-cell counts at which the game becomes harder
     private final int LEVEL_2_BENCHMARK = 950;
@@ -785,7 +785,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		// and display popup
 
 		
-		if (factNumber <= hivFacts.getNumOfTips()) {
+		if (factNumber < hivFacts.getNumOfTips()) {
 
 			sidebarPanel.addTextToPane(hivFacts.getTip(factNumber));
 
@@ -1052,7 +1052,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 
 			//If certain amount of time has passed, display the necessary fact
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 7000) < 7) {
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 14000) < 7) {
 				displayFact();
 			}
 
@@ -1074,7 +1074,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			// Repaint objects
 			repaint();
-			setDoubleBuffered(true);
+			sidebarPanel.repaint();
 
 			// See if the method are running at the
             // same rate. If not, sleep.

@@ -89,7 +89,6 @@ public class DisplayPanel extends JPanel {
 			//Create action performed event that changes screen to one ahead
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				System.out.println(GAME_SCREENS[panelType] + " " + panelType);
 				if(panelType == 7)
 					InvasionGame.changeDisplayPanel(GAME_SCREENS[panelType + 2]);
 				//if you have reached the end of the game and need to restart
