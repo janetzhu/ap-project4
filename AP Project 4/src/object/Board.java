@@ -3,7 +3,6 @@ package object;
 import impl.InvasionGame;
 import impl.InvasionGame.SidebarPanel;
 
-import java.applet.Applet;
 import java.awt.*;
 
 import javax.imageio.ImageIO;
@@ -46,6 +45,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final long GAME_WON_TIME = 180000;
     private final long HIV_INTRO_TIME = 10000;
     
+    // Benchmarks of T-cell counts at which the game becomes harder
     private final int LEVEL_2_BENCHMARK = 950;
     private final int LEVEL_3_BENCHMARK = 750;
     private final int LEVEL_4_BENCHMARK = 600;
@@ -554,9 +554,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		// JOptionPane that notifies user that he/she has been infected with HIV.
 		JOptionPane.showMessageDialog(this, 
-				"As a result of " + HIVinfectionReason[randomReasonIndex] + " , you have unfortunetly been infected "
-						+ "with HIV. HIV is now going to begin to diminish your t-cell troopers, making it harder "
-						+ "for you to defend your body cells from the invading diseases!", 
+				"As a result of " + HIVinfectionReason[randomReasonIndex] 
+						+" , you have unfortunately been infected "
+						+ "with HIV.\n HIV is now going to begin to diminish "
+						+ "your t-cell troopers, \nmaking it harder for you to defend "
+						+ "your body cells from the invading diseases!", 
 				"Infected with HIV", JOptionPane.WARNING_MESSAGE);
 		
 		long timeafterPrompt = System.currentTimeMillis();

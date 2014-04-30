@@ -17,102 +17,105 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Facts {
-
-	private String dbName;
-	private String dbUsername;
-	private String dbPassword;
-	Statement statement;
-	Connection myConnection;
 	
+	/******** METHODS ********/
+	// ArrayList of strings that holds tips (facts about HIV
+	// that pop up in regular intervals every few seconds)
 	private ArrayList<String> tips;
+	// Hashmap of tCellFacts (facts about HIV that pop up
+	// at various T-cell count levels)
 	private HashMap<Integer, String> tCellFacts;
 	
+	// Holds URLs (Uniform Resource Locator) for tips.txt and fact.txt
+	URL tipsLocation;
+	URL factsLocation;
+	
+	
+	/******** METHODS ********/
+	
+	/**
+	 * Facts constructor calls the methods that locate the tips.txt and facts.txt 
+	 * resources, and reads the files, storing the strings
+	 */
+	
 	public Facts() {
+		
+		// Allocate memory for tips and tCellFacts variables
+		tips = new ArrayList<String>();
+		tCellFacts = new HashMap<Integer,String>();
+		
+		// Calls the method that locates the resource locations for
+		// tips.txt and facts.txt
+		locateResources();
 			
-			// Locate resource for tips.txt
-			tips = new ArrayList<String>();
-			URL tipsViaClass = Facts.class.getResource("tips.txt");
-			if (tipsViaClass == null) {
-				System.out.println("tipsViaClass is null");
-			}
-			
-			// Locate resource
-			// TODO make this a try-catch block
-			tCellFacts = new HashMap<Integer,String>();
-			URL factsViaClass = Facts.class.getResource("facts.txt");
-			if (factsViaClass == null) {
-				System.out.println("factsViaClass is null");
-			}
-			
-			try {
-				
-				// Open and read tips.txt
-				BufferedReader reader1 = new BufferedReader(new InputStreamReader(tipsViaClass.openStream()));
-				
-				StringBuilder tipsOut = new StringBuilder();
-		        String tip;
-		        while ((tip = reader1.readLine()) != null) {
-		            tips.add(tip);
-		        }
-		        
-		        System.out.println(tipsOut.toString());   //Prints the string content read from input stream
-		        reader1.close();
-		        
-		        // Open and read facts.txt
-		        BufferedReader reader2 = new BufferedReader(new InputStreamReader(factsViaClass.openStream()));
-		        
-		        StringBuilder factsOut = new StringBuilder();
-		        String fact;
-		        while ((fact = reader2.readLine()) != null) {
-		        	int tCellCount = Integer.parseInt(fact);
-		        	fact = reader2.readLine();
-		            
-		            tCellFacts.put(tCellCount, fact);
-		        }
-		        reader2.close();
-		        
-		        reader2.close();
-		        
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				System.out.println("Error loading files"); e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-		//} 
+		// Calls the method that reads the files
+		readFiles();
+		
 	}
-
-	public void connectToDB(String name, String user, String pass) {
-		dbName = name;
-		String url = "jdbc:postgresql://localhost/" + dbName;
-		dbUsername = user;
-		dbPassword = pass;
-
+	
+	/**
+	 * Uses the Facts class to locate tips.txt and facts.txt resource locations.
+	 */
+	
+	public void locateResources() {
+		
+		// Locate resource for tips.txt
+		tipsLocation = Facts.class.getResource("tips.txt");
+		
+		// Throw IllegalArgumentException is resource could not be located
+		if (tipsLocation == null) throw new IllegalArgumentException("tipsLocation is null."
+				+ "Could not locate resource for tips.txt");
+		
+		
+		// Locate resource for facts.txt
+		factsLocation = Facts.class.getResource("facts.txt");
+		
+		if (factsLocation == null) throw new IllegalArgumentException("factsLocation is null."
+				+ "Could not locate resource for facts.txt");
+		
+	}
+	
+	/**
+	 * Read in strings from the tips.txt and facts.txt files into the 
+	 * tips ArrayList and tCellFacts Hashmap
+	 */
+	
+	public void readFiles() {
+		
 		try {
-
-			  Class.forName("org.postgresql.Driver");
-
-			  myConnection = DriverManager.getConnection(url + "?user=" + dbUsername + "&password=" + dbPassword);	
-
-				statement = myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
-		 }
-		 catch(ClassNotFoundException e) {
-			  e.printStackTrace();
-		  }
-		 catch (SQLException ex) {
-			  System.out.print("SQLException1: "+ex.getMessage());
-			  System.out.print("SQLState1: " + ex.getSQLState());
-			  System.out.print("VendorError1: " + ex.getErrorCode());
-		  }//end catch
-	}
-
-	public void getTipFromDB() {
-
-	}
-
-	public void getFactFromDB() {
-
+			
+			// Open BufferedReader to 
+			BufferedReader reader1 = new BufferedReader(new InputStreamReader(tipsLocation.openStream()));
+			
+			StringBuilder tipsOut = new StringBuilder();
+	        String tip;
+	        while ((tip = reader1.readLine()) != null) {
+	            tips.add(tip);
+	        }
+	        
+	        System.out.println(tipsOut.toString());   //Prints the string content read from input stream
+	        reader1.close();
+	        
+	        // Open and read facts.txt
+	        BufferedReader reader2 = new BufferedReader(new InputStreamReader(factsLocation.openStream()));
+	        
+	        String fact;
+	        while ((fact = reader2.readLine()) != null) {
+	        	int tCellCount = Integer.parseInt(fact);
+	        	fact = reader2.readLine();
+	            
+	            tCellFacts.put(tCellCount, fact);
+	        }
+	        reader2.close();
+	        
+	        reader2.close();
+	        
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error loading files"); e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	
