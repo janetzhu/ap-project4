@@ -1,8 +1,11 @@
 package test;
 
 import static org.junit.Assert.*;
+import impl.InvasionGame;
+import impl.InvasionGame.SidebarPanel;
 import object.Board;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /*
@@ -24,14 +27,25 @@ public class BoardTest {
  * 	
  */
 	
+	// Static board object
+	private static Board testBoard;
+	
+	/**** UNIT TESTS ***/
+	
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		
+		testBoard=new Board(5,4);
+	}
+	
+	
 	@Test
 	public void testBoardConstructor() {
 
-		Board b=new Board(2,3);
 
-		assertEquals(2,b.getgameHeight());
+		assertEquals(5,testBoard.getgameHeight());
 
-		assertEquals(3,b.getgameWidth());
+		assertEquals(4,testBoard.getgameWidth());
 
 	}
 	
@@ -50,37 +64,35 @@ public class BoardTest {
 	@Test
 	public void testcalibrateDifficulty() {
 
-		Board b=new Board(5,4);
+		testBoard.setTCellCount(950);
 
-		b.setTCellCount(950);
+		testBoard.calibrateDifficulty();
 
-		b.calibrateDifficulty();
+		assertEquals(testBoard.getDifficultyLevel(),2);
 
-		assertEquals(b.getDifficultyLevel(),2);
+		testBoard.setTCellCount(750);
 
-		b.setTCellCount(940);
+		testBoard.calibrateDifficulty();
 
-		b.calibrateDifficulty();
+		assertEquals(testBoard.getDifficultyLevel(),3);
 
-		assertEquals(b.getDifficultyLevel(),3);
+		testBoard.setTCellCount(600);
 
-		b.setTCellCount(930);
+		testBoard.calibrateDifficulty();
 
-		b.calibrateDifficulty();
+		assertEquals(testBoard.getDifficultyLevel(),4);
 
-		assertEquals(b.getDifficultyLevel(),4);
+		testBoard.setTCellCount(500);
 
-		b.setTCellCount(920);
+		testBoard.calibrateDifficulty();
 
-		b.calibrateDifficulty();
+		assertEquals(testBoard.getDifficultyLevel(),5);
 
-		assertEquals(b.getDifficultyLevel(),5);
+		testBoard.setTCellCount(400);
 
-		b.setTCellCount(910);
+		testBoard.calibrateDifficulty();
 
-		b.calibrateDifficulty();
-
-		assertEquals(b.getDifficultyLevel(),6);
+		assertEquals(testBoard.getDifficultyLevel(),6);
 
 	}
 
@@ -98,13 +110,12 @@ public class BoardTest {
 	@Test
 	public void testCalculateScore() {
 
-		Board b = new Board(5, 4);
+		testBoard.setGameScore(20);
+		testBoard.setGameStartTime(1000);
+		testBoard.calculateScore();
 
-		b.setGameScore(20);
-		b.setGameStartTime(1000);
-		b.calculateScore();
-
-		assertEquals(b.getGameScore(), 20);
+		assertEquals(testBoard.getGameScore(), 20);
 	}
+	
 }
 

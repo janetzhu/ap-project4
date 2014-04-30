@@ -810,8 +810,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * useAntiretrovirals()
 	 * Method that increases t cell count
 	 */
-	public void useAntiretrovirals() {
-	    int effectIndex = (int)(Math.random() * 4);
+	public void useAntiretrovirals(int effectIndex) {
 
 		if (effectIndex == 0) {
 			long timeBeforePrompt = System.currentTimeMillis();
@@ -945,7 +944,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		//If user decides to use antiretrovirals,
 		if (userDecision == 0) {
-	    	useAntiretrovirals();
+			// Randomize effect index that determines success/failure of antiretroviral treatment
+		    int effectIndex = (int)(Math.random() * 4);
+	    	useAntiretrovirals(effectIndex);
 		}
 		else {
 			sidebarPanel.addTextToPane(antiretroviralOutcomes[2]);
