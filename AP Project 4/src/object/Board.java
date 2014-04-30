@@ -43,7 +43,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
-    private final long GAME_WON_TIME = 120000;
+    private final long GAME_WON_TIME = 180000;
     private final long HIV_INTRO_TIME = 10000;
     
     private final int LEVEL_2_BENCHMARK = 950;
@@ -52,6 +52,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int LEVEL_5_BENCHMARK = 500;
     private final int LEVEL_6_BENCHMARK = 400;
     
+	private final String[] HIVinfectionReason = {"unprotected sexual intercourse", "sharing needles", "blood-to-blood contact"};
+  
     //Send over side bar panel from
     private SidebarPanel sidebarPanel; 
     public CountDownLatch latch;
@@ -97,7 +99,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private boolean antiretroviralOffered;
 
 	// Fact to display
-	private int factNo = 0; 
+	private int factNumber; 
 
 	/**
 	 * Board()
@@ -211,9 +213,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param i
 	 */
 	public void setVirusList(Virus currentVirus, int index) {
-
 		virusList.set(index, currentVirus);
-
 	}
 
 
@@ -297,6 +297,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		// Reset antiretroviral offered to false
 		antiretroviralOffered = false;
+		
+		// Reset fact Number to 0
+		factNumber = 0;
     	
     	//Create for loop which iterates through body of cells
     	for (int j = 0; j < CELL_ROWS; j++) {
@@ -345,7 +348,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
         }
     	
     	// Reset facts
-    	factNo = 0;
+    	factNumber = 0;
     	
     	//Initialize sidebar panel on board
     	this.initBoard(sidebarPanel);
@@ -570,10 +573,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		sidebarPanel.addTextToPane("You have been infected with HIV!");
 
 		long timeBeforePrompt = System.currentTimeMillis();
+		int randomReasonIndex = (int) (Math.random() * 2);
 
 		// JOptionPane that notifies user that he/she has been infected with HIV.
 		JOptionPane.showMessageDialog(this, 
-				"You have been infected with HIV.", 
+				"As a result of " + HIVinfectionReason[randomReasonIndex] + " , you have unfortunetly been infected "
+						+ "with HIV. HIV is now going to begin to diminish your t-cell troopers, making it harder "
+						+ "for you to defend your body cells from the invading diseases!", 
 				"Infected with HIV", JOptionPane.WARNING_MESSAGE);
 		
 		long timeafterPrompt = System.currentTimeMillis();
@@ -814,23 +820,22 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		// and display popup
 
 		
-		if (factNo <= hivFacts.getNumOfTips()) {
+		if (factNumber <= hivFacts.getNumOfTips()) {
 
-			sidebarPanel.addTextToPane(hivFacts.getTip(factNo));
+			sidebarPanel.addTextToPane(hivFacts.getTip(factNumber));
 
 			long timeBeforePrompt = System.currentTimeMillis();
 
 			// JOptionPane that pops up a message dialog displaying the fact.
 			JOptionPane.showMessageDialog(this, 
-					hivFacts.getTip(factNo), 
-					"Fast Fact #" + (factNo + 1), JOptionPane.PLAIN_MESSAGE);
+					hivFacts.getTip(factNumber), 
+					"Fast Fact #" + (factNumber + 1), JOptionPane.PLAIN_MESSAGE);
 			
 			long timeafterPrompt = System.currentTimeMillis();
 			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
 			gameStartTime = gameStartTime + timeSpentPaused;
 
-			factNo++;
-
+			factNumber++;
 		}
 
 
@@ -967,9 +972,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		// JOptionPane that prompts user, asking whether he/she wants to take antiretroviral treatment.
 		// Response is stored in userDecision: 0 is yes, 1 is no.
 		int userDecision = JOptionPane.showOptionDialog(this, 
-				"Your t-cell count is at 500, and your doctor has offered to put you"
-				+ "on antiretroviral treatment.\n"
-				+ "Though it has proven successful at controlling HIV,"
+				"Your t-cell count is at 500, and your doctor has offered to put you "
+				+ "on antiretroviral treatment. \n"
+				+ "Though it has proven successful at controlling HIV, "
 				+ "there are also side effects and complications that\n"
 				+ "make it risky. Take antiretrovirals?", 
 				"Antiretroviral Treatment", JOptionPane.YES_NO_OPTION,  
@@ -981,15 +986,11 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		//If user decides to use antiretrovirals,
 		if (userDecision == 0) {
-		    
 	    	useAntiretrovirals();
-			
 		}
-
-		//Else
 		else {
 			sidebarPanel.addTextToPane("You have opted out of taking antiretrovirals."
-					+ " Even though antiretroviral treatment comes with risks, it has proven"
+					+ " Even though antiretroviral treatment comes with risks, it has proven "
 					+ "effective in managing HIV.");
 		} 
 
@@ -1004,7 +1005,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 */
 
 	public void checkFactBenchmark() {
-		if (tCellCount == 900 || tCellCount == 500 || tCellCount == 350 || tCellCount == 200) {
+		if (tCellCount == 900 || tCellCount == 550 || tCellCount == 350 || tCellCount == 200) {
 
 			sidebarPanel.addTextToPane(hivFacts.getFact(tCellCount));
 
@@ -1047,7 +1048,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			// If t-cell count is 800 and antiretrovirals have never been offered before
 			// display the antiretrovirals dialog
-			if (tCellCount == 800 && !antiretroviralOffered) {
+			if ((tCellCount == 500 && !antiretroviralOffered) || tCellCount == 200) {
 				displayAntiretroviralsDialog();
 			}
 
@@ -1071,18 +1072,13 @@ public class Board extends JPanel implements Runnable, MouseListener {
 				if (!infected) {
 					//Call to infectHIV()
 					infectHIV();
-
-
 				}
-
-				//Else,
 				else if (infected) {
-
 					//Increment reduce cell counter
 					cellReduceCounter++;
 
 					//If it is equal to 7
-					if (cellReduceCounter == 7) {
+					if (cellReduceCounter == 3) {
 
 						//Decrement t cell count
 						tCellCount--;
@@ -1098,13 +1094,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			}
 
 
-			//If certain amount of time has passed,
-			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 2000) < 4) {
-
-				//Call to displayFact()
-
+			//If certain amount of time has passed, display the necessary fact
+			if (Math.abs((System.currentTimeMillis() - gameStartTime) % 7000) < 7) {
 				displayFact();
-
 			}
 
 			//If certain amount of time has passed,
