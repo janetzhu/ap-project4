@@ -1,20 +1,12 @@
 package object;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class Facts {
 	
@@ -62,7 +54,7 @@ public class Facts {
 		// Locate resource for tips.txt
 		tipsLocation = Facts.class.getResource("tips.txt");
 		
-		// Throw IllegalArgumentException is resource could not be located
+		// Throw IllegalArgumentException if resource could not be located
 		if (tipsLocation == null) throw new IllegalArgumentException("tipsLocation is null."
 				+ "Could not locate resource for tips.txt");
 		
@@ -70,6 +62,7 @@ public class Facts {
 		// Locate resource for facts.txt
 		factsLocation = Facts.class.getResource("facts.txt");
 		
+		// Throw IllegalArgumentException if resource could not be located
 		if (factsLocation == null) throw new IllegalArgumentException("factsLocation is null."
 				+ "Could not locate resource for facts.txt");
 		
@@ -84,51 +77,75 @@ public class Facts {
 		
 		try {
 			
-			// Open BufferedReader to 
+			// Open BufferedReader to open connection to tipslocation URL and read file
 			BufferedReader reader1 = new BufferedReader(new InputStreamReader(tipsLocation.openStream()));
 			
-			StringBuilder tipsOut = new StringBuilder();
+			// Create local variable to parse through the file
 	        String tip;
+	        
+	        // While there are lines in the file to read, add lines to tips ArrayList
 	        while ((tip = reader1.readLine()) != null) {
 	            tips.add(tip);
 	        }
-	        
-	        System.out.println(tipsOut.toString());   //Prints the string content read from input stream
+	      
+	        // Close the BufferedReader
 	        reader1.close();
 	        
-	        // Open and read facts.txt
+	        
+	        // Open BufferedReader to open connection to factsLocation URL and read file
 	        BufferedReader reader2 = new BufferedReader(new InputStreamReader(factsLocation.openStream()));
 	        
+	        // Create local variable to parse through the file
 	        String fact;
+	        
+	        // While there are lines in the file to read: parses the int that represents
+	        // the t-cell count that is associated with the line, and add line and int to 
+	        // tCellFacts hashmap
 	        while ((fact = reader2.readLine()) != null) {
+	        	
 	        	int tCellCount = Integer.parseInt(fact);
 	        	fact = reader2.readLine();
-	            
+	        	
 	            tCellFacts.put(tCellCount, fact);
 	        }
-	        reader2.close();
 	        
+	        // Close the second BufferedReader
 	        reader2.close();
 	        
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			System.out.println("Error loading files"); e.printStackTrace();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
-	//grabs a random tip from the tips arraylist
+	/**
+	 * Grabs tip from the tipNo position in the tips ArrayList 
+	 * @param tipNo
+	 * @return The tip
+	 */
 	public String getTip(int tipNo) {
 		return tips.get(tipNo);
 	}
+	
+	/**
+	 * Returns the number of tips in the tips ArrayList
+	 * @return size of the tips ArrayList
+	 */
 	
 	public int getNumOfTips() {
 		return tips.size();
 	}
 	
-	//returns a fact from the hashmap with the corresponding tcellcount
+	/**
+	 * Returns a fact from the hashmap that corresponds with a certain 
+	 * t-cell count level (tCellBenchmark). 
+	 * @param tCellBenchmark
+	 * @return the fact
+	 */
+	
 	public String getFact(int tCellBenchmark) {
 		return tCellFacts.get(tCellBenchmark);
 	}

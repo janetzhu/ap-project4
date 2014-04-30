@@ -802,7 +802,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 			factNumber++;
 		}
-
+ 
 
 	}
 
