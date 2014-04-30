@@ -64,6 +64,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	private int SIDEBAR_WIDTH = 200;
+	private int SIDEBAR_HEIGHT = GAME_HEIGHT - 64;
 
     public CountDownLatch latch;
 
@@ -256,7 +257,6 @@ public class InvasionGame extends JApplet implements Runnable{
 	 * @param newDisplayPanel
 	 */
 	public static void changeDisplayPanel (String newDisplayPanel) {
-		
 		currentScreen = newDisplayPanel;
 	}
 
@@ -318,209 +318,6 @@ public class InvasionGame extends JApplet implements Runnable{
 		return button;
 	}
 
-	//adds color and styles to JTextArea elements
-	/*public JTextArea styleText(JTextArea text) {
-		text.setMargin(new Insets(20, 20, 20, 20));
-		text.setLineWrap(true);
-		text.setWrapStyleWord(true);
-		text.setEditable(false);
-		text.setForeground(Color.WHITE);
-		text.setBackground(new Color(0,0,0, 150));
-		text.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 15));
-		return text;
-		
-	}*/
-
-/*
- * This class is the structure of the welcome screen where you hit start and directs you 
- * to the next page. 
- * 
- */
-
-	/*//JPanel object that contains the logo and Start button
-	public class WelcomePanel extends JPanel {
-		private JButton startButton;
-
-		public WelcomePanel() {
-			setLayout(null);
-			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
-			startButton = new JButton("START GAME!");
-			startButton = styleButton(startButton);
-			startButton.setBounds(325, 560, 200, 50);
-			startButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					cardLayout.show(gameScreens, "Background");
-					currentScreen = "Background";
-					sidebarPanel.repaint();
-				}
-
-			});
-			add(startButton);
-		}
-
-		public void paintComponent(Graphics g) {
-			Graphics2D g2 = (Graphics2D) g;
-
-	        g2.drawImage(background, 0, 0, this);
-	        g2.drawImage(logo, 0, 50, this);
-            
-		}
-
-	}*/
-
-
-	/*
-	 * This class tells the user the background and reason for playing 
-	 * the game and why it is important. It is directed toward a kid audience. 
-	 * 
-	 */
-
-	//JPanel that gives the user background information about HIV/AIDS
-
-	/*public class BackgroundPanel extends JPanel {
-	
-		private String background_information= 
-				"HIV is a virus that weakens the body's defense system (immune system)."
-				+ "It destroys good helper T cells that protect the body from harmful "
-				+ "infections, viruses, and diseases.\n\n"
-				+ "HIV gradually reproduces itself and kills more T-cells, making the "
-				+ "immune system weaker and weaker.\n\n" 
-				+ "After a certain point, the good T cells can no longer fight against  " 
-				+ "the HIV virus or protect the body against other diseases.\n\n" 
-				+ "Now, AIDS has developed, and diseases are free to attack the body.";
-
-		private JButton nextButton;
-		private JTextArea backgroundText;
-		private BufferedImage HIV_image;
-		private JLabel picLabel;
-
-		public BackgroundPanel(){
-			setLayout(null);
-			sidebarPanel.repaint();
-			initializeGUI();
-		}
-
-		public void paintComponent(Graphics g) {
-			Graphics2D g2 = (Graphics2D) g;
-
-			g2.drawImage(background,0,0,this);	
-			g2.drawImage(what_is_hiv,0,6,this);
-
-		}
-
-		private void initializeGUI(){
-			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
-
-			nextButton = new JButton("NEXT PAGE");
-			nextButton = styleButton(nextButton);
-			nextButton.setBounds(325, 560, 200, 50);
-
-			backgroundText = new JTextArea(background_information,10,50);
-			backgroundText.setBounds(25, 75, GAME_WIDTH-50, 300);
-			backgroundText = styleText(backgroundText);
-
-			
-			try {
-				HIV_image = ImageIO.read(new File("HIV_attack.jpg"));
-			} catch (IOException e) {
-				System.out.println("Error loading image");
-			}
-
-			picLabel = new JLabel(new ImageIcon(HIV_image));
-			picLabel.setBounds(-120, 375, GAME_WIDTH-50, 250);
-
-			nextButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					cardLayout.show(gameScreens, "Instructions");
-					currentScreen = "Instructions";
-					sidebarPanel.repaint();
-				}
-
-			});
-			add(backgroundText);
-			add(nextButton);
-			add(picLabel);
-
-		}
-		
-	}*/
-
-	/*
-	 * This class encompasses the Instruction Panel which 
-	 * tells the user what to do and how to play the game. 
-	 */
-
-	/*public class InstructionPanel extends JPanel {
-		
-
-		private JTextArea instructionsText;
-		private BufferedImage HIV_picture;
-		private JLabel pictureLabel;
-
-		private String instructions = "1. Click on the invading viruses to destroy them as they emerge from the top of the screen." + 
-		"\n2. Stop them from infecting the good cells at the bottom of the screen." +
-		"\n3. As the game moves along, the viruses become harder to destroy." + 
-		"\n4. Be sure to read the facts as they appear in the sidebar for useful information about HIV." +
-		"\n5. Good Luck!";
-
-		public InstructionPanel() {
-			setLayout(null);
-
-			initializeGUI();
-		}
-
-		public void initializeGUI() {
-			sidebarPanel.repaint();
-			setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));	
-
-			JButton nextButton = new JButton("PLAY GAME");
-			nextButton = styleButton(nextButton);
-			nextButton.setBounds(325, 560, 200, 50);
-			nextButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					cardLayout.show(gameScreens, "Game");
-					currentScreen = "Game";
-					gameBoard.initBoard(sidebarPanel);
-					sidebarPanel.repaint();
-				}
-
-			});
-
-			instructionsText = new JTextArea(instructions,10,50);
-			instructionsText.setBounds(25, 75, GAME_WIDTH-50, 300);
-			instructionsText = styleText(instructionsText);
-			BufferedImage HIV_picture = null;
-			try {
-				HIV_picture = ImageIO.read(new File("HIV_invasion.jpg"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			pictureLabel = new JLabel(new ImageIcon(HIV_picture));
-			pictureLabel.setBounds(-75, 375, GAME_WIDTH-50, 300);
-			
-			add(instructionsText);
-			add(nextButton);
-			add(pictureLabel);
-		}
-
-		public void paintComponent(Graphics g) {
-			Graphics2D g2 = (Graphics2D) g;
-
-			g2.drawImage(background,0,0,this);
-			g2.drawImage(instructions_img,0,6,this);
-		}
-
-	}*/
-
-
 	/**
 	 * SidebarPanel Class
 	 * Sets up sidebar with a JPanel implementation
@@ -555,7 +352,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		 * Constructor
 		 */
 		public SidebarPanel() {
-			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
+			setPreferredSize(new Dimension(SIDEBAR_WIDTH, SIDEBAR_HEIGHT));
 			dimmed = false;
 			
 			setLayout(null);
@@ -576,7 +373,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			scrollPane.setVerticalScrollBarPolicy(
 	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			//scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
-			scrollPane.setBounds(2, 64, SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4);
+			scrollPane.setBounds(2, 64, SIDEBAR_WIDTH - 4, SIDEBAR_HEIGHT - 4);
 			//scrollPane.setMinimumSize(new Dimension(10, 10));
 			scrollPane.setBackground(new Color (0,0,0,0));
 			scrollPane.setBorder(null);
@@ -701,7 +498,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,215));
-	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, SIDEBAR_HEIGHT);
 	        }
 	        
 	        //If game in progress
@@ -709,7 +506,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,150));
-	        	g2.fillRect(0,64,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        	g2.fillRect(0,64,SIDEBAR_WIDTH, SIDEBAR_HEIGHT);
 	        }
 	        
 		}
@@ -752,9 +549,6 @@ public class InvasionGame extends JApplet implements Runnable{
 			}
 			repaint();
 		}
-
-
-
 	}//end sidebarPanel
 	
 	//clear the text in the side bar panel

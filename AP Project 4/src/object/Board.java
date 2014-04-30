@@ -26,7 +26,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 
 	/******** CLASS  VARIABLES ********/
-	private final int DELAY = 20;
+	private int DELAY = 25;
 	private final int VIRUS_POS_XMIN = 15;
     private final int VIRUS_POS_XMAX = 635;
     private final int VIRUS_POS_YMIN = 10;
@@ -42,7 +42,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
     private final int START_VIRUS_COUNT = 5; //number of viruses at start of game
     private final int START_TCELL_COUNT = 1000;
     private final int START_DIFFICULTY_LEVEL = 1;
-    private final long GAME_WON_TIME = 180000;
+    private final long GAME_WON_TIME = 160000;
     private final long HIV_INTRO_TIME = 10000;
     
     // Benchmarks of T-cell counts at which the game becomes harder
@@ -123,7 +123,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	public Board(int height, int width) {
 		gameHeight = height;
 		gameWidth = width;
-
 	}
 
 	/**
@@ -132,10 +131,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getgameHeight() {
-
 		return gameHeight;
-
-
 	}
 
 	/**
@@ -144,9 +140,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getgameWidth() {
-
 		return gameWidth;
-
 	}
 
 	/**
@@ -155,7 +149,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getTCellCount() {
-
 		return tCellCount; 	
 	}
 
@@ -165,7 +158,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param number
 	 */
 	public void setTCellCount(int number) {
-
 		tCellCount=number;	
 	}
 
@@ -175,7 +167,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getDiffcultyLevel() {
-
 		return difficultyLevel;	
 	}
 
@@ -185,7 +176,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public int getGameScore() {
-
 		return gameScore;	
 	}
 
@@ -195,7 +185,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param score
 	 */
 	public void setGameScore(int score) {
-
 		gameScore = score;
 	}
 
@@ -205,7 +194,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @return
 	 */
 	public long getGameStartTime() {
-
 		return gameStartTime;
 	}
 
@@ -215,7 +203,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * @param time
 	 */
 	public void setGameStartTime(long time) {
-
 		gameStartTime = time;
 	}
 
@@ -229,7 +216,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		virusList.set(index, currentVirus);
 	}
 
-
 	 /**
 	  * initBoard()
 	  * Method called from InvasionGame class to start the game play
@@ -239,6 +225,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 public void initBoard(SidebarPanel sidebar) {
 		//Set visible to true
 		setVisible(true);
+		
+		setDoubleBuffered(true);
 
 		//Set size to game dimensions
 		setPreferredSize(new Dimension(gameWidth, gameHeight));
@@ -248,9 +236,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		//Add listener
 		addMouseListener(this);
-
-		//Set infected to false
-		infected = false;
 
 		//Initialize side bar panel
 		sidebarPanel = sidebar;
@@ -299,6 +284,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		//Initialize game score
 		gameScore = 0;
 
+		//Set infected to false
+		infected = false;
+		
 		//Initialize t cell count
 		tCellCount = START_TCELL_COUNT;
 
@@ -601,16 +589,15 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	    int randomNumberX = VIRUS_POS_XMIN + (int)(Math.random() * ((VIRUS_POS_XMAX - VIRUS_POS_XMIN) + 1));
 	    int randomNumberY = VIRUS_POS_YMIN + (int)(Math.random() * ((VIRUS_POS_YMAX - VIRUS_POS_YMIN) + 1));
 	    int randomNumberDifficulty;
-
-	    //If difficulty level is greater than 1
+	    
+	    //If difficulty level is greater than 1 set strength to random int between current difficulty and 3 less than
+	    // current difficulty
 	    if (difficultyLevel > 1) {
-
 	    	//Set minDifficulty
 	    	int minDifficulty = difficultyLevel - 3;
 
 	    	//If minDiffuclty is less than 1
 	    	if (minDifficulty < 1) {
-
 	    		//Set minDiffulty equal to 1
 	    		minDifficulty = 1;
 	    	}
@@ -618,10 +605,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	    	//Create a random difficulty
 		    randomNumberDifficulty = minDifficulty + (int)(Math.random() * ((difficultyLevel - minDifficulty) + 1));
 	    }
-
-	    //Else
 	    else {
-
 	    	//Set random difficulty to difficulty level
 	    	randomNumberDifficulty = difficultyLevel;
 	    }
@@ -768,14 +752,16 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		}
 		else if (tCellCount == LEVEL_4_BENCHMARK) {
 			difficultyLevel = 4;
+			DELAY = 20;
 		}
 		else if (tCellCount == LEVEL_5_BENCHMARK) {
 			difficultyLevel = 5;
+			DELAY = 20;
 		}
 		else if (tCellCount == LEVEL_6_BENCHMARK) {
 			difficultyLevel = 6;
+			DELAY = 20;
 		}
-
 	}
 
 	/**
@@ -861,6 +847,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 			
 			//Decrement t cell count
 			tCellCount -= 50;
+			difficultyLevel = difficultyLevel + 1;
 		}
 		else if (effectIndex == 2) {
 			long timeBeforePrompt = System.currentTimeMillis();
@@ -1048,7 +1035,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 					cellReduceCounter++;
 
 					//If it is equal to 7
-					if (cellReduceCounter == 3) {
+					if (cellReduceCounter == 5) {
 
 						//Decrement t cell count
 						tCellCount--;
