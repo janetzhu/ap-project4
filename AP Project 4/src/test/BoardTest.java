@@ -37,7 +37,7 @@ public class BoardTest {
 	
 /*
  * @Test
- * testcaliberateDifficulty() 
+ * testcalibrateDifficulty() 
  * 
  * This method is important to make sure the game difficulty is computed 
  * appropriately. 
@@ -48,7 +48,7 @@ public class BoardTest {
  */
 
 	@Test
-	public void testcaliberateDifficulty() {
+	public void testcalibrateDifficulty() {
 
 		Board b=new Board(5,4);
 
@@ -56,31 +56,31 @@ public class BoardTest {
 
 		b.calibrateDifficulty();
 
-		assertEquals(b.getDiffcultyLevel(),2);
+		assertEquals(b.getDifficultyLevel(),2);
 
 		b.setTCellCount(940);
 
 		b.calibrateDifficulty();
 
-		assertEquals(b.getDiffcultyLevel(),3);
+		assertEquals(b.getDifficultyLevel(),3);
 
 		b.setTCellCount(930);
 
 		b.calibrateDifficulty();
 
-		assertEquals(b.getDiffcultyLevel(),4);
+		assertEquals(b.getDifficultyLevel(),4);
 
 		b.setTCellCount(920);
 
 		b.calibrateDifficulty();
 
-		assertEquals(b.getDiffcultyLevel(),5);
+		assertEquals(b.getDifficultyLevel(),5);
 
 		b.setTCellCount(910);
 
 		b.calibrateDifficulty();
 
-		assertEquals(b.getDiffcultyLevel(),6);
+		assertEquals(b.getDifficultyLevel(),6);
 
 	}
 
