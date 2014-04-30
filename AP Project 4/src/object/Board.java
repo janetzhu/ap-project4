@@ -94,7 +94,7 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	private int cellCounter;
 
 	//Declare boolean antiretroviralOffered
-	private boolean antiretroviralOffered = false;
+	private boolean antiretroviralOffered;
 
 	// Fact to display
 	private int factNo = 0; 
@@ -239,18 +239,6 @@ public class Board extends JPanel implements Runnable, MouseListener {
 		//Set infected to false
 		infected = false;
 
-		//Set up cell counter
-		cellCounter = CELL_ROWS * CELL_COLUMNS;
-
-		//Initialize game score
-		gameScore = 0;
-
-		//Initialize t cell count
-		tCellCount = START_TCELL_COUNT;
-
-		//Initialize difficulty level
-		difficultyLevel = START_DIFFICULTY_LEVEL;
-
 		//Initialize side bar panel
 		sidebarPanel = sidebar;
 
@@ -291,6 +279,24 @@ public class Board extends JPanel implements Runnable, MouseListener {
     	
     	//Clear the virus list
     	virusList.clear();
+    	
+    	//Set up cell counter
+		cellCounter = CELL_ROWS * CELL_COLUMNS;
+
+		//Initialize game score
+		gameScore = 0;
+
+		//Initialize t cell count
+		tCellCount = START_TCELL_COUNT;
+
+		//Initialize difficulty level
+		difficultyLevel = START_DIFFICULTY_LEVEL;
+    			
+    	//Reset tCellCount
+    	tCellCount = START_TCELL_COUNT;
+
+		// Reset antiretroviral offered to false
+		antiretroviralOffered = false;
     	
     	//Create for loop which iterates through body of cells
     	for (int j = 0; j < CELL_ROWS; j++) {
@@ -605,6 +611,8 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	     * Inspired by a similar post on stack overflow:
 	     * http://stackoverflow.com/questions/363681/generating-random-numbers-in-a-range-with-java
 	     */
+    	
+    	// Random x and y coordinates are integers between the x and y min and max constants
 	    int randomNumberX = VIRUS_POS_XMIN + (int)(Math.random() * ((VIRUS_POS_XMAX - VIRUS_POS_XMIN) + 1));
 	    int randomNumberY = VIRUS_POS_YMIN + (int)(Math.random() * ((VIRUS_POS_YMAX - VIRUS_POS_YMIN) + 1));
 	    int randomNumberDifficulty;
@@ -833,8 +841,90 @@ public class Board extends JPanel implements Runnable, MouseListener {
 	 * Method that increases t cell count
 	 */
 	public void useAntiretrovirals() {
-		//Increment t cell count
-		tCellCount += 50;
+	    int effectIndex = (int)(Math.random() * 4);
+
+		if (effectIndex == 0) {
+			long timeBeforePrompt = System.currentTimeMillis();
+
+			// JOptionPane that pops up a message dialog displaying the fact.
+			JOptionPane.showMessageDialog(this, 
+					"You have chosen to take antiretrovirals. "
+							+ "A successful round of treatment increased your t-cell "
+							+ "count by 50.", 
+					"Treatment Successful!", JOptionPane.PLAIN_MESSAGE);
+			
+			long timeafterPrompt = System.currentTimeMillis();
+			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+			gameStartTime = gameStartTime + timeSpentPaused;
+			
+			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
+					+ "A successful round of treatment increased your t-cell "
+					+ "count by 50.");
+			
+			//Increment t cell count
+			tCellCount += 50;
+		}
+		else if (effectIndex == 1) {
+			long timeBeforePrompt = System.currentTimeMillis();
+
+			// JOptionPane that pops up a message dialog displaying the fact.
+			JOptionPane.showMessageDialog(this, 
+					"You have chosen to take antiretrovirals. "
+							+ "However, sadly the treatment was unsuccessful, and the adverse side-effects have "
+							+ "actually decreased your t-cell count by 50.", 
+					"Treatment Unsuccessful!", JOptionPane.PLAIN_MESSAGE);
+			
+			long timeafterPrompt = System.currentTimeMillis();
+			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+			gameStartTime = gameStartTime + timeSpentPaused;
+			
+			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
+					+ "However, sadly the treatment was unsuccessful, and the adverse side-effects have "
+					+ "actually decreased your t-cell count by 50.");
+			
+			//Decrement t cell count
+			tCellCount -= 50;
+		}
+		else if (effectIndex == 2) {
+			long timeBeforePrompt = System.currentTimeMillis();
+
+			// JOptionPane that pops up a message dialog displaying the fact.
+			JOptionPane.showMessageDialog(this, 
+					"You have chosen to take antiretrovirals. "
+							+ "However, sadly the treatment was unsuccessful, and has not managed to increase "
+							+ "your t-cell count.",
+					"Treatment Unsuccessful!", JOptionPane.PLAIN_MESSAGE);
+			
+			long timeafterPrompt = System.currentTimeMillis();
+			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+			gameStartTime = gameStartTime + timeSpentPaused;
+			
+			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
+					+ "However, sadly the treatment was unsuccessful, and has not managed to increase "
+					+ "your t-cell count.");
+		}
+		else if (effectIndex == 3 || effectIndex == 4) {
+			long timeBeforePrompt = System.currentTimeMillis();
+
+			// JOptionPane that pops up a message dialog displaying the fact.
+			JOptionPane.showMessageDialog(this, 
+					"You have chosen to take antiretrovirals. "
+							+ "A successful round of treatment increased your t-cell "
+							+ "count by 100.", 
+					"Treatment Successful!", JOptionPane.PLAIN_MESSAGE);
+			
+			long timeafterPrompt = System.currentTimeMillis();
+			long timeSpentPaused = timeafterPrompt - timeBeforePrompt;
+			gameStartTime = gameStartTime + timeSpentPaused;
+			
+			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
+					+ "A successful round of treatment increased your t-cell "
+					+ "count by 100.");
+			
+			//Increment t cell count
+			tCellCount += 100;
+		}
+				
 	}
 
 
@@ -891,11 +981,9 @@ public class Board extends JPanel implements Runnable, MouseListener {
 
 		//If user decides to use antiretrovirals,
 		if (userDecision == 0) {
-			sidebarPanel.addTextToPane("You have chosen to take antiretrovirals. "
-					+ "A successful round of treatment increased your t-cell "
-					+ "count by 50.");
-
-			useAntiretrovirals();
+		    
+	    	useAntiretrovirals();
+			
 		}
 
 		//Else
