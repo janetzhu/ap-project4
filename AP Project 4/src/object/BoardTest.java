@@ -1,29 +1,26 @@
-package test;
+package object;
 
 import static org.junit.Assert.*;
-import object.Board;
 
 import org.junit.Test;
 
-/*
+/**
  *This class tests the essential methods of the Board class  
  *and the graphical methods are left out since one can already 
  *see that on the screen. 
  * 
  */
-
 public class BoardTest {
 
-/*
- * @Test 
- * testBoardConstructor() which makes sure  
- * that the members of the Board class are initialized properly. 
- * 
- * @param none
- * @return none
- * 	
- */
-	
+	/**
+	 * @Test 
+	 * testBoardConstructor() which makes sure  
+	 * that the members of the Board class are initialized properly. 
+	 * 
+	 * @param none
+	 * @return none
+	 * 	
+	 */
 	@Test
 	public void testBoardConstructor() {
 
@@ -35,20 +32,19 @@ public class BoardTest {
 
 	}
 	
-/*
- * @Test
- * testcalibrateDifficulty() 
- * 
- * This method is important to make sure the game difficulty is computed 
- * appropriately. 
- * 
- * 
- *@param none
- *@return none 
- */
-
+	/**
+	 * @Test
+	 * testcaliberateDifficulty() 
+	 * 
+	 * This method is important to make sure the game difficulty is computed 
+	 * appropriately. 
+	 * 
+	 * 
+	 *@param none
+	 *@return none 
+	 */
 	@Test
-	public void testcalibrateDifficulty() {
+	public void testcaliberateDifficulty() {
 
 		Board b=new Board(5,4);
 
@@ -84,7 +80,7 @@ public class BoardTest {
 
 	}
 
-	/*
+	/**
 	 * @test
 	 * 
 	 * testCalculateScore() is a method that verifies the score is calculated 
@@ -94,7 +90,6 @@ public class BoardTest {
 	 *@return none 
 	 * 
 	 */
-	
 	@Test
 	public void testCalculateScore() {
 
