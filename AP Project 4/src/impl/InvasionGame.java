@@ -64,6 +64,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	private int GAME_HEIGHT = 650;
 	private int GAME_WIDTH = 650;
 	private int SIDEBAR_WIDTH = 200;
+	private int SIDEBAR_HEIGHT = GAME_HEIGHT - 64;
 
     public CountDownLatch latch;
 
@@ -256,7 +257,6 @@ public class InvasionGame extends JApplet implements Runnable{
 	 * @param newDisplayPanel
 	 */
 	public static void changeDisplayPanel (String newDisplayPanel) {
-		
 		currentScreen = newDisplayPanel;
 	}
 
@@ -352,7 +352,7 @@ public class InvasionGame extends JApplet implements Runnable{
 		 * Constructor
 		 */
 		public SidebarPanel() {
-			setPreferredSize(new Dimension(SIDEBAR_WIDTH, WINDOW_HEIGHT));
+			setPreferredSize(new Dimension(SIDEBAR_WIDTH, SIDEBAR_HEIGHT));
 			dimmed = false;
 			
 			setLayout(null);
@@ -373,7 +373,7 @@ public class InvasionGame extends JApplet implements Runnable{
 			scrollPane.setVerticalScrollBarPolicy(
 	                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			//scrollPane.setPreferredSize(new Dimension(SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4));
-			scrollPane.setBounds(2, 64, SIDEBAR_WIDTH - 4, WINDOW_HEIGHT - 4);
+			scrollPane.setBounds(2, 64, SIDEBAR_WIDTH - 4, SIDEBAR_HEIGHT - 4);
 			//scrollPane.setMinimumSize(new Dimension(10, 10));
 			scrollPane.setBackground(new Color (0,0,0,0));
 			scrollPane.setBorder(null);
@@ -498,7 +498,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,215));
-	        	g2.fillRect(0,0,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        	g2.fillRect(0,0,SIDEBAR_WIDTH, SIDEBAR_HEIGHT);
 	        }
 	        
 	        //If game in progress
@@ -506,7 +506,7 @@ public class InvasionGame extends JApplet implements Runnable{
 	        	
 	        	//Set up the sidebar
 	        	g2.setColor(new Color(0,0,0,150));
-	        	g2.fillRect(0,64,SIDEBAR_WIDTH, GAME_HEIGHT);
+	        	g2.fillRect(0,64,SIDEBAR_WIDTH, SIDEBAR_HEIGHT);
 	        }
 	        
 		}
@@ -549,9 +549,6 @@ public class InvasionGame extends JApplet implements Runnable{
 			}
 			repaint();
 		}
-
-
-
 	}//end sidebarPanel
 	
 	//clear the text in the side bar panel
