@@ -1,6 +1,7 @@
-package object;
+package test;
 
 import static org.junit.Assert.*;
+import object.Cell;
 
 import org.junit.Test;
 

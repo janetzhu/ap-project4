@@ -1,6 +1,7 @@
-package object;
+package test;
 
 import static org.junit.Assert.*;
+import object.Virus;
 
 import org.junit.Test;
 
